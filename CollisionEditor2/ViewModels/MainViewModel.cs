@@ -11,10 +11,14 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using CollisionEditor2.Views;
 using CollisionEditor2.ViewServices;
+using MessageBoxSlim.Avalonia;
+using MessageBoxSlim;
+using MessageBoxSlim.Avalonia.DTO;
+using MessageBoxSlim.Avalonia.Enums;
 
 namespace CollisionEditor2.ViewModels;
 
-public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
+public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataErrorInfo
 {   
     public AngleMap AngleMap { get; private set; }
     public TileSet TileSet { get; private set; }
@@ -208,11 +212,19 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) * (TileSet.TileSize.Height * tileMapTileScale + tileMapSeparation);
     }
 
-    private void MenuSaveTileMap()
+    private async void MenuSaveTileMap()
     {
         if (TileSet.Tiles.Count == 0)
         {
-            System.Windows.Forms.MessageBox.Show("Error: You haven't chosen TileMap to save");
+            _ = await BoxedMessage.Create(new MessageBoxParams
+            {
+                Buttons = ButtonEnum.Ok,
+                ContentTitle = "Error",
+                ContentMessage = "Error: You haven't chosen TileMap to save",
+                Location = WindowStartupLocation.CenterScreen,
+                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                Style = BoxStyle.UbuntuLinux
+            }).ShowDialogAsync(window);
             return;
         }
 
@@ -223,11 +235,19 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         }
     }
 
-    private void MenuSaveWidthMap()
+    private async void MenuSaveWidthMap()
     {
         if (TileSet.Tiles.Count == 0)
         {
-            System.Windows.Forms.MessageBox.Show("Error: The WidthMap isn't generated!");
+            _ = await BoxedMessage.Create(new MessageBoxParams
+            {
+                Buttons = ButtonEnum.Ok,
+                ContentTitle = "Error",
+                ContentMessage = "Error: The WidthMap isn't generated!",
+                Location = WindowStartupLocation.CenterScreen,
+                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                Style = BoxStyle.UbuntuLinux
+            }).ShowDialogAsync(window);
             return;
         }
 
@@ -238,11 +258,19 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         }
     }
 
-    private void MenuSaveHeightMap()
+    private async void MenuSaveHeightMap()
     {
         if (TileSet.Tiles.Count == 0)
         {
-            System.Windows.Forms.MessageBox.Show("Error: The HeightMap isn't generated!");
+            _ = await BoxedMessage.Create(new MessageBoxParams
+            {
+                Buttons = ButtonEnum.Ok,
+                ContentTitle = "Error",
+                ContentMessage = "Error: The HeightMap isn't generated!",
+                Location = WindowStartupLocation.CenterScreen,
+                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                Style = BoxStyle.UbuntuLinux
+            }).ShowDialogAsync(window);
             return;
         }
 
@@ -253,11 +281,19 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         }
     }
 
-    private void MenuSaveAngleMap()
+    private async void MenuSaveAngleMap()
     {
         if (AngleMap.Values.Count == 0)
         {
-            System.Windows.Forms.MessageBox.Show("Error: You haven't chosen AngleMap to save");
+            _ = await BoxedMessage.Create(new MessageBoxParams
+            {
+                Buttons = ButtonEnum.Ok,
+                ContentTitle = "Error",
+                ContentMessage = "Error: You haven't chosen AngleMap to save",
+                Location = WindowStartupLocation.CenterScreen,
+                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                Style = BoxStyle.UbuntuLinux
+            }).ShowDialogAsync(window);
             return;
         }
 
