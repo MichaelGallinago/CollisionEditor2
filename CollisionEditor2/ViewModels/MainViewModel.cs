@@ -1,13 +1,15 @@
 ﻿using CollisionEditor2.Models;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows;
 using System.ComponentModel;
 using System.Collections;
 using System.Drawing;
 using System.IO;
 using System;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using CollisionEditor2.Views;
 using CollisionEditor2.ViewServices;
 
 namespace CollisionEditor2.ViewModels;
@@ -63,6 +65,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
             (byte byteAngle, string hexAngle, double fullAngle) angles = ViewModelAngleService.GetAngles(hexAngle);
             ByteAngle = angles.byteAngle;
             AngleMap.SetAngle((int)ChosenTile, angles.byteAngle);
+            
             window.DrawRedLine();
         }
     }
@@ -187,7 +190,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
 
             foreach (Bitmap tile in TileSet.Tiles)
             {
-                var image = new System.Windows.Controls.Image()
+                var image = new Avalonia.Controls.Image()
                 {
                     Width  = TileSet.TileSize.Width  * 2,
                     Height = TileSet.TileSize.Height * 2
@@ -342,13 +345,13 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
             chosenTile = (uint)TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(ChosenTile));
         }
-
-        System.Windows.Controls.Image lastTile = GetTile(window.LastChosenTile);
+        
+        Avalonia.Controls.Image lastTile = GetTile(window.LastChosenTile);
 
         window.TileMapGrid.Children.RemoveAt(window.LastChosenTile);
         window.TileMapGrid.Children.Insert(window.LastChosenTile, lastTile);
 
-        System.Windows.Controls.Image newTile = GetTile((int)chosenTile);
+        Avalonia.Controls.Image newTile = GetTile((int)chosenTile);
 
         Border border = new Border()
         {
@@ -386,10 +389,10 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         window.RectanglesGrid.Children.Clear();
     }
 
-    internal System.Windows.Controls.Image GetTile(int index)
+    internal Avalonia.Controls.Image GetTile(int index)
     {
         Bitmap tile = TileSet.Tiles[index];
-        var image = new System.Windows.Controls.Image()
+        var image = new Avalonia.Controls.Image()
         {
             Width = TileSet.TileSize.Width * 2,
             Height = TileSet.TileSize.Height * 2
