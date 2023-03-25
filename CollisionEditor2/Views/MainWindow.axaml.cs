@@ -83,7 +83,7 @@ namespace CollisionEditor2.Views
             var mousePosition = e.GetPosition(RectanglesGrid);
             Vector2<int> position = GetGridPosition(mousePosition, RectanglesGrid);
 
-            SquaresService.MoveSquare(position, firstSquare, secondSquare);
+            SquaresService.MoveSquare(windowMain.window, position, firstSquare, secondSquare);
 
             if (RectanglesGrid.Children.Contains(firstSquare.Square) && RectanglesGrid.Children.Contains(secondSquare.Square))
             {
@@ -95,7 +95,7 @@ namespace CollisionEditor2.Views
         internal void DrawRedLine()
         {
             if (windowMain.AngleMap.Values.Count > 0)
-                RedLineService.DrawRedLine(windowMain.window ,ref redLine);
+                RedLineService.DrawRedLine(windowMain.window, ref redLine);
         }
 
         private void SelectTileTextBox_PreviewKeyDown(object sender, KeyEventArgs e)

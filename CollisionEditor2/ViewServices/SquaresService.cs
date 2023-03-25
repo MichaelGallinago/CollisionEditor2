@@ -1,13 +1,13 @@
 ﻿using CollisionEditor2.Models;
 using Avalonia.Controls;
+using CollisionEditor2.Views;
 
 namespace CollisionEditor2.ViewServices;
 
 internal static class SquaresService
 {
-    static MainWindow mainWindow = (MainWindow)System.Windows.Application.Current.MainWindow;
-
-    public static void MoveSquare(Vector2<int> position, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
+    public static void MoveSquare(MainWindow mainWindow, Vector2<int> position, 
+        SquareAndPosition firstSquare, SquareAndPosition secondSquare)
     {
         firstSquare.Square.SetValue(Grid.ColumnProperty, position.X);
         firstSquare.Square.SetValue(Grid.RowProperty, position.Y);
