@@ -138,12 +138,14 @@ namespace CollisionEditor2.Views
         {
             RectanglesGridUpdate(false);
         }
-        private uint GetUniformGridIndex(Point mousePosition, System.Windows.Controls.Primitives.UniformGrid grid)
+
+        private uint GetUniformGridIndex(Point mousePosition)
         {
             var tileSize = windowMain.TileSet.TileSize;
             uint tileWidth = (uint)tileSize.Width * tileMapTileScale;
             uint tileHeight = (uint)tileSize.Height * tileMapTileScale;
-            return (uint)mousePosition.X / (tileWidth + tileMapSeparation) + ((uint)mousePosition.Y / (tileHeight + tileMapSeparation)) * (uint)TileMapGrid.Columns;
+            return (uint)mousePosition.X / (tileWidth  + tileMapSeparation) 
+                + ((uint)mousePosition.Y / (tileHeight + tileMapSeparation)) * (uint)TileMapGrid.Columns;
         }
 
 
@@ -159,7 +161,7 @@ namespace CollisionEditor2.Views
 
             var mousePosition = e.GetPosition(TileMapGrid);
 
-            windowMain.ChosenTile = GetUniformGridIndex(mousePosition, TileMapGrid);
+            windowMain.ChosenTile = GetUniformGridIndex(mousePosition);
 
             if (windowMain.ChosenTile > windowMain.TileSet.Tiles.Count - 1)
                 windowMain.ChosenTile = (uint)windowMain.TileSet.Tiles.Count - 1;
@@ -184,74 +186,73 @@ namespace CollisionEditor2.Views
         }
 
 
-        private void WindowSizeChanged(object sender, SizeChangedEventArgs e)
+        private void WindowSizeChanged(object sender, EventArgs e)
         {
             int countOfTiles = windowMain.TileSet.Tiles.Count;
             var tileSize = windowMain.TileSet.TileSize;
 
-            double actualHeightTextAndButtons = (ActualHeight - menuHeight) / countHeightParts * textAndButtonsHeight;
-            double actualWidthUpAndDownButtons = ActualWidth / countWidthParts * upAndDownButtonsWidth;
-            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (ActualWidth / countHeightParts * 43)) / 0.35 - 21);
+            double actualHeightTextAndButtons = (Height - menuHeight) / countHeightParts * textAndButtonsHeight;
+            double actualWidthUpAndDownButtons = Width / countWidthParts * upAndDownButtonsWidth;
+            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (Width / countHeightParts * 43)) / 0.35 - 21);
 
-            double actualHeightGrid = (ActualHeight - menuHeight) / countHeightParts * gridHeight;
+            double actualHeightGrid = (Height - menuHeight) / countHeightParts * gridHeight;
 
-            TileGrid.Width = actualHeightGrid;
+            TileGrid.Width  = actualHeightGrid;
             TileGrid.Height = actualHeightGrid;
 
-            RectanglesGrid.Width = actualHeightGrid;
+            RectanglesGrid.Width  = actualHeightGrid;
             RectanglesGrid.Height = actualHeightGrid;
 
-            canvasForLine.Width = actualHeightGrid;
+            canvasForLine.Width  = actualHeightGrid;
             canvasForLine.Height = actualHeightGrid;
 
-            Heights.Height = actualHeightTextAndButtons;
+            Heights.Height   = actualHeightTextAndButtons;
             Heights.FontSize = actualFontSize;
 
-            Widths.Height = actualHeightTextAndButtons;
+            Widths.Height   = actualHeightTextAndButtons;
             Widths.FontSize = actualFontSize;
 
-            TextBlockFullAngle.Height = actualHeightTextAndButtons - 2;
+            TextBlockFullAngle.Height   = actualHeightTextAndButtons - 2;
             TextBlockFullAngle.FontSize = actualFontSize;
 
-            TextBoxByteAngle.Height = actualHeightTextAndButtons - 2;
+            TextBoxByteAngle.Height   = actualHeightTextAndButtons - 2;
             TextBoxByteAngle.FontSize = actualFontSize;
 
-            TextBoxHexAngle.Height = actualHeightTextAndButtons - 2;
+            TextBoxHexAngle.Height   = actualHeightTextAndButtons - 2;
             TextBoxHexAngle.FontSize = actualFontSize;
 
 
             ByteAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
-            ByteAngleIncrimentButton.Width = actualWidthUpAndDownButtons - 3;
+            ByteAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
             ByteAngleDecrementButton.Height = actualHeightTextAndButtons / 2 - 1;
-            ByteAngleDecrementButton.Width = actualWidthUpAndDownButtons - 3;
+            ByteAngleDecrementButton.Width  = actualWidthUpAndDownButtons - 3;
 
-            TriangleUpByteAngle.Height = actualHeightTextAndButtons / 2 - 5;
-            TriangleUpByteAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
-            TriangleDownByteAngle.Height = actualHeightTextAndButtons / 2 - 5;
-            TriangleDownByteAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
+            TriangleUpByteAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
+            TriangleUpByteAngle.Width    = actualWidthUpAndDownButtons / 2 - 5;
+            TriangleDownByteAngle.Height = actualHeightTextAndButtons  / 2 - 5;
+            TriangleDownByteAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
 
             HexAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
-            HexAngleIncrimentButton.Width = actualWidthUpAndDownButtons - 3;
+            HexAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
             HexAngleDecrementButton.Height = actualHeightTextAndButtons / 2 - 1;
-            HexAngleDecrementButton.Width = actualWidthUpAndDownButtons - 3;
+            HexAngleDecrementButton.Width  = actualWidthUpAndDownButtons - 3;
 
-            TriangleUpHexAngle.Height = actualHeightTextAndButtons / 2 - 5;
-            TriangleUpHexAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
-            TriangleDownHexAngle.Height = actualHeightTextAndButtons / 2 - 5;
-            TriangleDownHexAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
+            TriangleUpHexAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
+            TriangleUpHexAngle.Width    = actualWidthUpAndDownButtons / 2 - 5;
+            TriangleDownHexAngle.Height = actualHeightTextAndButtons  / 2 - 5;
+            TriangleDownHexAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
 
-            int tileWidth = tileSize.Width * tileMapTileScale;
+            int tileWidth  = tileSize.Width  * tileMapTileScale;
             int tileHeight = tileSize.Height * tileMapTileScale;
 
-            TileMapGrid.Width = baseTileMapGridWidth + (((int)(ActualWidth / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth) * tileWidth;
+            TileMapGrid.Width   = baseTileMapGridWidth + (((int)(Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth) * tileWidth;
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
-            System.Windows.Forms.MessageBox.Show(ActualWidth.ToString());
-            TileMapGrid.Height = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
+            TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
 
-            SelectTileTextBox.Height = actualHeightTextAndButtons - 2;
+            SelectTileTextBox.Height   = actualHeightTextAndButtons - 2;
             SelectTileTextBox.FontSize = actualFontSize;
-            SelectTileButton.Height = actualHeightTextAndButtons - 2;
-            SelectTileButton.FontSize = actualFontSize;
+            SelectTileButton.Height    = actualHeightTextAndButtons - 2;
+            SelectTileButton.FontSize  = actualFontSize;
 
             DrawRedLine();
         }
