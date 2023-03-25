@@ -6,8 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="664" d:DesignHeight="440"
         x:Class="CollisionEditor2.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="CollisionEditorC#"
-		>
+        Title="CollisionEditor2">
 		<!--FontFamily="/Assets/dos.ttf#Droid Sans Mono"-->
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -52,9 +51,9 @@
 			<MenuItem Header="File">
 				<MenuItem Header="Load" >
 					<!--InputGestureText="Ctrl+D"-->
-					<MenuItem Header="TileMap"  Command="{Binding MenuOpenTileMapCommand}"/>
+					<MenuItem Header="TileMap"  Command="{Binding MenuOpenTileMapCommand}"  HotKey="Ctrl+D"/>
 					<!--InputGestureText="Ctrl+W"-->
-					<MenuItem Header="AngleMap" Command="{Binding MenuOpenAngleMapCommand}"/>
+					<MenuItem Header="AngleMap" Command="{Binding MenuOpenAngleMapCommand}" HotKey="Ctrl+W"/>
 				</MenuItem>
 
 				<MenuItem Header="Unload">
@@ -63,7 +62,7 @@
 				</MenuItem>
 
 				<!--InputGestureText="Ctrl+A"-->
-				<MenuItem Header="Unload All" HorizontalAlignment="Right" Command="{Binding MenuUnloadAllCommand}"/>
+				<MenuItem Header="Unload All" HorizontalAlignment="Right" Command="{Binding MenuUnloadAllCommand}" HotKey="Ctrl+A"/>
 
 				<MenuItem Header="Save">
 					<MenuItem Header="AngleMap"  Command="{Binding MenuSaveAngleMapCommand}"/>
@@ -73,7 +72,7 @@
 				</MenuItem>
 
 				<!--InputGestureText="Ctrl+S"-->
-				<MenuItem Header="Save All" Command="{Binding MenuSaveAllCommand}"/>
+				<MenuItem Header="Save All" Command="{Binding MenuSaveAllCommand}" HotKey="Ctrl+S"/>
 				<!--InputGestureText="Alt+F4"-->
 				<MenuItem Header="Exit"     Command="{Binding ExitAppCommand}"/>
 
@@ -137,12 +136,5 @@
                  Text="{Binding Path=ChosenTile,Mode=TwoWay}" />
 		<Button  Grid.Column="13" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton"  IsEnabled="False" Content="Select Tile" Command="{Binding SelectTileCommand}"/>
 	</Grid>
-
-	<!--<Window.InputBindings>
-		<KeyBinding Gesture="CTRL+D" Command="{Binding MenuOpenTileMapCommand}"/>
-		<KeyBinding Gesture="CTRL+W" Command="{Binding MenuOpenAngleMapCommand}"/>
-		<KeyBinding Gesture="CTRL+A" Command="{Binding MenuUnloadAllCommand}"/>
-		<KeyBinding Gesture="CTRL+S" Command="{Binding MenuSaveAllCommand}"/>
-	</Window.InputBindings>-->
 </Window>
 

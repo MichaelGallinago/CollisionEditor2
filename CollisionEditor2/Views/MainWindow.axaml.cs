@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using Avalonia.Controls.ApplicationLifetimes;
 
 namespace CollisionEditor2.Views
 {
@@ -65,20 +64,22 @@ namespace CollisionEditor2.Views
             return position;
         }
 
-        private void RectanglesGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void RectanglesGrid_MouseLeftButtonDown(object sender,  PointerEventArgs e)
         {
             RectanglesGridUpdate(e, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
         }
 
-        private void RectanglesGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void RectanglesGrid_MouseRightButtonDown(object sender, PointerEventArgs e)
         {
             RectanglesGridUpdate(e, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
         }
 
-        private void RectanglesGridUpdate(MouseButtonEventArgs e, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
+        private void RectanglesGridUpdate(PointerEventArgs e, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (windowMain.AngleMap.Values.Count <= 0)
+            {
                 return;
+            }
 
             var mousePosition = e.GetPosition(RectanglesGrid);
             Vector2<int> position = GetGridPosition(mousePosition, RectanglesGrid);
@@ -129,12 +130,12 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGrid_MouseEnter(object sender, MouseEventArgs e)
+        private void RectanglesGrid_MouseEnter(object sender, PointerEventArgs e)
         {
             RectanglesGridUpdate(true);
         }
 
-        private void RectanglesGrid_MouseLeave(object sender, MouseEventArgs e)
+        private void RectanglesGrid_MouseLeave(object sender, PointerEventArgs e)
         {
             RectanglesGridUpdate(false);
         }
@@ -149,7 +150,7 @@ namespace CollisionEditor2.Views
         }
 
 
-        private void TileMapGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TileMapGrid_MouseLeftButtonDown(object sender, PointerEventArgs e)
         {
             if (windowMain.TileSet.Tiles.Count <= 0)
                 return;
