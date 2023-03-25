@@ -124,7 +124,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
 
     private void MenuOpenAngleMap()
     {
-        string filePath = ViewModelFileService.GetFileOpenPath(ViewModelFileService.Filters.AngleMap);
+        string filePath = ViewModelFileService.GetFileOpenPath(window,ViewModelFileService.Filters.AngleMap);
         if (filePath != string.Empty)
         {   
             AngleMap = new AngleMap(filePath);
@@ -164,7 +164,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
 
     private void MenuOpenTileMap()
     {
-        string filePath = ViewModelFileService.GetFileOpenPath(ViewModelFileService.Filters.TileMap);
+        string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
             TileSet = new TileSet(filePath);
@@ -216,7 +216,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(ViewModelFileService.Filters.TileMap);
+        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
             TileSet.Save(Path.GetFullPath(filePath), 16);
@@ -231,7 +231,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(ViewModelFileService.Filters.WidthMap);
+        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.WidthMap);
         if (filePath != string.Empty)
         {
             TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.WidthMap);
@@ -246,7 +246,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(ViewModelFileService.Filters.HeightMap);
+        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
         if (filePath != string.Empty)
         {
             TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.HeightMap);
@@ -261,7 +261,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(ViewModelFileService.Filters.AngleMap);
+        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.AngleMap);
         if (filePath != string.Empty)
         {
             AngleMap.Save(Path.GetFullPath(filePath));
