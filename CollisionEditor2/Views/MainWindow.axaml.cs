@@ -50,7 +50,6 @@ namespace CollisionEditor2.Views
             Vector2<int> position = new Vector2<int>();
             foreach (var column in grid.ColumnDefinitions)
             {
-                MessageBox.Show(column.Offset.ToString());
                 if (mousePosition.X > column.Offset && mousePosition.X < (column.Offset + column.ActualWidth))
                     break;
                 position.X++;
