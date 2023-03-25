@@ -11,11 +11,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace CollisionEditor2.Views
 {
     public partial class MainWindow : Window
-    {
+    {   
+
         public int LastChosenTile { get; set; }
 
         private const int tileMapSeparation = 4;
@@ -94,7 +96,7 @@ namespace CollisionEditor2.Views
         internal void DrawRedLine()
         {
             if (windowMain.AngleMap.Values.Count > 0)
-                RedLineService.DrawRedLine(ref redLine);
+                RedLineService.DrawRedLine(windowMain.window ,ref redLine);
         }
 
         private void SelectTileTextBox_PreviewKeyDown(object sender, KeyEventArgs e)

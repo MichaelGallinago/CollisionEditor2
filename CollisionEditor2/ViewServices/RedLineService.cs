@@ -2,14 +2,14 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Controls;
 using Avalonia.Media;
 using System;
+using CollisionEditor2.Views;
 
 namespace CollisionEditor2.ViewServices;
 
 internal static class RedLineService
 {
-    static MainWindow mainWindow = (MainWindow)System.Windows.Application.Current.MainWindow;
 
-    public static void DrawRedLine(ref Line redLine)
+    public static void DrawRedLine(MainWindow mainWindow,ref Line redLine)
     {
         float floatAngle = float.Parse(mainWindow.TextBlockFullAngle.Text.TrimEnd('°'));
 
