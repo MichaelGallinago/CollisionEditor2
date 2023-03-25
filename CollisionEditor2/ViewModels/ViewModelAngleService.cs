@@ -4,14 +4,14 @@ namespace CollisionEditor2.ViewModels;
 
 public static class ViewModelAngleService
 {
-    public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(byte byteAngle)
+    public static Angles GetAngles(byte byteAngle)
     {
-        return (byteAngle, ViewModelAssistant.GetHexAngle(byteAngle), ViewModelAssistant.GetFullAngle(byteAngle));
+        return new Angles(byteAngle, ViewModelAssistant.GetHexAngle(byteAngle), ViewModelAssistant.GetFullAngle(byteAngle));
     }
 
-    public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(string hexAngle)
+    public static Angles GetAngles(string hexAngle)
     {
         var byteAngle = ViewModelAssistant.GetByteAngle(hexAngle);
-        return (byteAngle, hexAngle, ViewModelAssistant.GetFullAngle(byteAngle));
+        return new Angles(byteAngle, hexAngle, ViewModelAssistant.GetFullAngle(byteAngle));
     }
 }

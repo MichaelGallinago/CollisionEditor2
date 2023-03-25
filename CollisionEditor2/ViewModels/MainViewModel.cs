@@ -60,9 +60,9 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
 
             textboxValidator.ClearErrors(nameof(HexAngle));
 
-            (byte byteAngle, string hexAngle, double fullAngle) angles = ViewModelAngleService.GetAngles(hexAngle);
-            ByteAngle = angles.byteAngle;
-            AngleMap.SetAngle((int)ChosenTile, angles.byteAngle);
+            Angles angles = ViewModelAngleService.GetAngles(hexAngle);
+            ByteAngle = angles.ByteAngle;
+            AngleMap.SetAngle((int)ChosenTile, angles.ByteAngle);
             window.DrawRedLine();
         }
     }
@@ -144,20 +144,20 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         }
     }
 
-    public void ShowAngles((byte byteAngle, string hexAngle, double fullAngle) angles)
+    public void ShowAngles(Angles angles)
     {
         
-        byteAngle = angles.byteAngle;
+        byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngle));
         window.ByteAngleIncrimentButton.IsEnabled = true;
         window.ByteAngleDecrementButton.IsEnabled = true;
 
-        hexAngle = angles.hexAngle;
+        hexAngle = angles.HexAngle;
         OnPropertyChanged(nameof(HexAngle));
         window.HexAngleIncrimentButton.IsEnabled = true;
         window.HexAngleDecrementButton.IsEnabled = true;
 
-        window.TextBlockFullAngle.Text = angles.fullAngle.ToString() + "°";
+        window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
     }
 
     private void MenuOpenTileMap()
@@ -166,10 +166,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
         if (filePath != string.Empty)
         {
             TileSet = new TileSet(filePath);
-            if (AngleMap is null)
-            {
-                AngleMap = new AngleMap(TileSet.Tiles.Count);
-            }
+            AngleMap ??= new AngleMap(TileSet.Tiles.Count);
 
             ViewModelAssistant.SupplementElements(AngleMap,TileSet);
 
@@ -303,7 +300,7 @@ public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
 
         window.Heights.Text = null;
         window.Widths.Text = null;
-        ShowAngles((0, "0x00", 0));
+        ShowAngles(new Angles(0, "0x00", 0));
         window.SelectTileTextBox.Text = "0";
         window.ByteAngleIncrimentButton.IsEnabled = false;
         window.ByteAngleDecrementButton.IsEnabled = false;

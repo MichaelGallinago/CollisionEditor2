@@ -8,10 +8,10 @@ namespace CollisionEditor2.Models;
 
 internal static class ViewModelAssistant
 {
-    public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(AngleMap angleMap, uint chosenTile)
+    public static Angles GetAngles(AngleMap angleMap, uint chosenTile)
     {
         byte angle = angleMap.Values[(int)chosenTile];
-        return (angle, GetHexAngle(angle), GetFullAngle(angle));
+        return new Angles(angle, GetHexAngle(angle), GetFullAngle(angle));
     }
 
     public static string GetCollisionValues(byte[] collisionArray)
