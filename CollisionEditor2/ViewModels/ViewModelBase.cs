@@ -1,8 +1,7 @@
 ﻿using ReactiveUI;
 
-namespace CollisionEditor2.ViewModels
+namespace CollisionEditor2.ViewModels;
+
+public class ViewModelBase : ReactiveObject
 {
-    public class ViewModelBase : ReactiveObject
-    {
-    }
 }

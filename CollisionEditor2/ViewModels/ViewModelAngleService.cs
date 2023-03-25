@@ -1,18 +1,17 @@
-﻿using CollisionEditor.Model;
+﻿using CollisionEditor2.Models;
 
-namespace CollisionEditor.ViewModel
+namespace CollisionEditor2.ViewModels;
+
+public static class ViewModelAngleService
 {
-    public static class ViewModelAngleService
+    public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(byte byteAngle)
     {
-        public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(byte byteAngle)
-        {
-            return (byteAngle, ViewModelAssistant.GetHexAngle(byteAngle), ViewModelAssistant.GetFullAngle(byteAngle));
-        }
+        return (byteAngle, ViewModelAssistant.GetHexAngle(byteAngle), ViewModelAssistant.GetFullAngle(byteAngle));
+    }
 
-        public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(string hexAngle)
-        {
-            var byteAngle = ViewModelAssistant.GetByteAngle(hexAngle);
-            return (byteAngle, hexAngle, ViewModelAssistant.GetFullAngle(byteAngle));
-        }
+    public static (byte byteAngle, string hexAngle, double fullAngle) GetAngles(string hexAngle)
+    {
+        var byteAngle = ViewModelAssistant.GetByteAngle(hexAngle);
+        return (byteAngle, hexAngle, ViewModelAssistant.GetFullAngle(byteAngle));
     }
 }

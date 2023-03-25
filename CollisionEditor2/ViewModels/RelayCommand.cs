@@ -1,14 +1,13 @@
 ﻿using System.Windows.Input;
 using System;
 
-namespace CollisionEditor.ViewModel
+namespace CollisionEditor2.ViewModels;
+
+public class RelayCommand : ICommand
 {
-    public class RelayCommand : ICommand
-    {
-        private readonly Action action;
-        public RelayCommand(Action action) => this.action = action;
-        public bool CanExecute(object? parameter) => true;
-        public event EventHandler? CanExecuteChanged;
-        public void Execute(object? parameter) => action();
-    }
+    private readonly Action action;
+    public RelayCommand(Action action) => this.action = action;
+    public bool CanExecute(object? parameter) => true;
+    public event EventHandler? CanExecuteChanged;
+    public void Execute(object? parameter) => action();
 }

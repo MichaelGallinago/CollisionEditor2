@@ -3,46 +3,51 @@ using System.Linq;
 using System.IO;
 using System;
 
-namespace CollisionEditor.Model
+namespace CollisionEditor2.Models;
+
+public class AngleMap
 {
-    public class AngleMap
+    public List<byte> Values { get; private set; }
+
+    public AngleMap(string path)
     {
-        public List<byte> Values { get; private set; }
+        BinaryReader reader = new(File.Open(path, FileMode.Open));
+        Values = reader.ReadBytes((int)Math.Min(int.MaxValue, reader.BaseStream.Length)).ToList();
+    }
 
-        public AngleMap(string path)
+    public AngleMap(int tileCount)
+    {
+        Values = new List<byte>(new byte[tileCount]);
+    }
+
+    public void Save(string path)
+    {
+        if (File.Exists(path))
         {
-            BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open));
-            Values = reader.ReadBytes((int)Math.Min(int.MaxValue, reader.BaseStream.Length)).ToList();
+            File.Delete(path);
         }
 
-        public AngleMap(int tileCount)
+        using BinaryWriter writer = new(File.Open(path, FileMode.CreateNew));
         {
-            Values = new List<byte>(new byte[tileCount]);
+            foreach (byte value in Values)
+            {
+                writer.Write(value);
+            }
         }
+    }
 
-        public void Save(string path)
-        {
-            if (File.Exists(path)) 
-                File.Delete(path);
+    public byte SetAngleWithLine(int tileIndex, Vector2<int> positionGreen, Vector2<int> positionBlue)
+    {
+        return Values[tileIndex] = (byte)(Math.Atan2(positionBlue.Y - positionGreen.Y, positionBlue.X - positionGreen.X) * 128 / Math.PI);
+    }
 
-            using BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.CreateNew));
-                foreach (byte value in Values)
-                    writer.Write(value);
-        }
+    public byte SetAngle(int tileIndex, byte value)
+    {
+        return Values[tileIndex] = value;
+    }
 
-        public byte SetAngleWithLine(int tileIndex, Vector2<int> positionGreen, Vector2<int> positionBlue)
-        {
-            return Values[tileIndex] = (byte)(Math.Atan2(positionBlue.Y - positionGreen.Y, positionBlue.X - positionGreen.X) * 128 / Math.PI);
-        }
-
-        public byte SetAngle(int tileIndex, byte value)
-        {
-            return Values[tileIndex] = value;
-        }
-
-        public byte ChangeAngle(int tileIndex, int value)
-        {
-            return Values[tileIndex] = (byte)(Values[tileIndex] + value);
-        }
+    public byte ChangeAngle(int tileIndex, int value)
+    {
+        return Values[tileIndex] = (byte)(Values[tileIndex] + value);
     }
 }
