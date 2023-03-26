@@ -69,7 +69,6 @@ namespace CollisionEditor2.Views
             //    position.Y++;
             //}
 
-            return position;
         }
 
         private void RectanglesGrid_MouseLeftButtonDown(PointerPressedEventArgs e)
@@ -115,14 +114,14 @@ namespace CollisionEditor2.Views
 
         private void TextBoxHexAngle_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            bool isCtrlKeyDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-            Key[] exceptions = new Key[] { Key.Back, Key.Delete, Key.Left, Key.Right };
+            //bool isCtrlKeyDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            //Key[] exceptions = new Key[] { Key.Back, Key.Delete, Key.Left, Key.Right };
 
-            if (TextBoxHexAngle.Text.Length >= 4 && !exceptions.Contains(e.Key) && !isCtrlKeyDown
-                || TextBoxHexAngle.Text.Length > 0 && e.Key == Key.C && isCtrlKeyDown)
-            {
-                e.Handled = true;
-            }
+            //if (TextBoxHexAngle.Text.Length >= 4 && !exceptions.Contains(e.Key) && !isCtrlKeyDown
+            //    || TextBoxHexAngle.Text.Length > 0 && e.Key == Key.C && isCtrlKeyDown)
+            //{
+            //    e.Handled = true;
+            //}
         }
 
         private async void RectanglesGridUpdate(bool isAppear)

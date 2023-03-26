@@ -19,7 +19,7 @@ namespace CollisionEditor2
             {
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    
                 };
             }
 
