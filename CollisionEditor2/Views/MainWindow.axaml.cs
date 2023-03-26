@@ -47,19 +47,28 @@ namespace CollisionEditor2.Views
         private Vector2<int> GetGridPosition(Point mousePosition, Grid grid)
         {
             Vector2<int> position = new Vector2<int>();
-            foreach (var column in grid.ColumnDefinitions)
-            {
-                if (mousePosition.X > column.Offset && mousePosition.X < (column.Offset + column.ActualWidth))
-                    break;
-                position.X++;
-            }
 
-            foreach (var row in grid.RowDefinitions)
-            {
-                if (mousePosition.Y > row.Offset && mousePosition.Y < (row.Offset + row.ActualHeight))
-                    break;
-                position.Y++;
-            }
+            var tileSize = windowMain.TileSet.TileSize;
+            int tileWidth = tileSize.Width;
+            int tileHeight = tileSize.Height;
+            position.X = (int)mousePosition.X / tileWidth;
+            position.Y = (int)mousePosition.Y / tileHeight;
+            return position;
+
+
+            //foreach (var column in grid.ColumnDefinitions)
+            //{
+            //    if (mousePosition.X > column.Offset && mousePosition.X < (column.Offset + column.ActualWidth))
+            //        break;
+            //    position.X++;
+            //}
+
+            //foreach (var row in grid.RowDefinitions)
+            //{
+            //    if (mousePosition.Y > row.Offset && mousePosition.Y < (row.Offset + row.ActualHeight))
+            //        break;
+            //    position.Y++;
+            //}
 
             return position;
         }
