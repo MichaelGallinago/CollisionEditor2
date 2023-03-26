@@ -86,7 +86,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     private const int tileMapSeparation = 4;
     private const int tileMapTileScale = 2;
 
-    private MainWindow window;
+    public MainWindow window;
     private byte byteAngle;
     private string hexAngle;
     private uint chosenTile;
