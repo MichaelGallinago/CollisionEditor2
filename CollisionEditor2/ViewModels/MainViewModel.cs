@@ -167,16 +167,16 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
     }
 
-    private async void MenuOpenTileMap()
+    private void MenuOpenTileMap()
     {
 
-        await FuckME();
+        
         string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
             TileSet = new TileSet(filePath);
             AngleMap ??= new AngleMap(TileSet.Tiles.Count);
-            await FuckME();
+           
             ViewModelAssistant.SupplementElements(AngleMap,TileSet);
 
             ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
@@ -221,7 +221,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
             Style = BoxStyle.UbuntuLinux
         }).ShowDialogAsync(window);
-       
     }
 
     public void TileMapGridUpdate(int tileCount)
