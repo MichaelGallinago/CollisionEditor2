@@ -15,8 +15,7 @@ using System;
 namespace CollisionEditor2.Views
 {
     public partial class MainWindow : Window
-    {   
-
+    {
         public int LastChosenTile { get; set; }
 
         private const int tileMapSeparation = 4;
@@ -64,12 +63,12 @@ namespace CollisionEditor2.Views
             return position;
         }
 
-        private void RectanglesGrid_MouseLeftButtonDown(object sender,  PointerEventArgs e)
+        private void RectanglesGrid_MouseLeftButtonDown(PointerPressedEventArgs e)
         {
             RectanglesGridUpdate(e, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
         }
 
-        private void RectanglesGrid_MouseRightButtonDown(object sender, PointerEventArgs e)
+        private void RectanglesGrid_MouseRightButtonDown(PointerPressedEventArgs e)
         {
             RectanglesGridUpdate(e, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
         }
@@ -149,8 +148,7 @@ namespace CollisionEditor2.Views
                 + ((uint)mousePosition.Y / (tileHeight + tileMapSeparation)) * (uint)TileMapGrid.Columns;
         }
 
-
-        private void TileMapGrid_MouseLeftButtonDown(object sender, PointerEventArgs e)
+        private void TileMapGrid_MouseLeftButtonDown(PointerPressedEventArgs e)
         {
             if (windowMain.TileSet.Tiles.Count <= 0)
                 return;
@@ -185,7 +183,30 @@ namespace CollisionEditor2.Views
             windowMain.SelectTileFromTileMap();
             LastChosenTile = (int)windowMain.ChosenTile;
         }
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
 
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            {
+                if (Equals(e.Source, TileMapGrid))
+                {
+                    TileMapGrid_MouseLeftButtonDown(e);
+                }
+                else if (Equals(e.Source, TileMapGrid))
+                {
+                    RectanglesGrid_MouseLeftButtonDown(e);
+                }
+            }
+
+            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            {
+                if (Equals(e.Source, TileMapGrid))
+                {
+                    RectanglesGrid_MouseRightButtonDown(e);
+                }
+            }
+        }
 
         private void WindowSizeChanged(object sender, EventArgs e)
         {
