@@ -6,6 +6,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -166,14 +167,16 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
     }
 
-    private void MenuOpenTileMap()
+    private async void MenuOpenTileMap()
     {
+
+        await FuckME();
         string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
             TileSet = new TileSet(filePath);
             AngleMap ??= new AngleMap(TileSet.Tiles.Count);
-
+            await FuckME();
             ViewModelAssistant.SupplementElements(AngleMap,TileSet);
 
             ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
@@ -205,6 +208,20 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             TileMapGridUpdate(TileSet.Tiles.Count);
             window.DrawRedLine();
         }
+    }
+
+    private async Task FuckME()
+    {
+        _ = await BoxedMessage.Create(new MessageBoxParams
+        {
+            Buttons = ButtonEnum.Ok,
+            ContentTitle = "Error",
+            ContentMessage = "AAAAAAAAA",
+            Location = WindowStartupLocation.CenterScreen,
+            Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+            Style = BoxStyle.UbuntuLinux
+        }).ShowDialogAsync(window);
+       
     }
 
     public void TileMapGridUpdate(int tileCount)
