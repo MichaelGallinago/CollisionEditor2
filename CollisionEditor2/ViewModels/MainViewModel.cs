@@ -176,15 +176,12 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             
             TileSet = new TileSet(filePath);
             AngleMap ??= new AngleMap(TileSet.Tiles.Count);
-           
             ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-
             ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
-            await FuckME("fff2");
+            
             TileGridUpdate(TileSet, (int)ChosenTile, window);
-            await FuckME("fff3");
             RectanglesGridUpdate();
-            await FuckME("fff2");
+            
             window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
             window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
             
@@ -240,7 +237,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
                 ContentTitle = "Error",
                 ContentMessage = "Error: You haven't chosen TileMap to save",
                 Location = WindowStartupLocation.CenterScreen,
-                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                
                 Style = BoxStyle.UbuntuLinux
             }).ShowDialogAsync(window);
             return;
@@ -263,7 +260,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
                 ContentTitle = "Error",
                 ContentMessage = "Error: The WidthMap isn't generated!",
                 Location = WindowStartupLocation.CenterScreen,
-                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                
                 Style = BoxStyle.UbuntuLinux
             }).ShowDialogAsync(window);
             return;
@@ -286,7 +283,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
                 ContentTitle = "Error",
                 ContentMessage = "Error: The HeightMap isn't generated!",
                 Location = WindowStartupLocation.CenterScreen,
-                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                
                 Style = BoxStyle.UbuntuLinux
             }).ShowDialogAsync(window);
             return;
@@ -309,7 +306,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
                 ContentTitle = "Error",
                 ContentMessage = "Error: You haven't chosen AngleMap to save",
                 Location = WindowStartupLocation.CenterScreen,
-                Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
+                
                 Style = BoxStyle.UbuntuLinux
             }).ShowDialogAsync(window);
             return;
@@ -487,7 +484,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             window.RectanglesGrid.RowDefinitions.Add(new RowDefinition());
     }
 
-    private static void TileGridUpdate(TileSet tileSet, int ChosenTile, MainWindow window)
+    private async void TileGridUpdate(TileSet tileSet, int ChosenTile, MainWindow window)
     {
         window.TileGrid.Children.Clear();
 
@@ -498,7 +495,8 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         window.TileGrid.Background = new SolidColorBrush(Colors.Transparent);
 
         Bitmap tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Bitmap(size.Height, size.Width);
-
+        await Task.Delay(1000);
+        await FuckME(tile.Width.ToString());
         for (int y = 0; y < size.Height; y++)
         {
             for (int x = 0; x < size.Width; x++)
