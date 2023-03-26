@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using CollisionEditor2.Views;
 
@@ -45,14 +46,14 @@ public static class ViewModelFileService
             }
         };
 
-        fileDialog.ShowAsync(mainWindow);
-        if (fileDialog.InitialFileName == null)
+        string[] filePath = fileDialog.ShowAsync(mainWindow).Result;
+        if (filePath == null)
         {
             return string.Empty;
         }
         else
         {
-            return fileDialog.InitialFileName;
+            return string.Join("/", filePath);
         }
     }
 }

@@ -167,11 +167,12 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
     }
 
-    private void MenuOpenTileMap()
+    private async void MenuOpenTileMap()
     {
 
-        
+        await FuckME("fff");
         string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
+         await FuckME(filePath);
         if (filePath != string.Empty)
         {
             TileSet = new TileSet(filePath);
@@ -210,13 +211,13 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         }
     }
 
-    private async Task FuckME()
+    private async Task FuckME(string a)
     {
         _ = await BoxedMessage.Create(new MessageBoxParams
         {
             Buttons = ButtonEnum.Ok,
             ContentTitle = "Error",
-            ContentMessage = "AAAAAAAAA",
+            ContentMessage = a,
             Location = WindowStartupLocation.CenterScreen,
             Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
             Style = BoxStyle.UbuntuLinux

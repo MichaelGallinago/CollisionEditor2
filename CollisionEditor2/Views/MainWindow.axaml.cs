@@ -40,7 +40,6 @@ namespace CollisionEditor2.Views
         {
             InitializeComponent();
             windowMain = new MainViewModel(this);
-            DataContext = windowMain;
         }
 
         private Vector2<int> GetGridPosition(Point mousePosition, Grid grid)
