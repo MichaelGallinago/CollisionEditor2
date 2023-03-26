@@ -170,22 +170,24 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     private async void MenuOpenTileMap()
     {
 
-        await FuckME("fff");
         string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
-         await FuckME(filePath);
         if (filePath != string.Empty)
         {
+            
             TileSet = new TileSet(filePath);
             AngleMap ??= new AngleMap(TileSet.Tiles.Count);
            
             ViewModelAssistant.SupplementElements(AngleMap,TileSet);
 
             ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
+            await FuckME("fff2");
             TileGridUpdate(TileSet, (int)ChosenTile, window);
+            await FuckME("fff3");
             RectanglesGridUpdate();
+            await FuckME("fff2");
             window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
             window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
-
+            
             ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
             window.TextBoxByteAngle.IsEnabled = true;
             window.TextBoxHexAngle.IsEnabled  = true;
@@ -219,7 +221,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             ContentTitle = "Error",
             ContentMessage = a,
             Location = WindowStartupLocation.CenterScreen,
-            Icon = BitmapFactory.Load("avares://MessageBox.Avalonia.Example/Assets/plus.ico"),
             Style = BoxStyle.UbuntuLinux
         }).ShowDialogAsync(window);
     }
