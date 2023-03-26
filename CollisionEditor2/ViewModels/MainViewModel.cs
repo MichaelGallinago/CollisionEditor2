@@ -495,8 +495,9 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         window.TileGrid.Background = new SolidColorBrush(Colors.Transparent);
 
         Bitmap tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Bitmap(size.Height, size.Width);
-        await Task.Delay(1000);
-        await FuckME(tile.Width.ToString());
+        
+        if (TileSet.Tiles.Count!=0)
+            await FuckME(tile.Width.ToString());
         for (int y = 0; y < size.Height; y++)
         {
             for (int x = 0; x < size.Width; x++)
