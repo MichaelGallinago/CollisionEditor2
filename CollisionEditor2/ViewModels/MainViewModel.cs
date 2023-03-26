@@ -173,7 +173,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            
             TileSet = new TileSet(filePath);
             AngleMap ??= new AngleMap(TileSet.Tiles.Count);
             ViewModelAssistant.SupplementElements(AngleMap,TileSet);

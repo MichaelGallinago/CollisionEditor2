@@ -38,7 +38,6 @@ internal static class ViewModelAssistant
             bitmapData.Stride);
 
         bitmap.UnlockBits(bitmapData);
-        bitmap.Dispose();
 
         return avaloniaBitmap;
     }
