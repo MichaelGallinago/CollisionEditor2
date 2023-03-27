@@ -132,28 +132,30 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         TileGridUpdate(TileSet, (int)chosenTile, window);
     }
 
-    private void MenuOpenAngleMap()
+    private async void MenuOpenAngleMap()
     {
-        string filePath = ViewModelFileService.GetFileOpenPath(window,ViewModelFileService.Filters.AngleMap);
-        if (filePath != string.Empty)
-        {   
-            AngleMap = new AngleMap(filePath);
-            if (TileSet is null)
-            {
-                TileSet = new TileSet(AngleMap.Values.Count);
-            }
-            
-            ViewModelAssistant.SupplementElements(AngleMap, TileSet);
-
-            ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
-            window.SelectTileTextBox.IsEnabled = true;
-            window.SelectTileButton.IsEnabled  = true;
-            window.TextBoxByteAngle.IsEnabled  = true;
-            window.TextBoxHexAngle.IsEnabled   = true;
-
-            TileMapGridUpdate(TileSet.Tiles.Count);
-            window.DrawRedLine();
+        string filePath = await ViewModelFileService.GetFileOpenPath(window,ViewModelFileService.Filters.AngleMap);
+        if (filePath == string.Empty)
+        {
+            return;
         }
+
+        AngleMap = new AngleMap(filePath);
+        if (TileSet is null)
+        {
+            TileSet = new TileSet(AngleMap.Values.Count);
+        }
+            
+        ViewModelAssistant.SupplementElements(AngleMap, TileSet);
+
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        window.SelectTileTextBox.IsEnabled = true;
+        window.SelectTileButton.IsEnabled  = true;
+        window.TextBoxByteAngle.IsEnabled  = true;
+        window.TextBoxHexAngle.IsEnabled   = true;
+
+        TileMapGridUpdate(TileSet.Tiles.Count);
+        window.DrawRedLine();
     }
 
     public void ShowAngles(Angles angles)
@@ -174,43 +176,45 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
 
     private async void MenuOpenTileMap()
     {
-        string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
-        if (filePath != string.Empty)
-        {
-            TileSet = new TileSet(filePath);
-            AngleMap ??= new AngleMap(TileSet.Tiles.Count);
-            ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-            ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
-            
-            TileGridUpdate(TileSet, (int)ChosenTile, window);
-            RectanglesGridUpdate();
-            
-            window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
-            window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
-            
-            ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
-            window.TextBoxByteAngle.IsEnabled = true;
-            window.TextBoxHexAngle.IsEnabled  = true;
-
-            window.TileMapGrid.Children.Clear();
-
-            foreach (Bitmap tile in TileSet.Tiles)
-            {
-                var image = new Avalonia.Controls.Image()
-                {
-                    Width  = TileSet.TileSize.Width  * 2,
-                    Height = TileSet.TileSize.Height * 2,
-                    Source = ViewModelAssistant.BitmapConvert(tile)
-                };
-                window.TileMapGrid.Children.Add(image);
-            }
-
-            window.SelectTileTextBox.IsEnabled = true;
-            window.SelectTileButton.IsEnabled  = true;
-
-            TileMapGridUpdate(TileSet.Tiles.Count);
-            window.DrawRedLine();
+        string filePath = await ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
+        if (filePath == string.Empty) 
+        { 
+            return; 
         }
+
+        TileSet = new TileSet(filePath);
+        AngleMap ??= new AngleMap(TileSet.Tiles.Count);
+        ViewModelAssistant.SupplementElements(AngleMap,TileSet);
+        ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
+            
+        TileGridUpdate(TileSet, (int)ChosenTile, window);
+        RectanglesGridUpdate();
+            
+        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
+        window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
+            
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        window.TextBoxByteAngle.IsEnabled = true;
+        window.TextBoxHexAngle.IsEnabled  = true;
+
+        window.TileMapGrid.Children.Clear();
+
+        foreach (Bitmap tile in TileSet.Tiles)
+        {
+            var image = new Avalonia.Controls.Image()
+            {
+                Width  = TileSet.TileSize.Width  * 2,
+                Height = TileSet.TileSize.Height * 2,
+                Source = ViewModelAssistant.BitmapConvert(tile)
+            };
+            window.TileMapGrid.Children.Add(image);
+        }
+
+        window.SelectTileTextBox.IsEnabled = true;
+        window.SelectTileButton.IsEnabled  = true;
+
+        TileMapGridUpdate(TileSet.Tiles.Count);
+        window.DrawRedLine();
     }
 
     private async Task FuckME(string a)
@@ -246,7 +250,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
+        string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
             TileSet.Save(Path.GetFullPath(filePath), 16);
@@ -269,7 +273,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.WidthMap);
+        string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.WidthMap);
         if (filePath != string.Empty)
         {
             TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.WidthMap);
@@ -292,7 +296,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
+        string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
         if (filePath != string.Empty)
         {
             TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.HeightMap);
@@ -315,7 +319,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             return;
         }
 
-        string filePath = ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.AngleMap);
+        string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.AngleMap);
         if (filePath != string.Empty)
         {
             AngleMap.Save(Path.GetFullPath(filePath));

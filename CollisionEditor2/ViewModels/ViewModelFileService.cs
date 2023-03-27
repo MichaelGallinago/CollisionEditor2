@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using CollisionEditor2.Views;
+using System.Collections.Generic;
 using Avalonia.Controls;
-using CollisionEditor2.Views;
+using System.Threading.Tasks;
 
 namespace CollisionEditor2.ViewModels;
 
 public static class ViewModelFileService
 {
-
     public enum Filters { TileMap, AngleMap, WidthMap, HeightMap }
 
     private static Dictionary<Filters, FileDialogFilter> filters = new Dictionary<Filters, FileDialogFilter>()
@@ -18,25 +17,25 @@ public static class ViewModelFileService
         [Filters.HeightMap] = new FileDialogFilter() { Name = "Binary Files(*.bin)", Extensions = { "bin" } }
     };
 
-    public static string GetFileSavePath(MainWindow mainWindow, Filters filterID)
+    public static async Task<string> GetFileSavePath(MainWindow mainWindow, Filters filterID)
     {
         var fileDialog = new SaveFileDialog()
         {
-            Filters =new List<FileDialogFilter>(){ filters[filterID]}
+            Filters = new List<FileDialogFilter>()
+            { 
+                filters[filterID]
+            }
         };
-        fileDialog.ShowAsync(mainWindow);
 
-        if (fileDialog.InitialFileName == null)
+        string? filePath = await fileDialog.ShowAsync(mainWindow);
+        if (filePath is null)
         {
             return string.Empty;
         }
-        else
-        {
-            return fileDialog.InitialFileName;
-        }
+        return filePath;
     }
 
-    public static string GetFileOpenPath(MainWindow mainWindow,Filters filterID)
+    public static async Task<string> GetFileOpenPath(MainWindow mainWindow,Filters filterID)
     {
         var fileDialog = new OpenFileDialog()
         {
@@ -46,14 +45,12 @@ public static class ViewModelFileService
             }
         };
 
-        string[] filePath = fileDialog.ShowAsync(mainWindow).Result;
-        if (filePath == null)
+        string[]? filePath = await fileDialog.ShowAsync(mainWindow);
+
+        if (filePath is null)
         {
             return string.Empty;
         }
-        else
-        {
-            return string.Join("/", filePath);
-        }
+        return string.Join("/", filePath);
     }
 }
