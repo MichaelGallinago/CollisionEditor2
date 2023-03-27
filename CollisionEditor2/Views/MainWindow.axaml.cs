@@ -48,36 +48,50 @@ namespace CollisionEditor2.Views
             Vector2<int> position = new Vector2<int>();
 
             var tileSize = windowMain.TileSet.TileSize;
-            int tileWidth = tileSize.Width;
-            int tileHeight = tileSize.Height;
-            position.X = (int)Math.Ceiling(2 * mousePosition.X / tileWidth);
-            position.Y = (int)Math.Ceiling(2 * mousePosition.Y / tileWidth);
+            position.X = (int)Math.Floor(2 * mousePosition.X / tileSize.Width);
+            position.Y = (int)Math.Floor(2 * mousePosition.Y / tileSize.Height);
             return position;
         }
-        public void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+
+        public void RectanglesGrid_OnPointerPressed2(object? sender, PointerPressedEventArgs e)
         {
+            var pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
+            var x = pointControlPosition.Position.X;
+            var y = pointControlPosition.Position.Y;
 
-            var pointControlCoords = e.GetCurrentPoint(RectanglesGrid);
-            var x = pointControlCoords.Position.X;
-            var y = pointControlCoords.Position.Y;
-            if (pointControlCoords.Properties.IsLeftButtonPressed)
+            if (pointControlPosition.Properties.IsLeftButtonPressed)
             {
-                RectanglesGrid_MouseLeftButtonDown(x,y);
+                RectanglesGrid_LeftButton(x, y);
             }
-
-            if (pointControlCoords.Properties.IsRightButtonPressed)
+            else if (pointControlPosition.Properties.IsRightButtonPressed)
             {
-                RectanglesGrid_MouseRightButtonDown(x,y);
+                RectanglesGrid_RightButton(x, y);
             }
         }
 
-        private void RectanglesGrid_MouseLeftButtonDown(double x, double y)
+        public void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            var pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
+            var x = pointControlPosition.Position.X;
+            var y = pointControlPosition.Position.Y;
+
+            if (pointControlPosition.Properties.IsLeftButtonPressed)
+            {
+                RectanglesGrid_LeftButton(x, y);
+            }
+            else if (pointControlPosition.Properties.IsRightButtonPressed)
+            {
+                RectanglesGrid_RightButton(x, y);
+            }
+        }
+
+        private void RectanglesGrid_LeftButton(double x, double y)
         {
             var mousePosition = new Vector2<double>(x, y);
             RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
         }
 
-        private void RectanglesGrid_MouseRightButtonDown(double x, double y)
+        private void RectanglesGrid_RightButton(double x, double y)
         {
             var mousePosition = new Vector2<double>(x, y);
             RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
@@ -89,7 +103,6 @@ namespace CollisionEditor2.Views
             {
                 return;
             }
-
             
             Vector2<int> position = GetGridPosition(mousePosition, RectanglesGrid);
 
@@ -181,10 +194,13 @@ namespace CollisionEditor2.Views
                 + ((uint)mousePosition.Y / (tileHeight + tileMapSeparation)) * (uint)TileMapGrid.Columns;
         }
 
-        private void TileMapGrid_MouseLeftButtonDown(PointerPressedEventArgs e)
+        public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            if (windowMain.TileSet.Tiles.Count <= 0)
+            if (windowMain.TileSet.Tiles.Count <= 0 || 
+                !e.GetCurrentPoint(RectanglesGrid).Properties.IsLeftButtonPressed)
+            {
                 return;
+            }
 
             Image lastTile = windowMain.GetTile((int)windowMain.ChosenTile);
 

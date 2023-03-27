@@ -13,6 +13,12 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
+	<Window.Styles>
+		<Style Selector="DataValidationErrors">
+			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}" />
+			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}" />
+		</Style>
+	</Window.Styles>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20"/>
@@ -85,11 +91,9 @@
 		<UniformGrid x:Name="TileGrid" Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Background="Transparent"
 					 RenderOptions.BitmapInterpolationMode="Default"/>
 		
-		<!--MouseLeftButtonDown="RectanglesGrid_MouseLeftButtonDown" MouseRightButtonDown="RectanglesGrid_MouseRightButtonDown"-->
-		<!--MouseEnter="RectanglesGrid_MouseEnter" MouseLeave="RectanglesGrid_MouseLeave"-->
 		<Grid x:Name="RectanglesGrid"  Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Focusable="True" Background="Transparent"
               PointerEnter="RectanglesGrid_MouseEnter" PointerLeave="RectanglesGrid_MouseLeave"	PointerPressed="RectanglesGrid_OnPointerPressed"
-              RenderOptions.BitmapInterpolationMode="Default" />
+              RenderOptions.BitmapInterpolationMode="Default"/>
 		<Canvas Grid.Column="0" Grid.Row="3"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="11" IsHitTestVisible="False"/>
 
 		<Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="8" Background="GhostWhite" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
@@ -101,11 +105,11 @@
 
 		<!--Text="{Binding Path=ByteAngle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
 		<TextBox Grid.Column="2" Grid.Row="9" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngle,Mode=TwoWay}"
-                 Name="TextBoxByteAngle" Padding="2,0,0,0"  Background="#FFB1B1B1"/>
+                 Name="TextBoxByteAngle" Padding="2,0,0,0"  Background="#FFB1B1B1" Watermark="byte"/>
 		<!--Text="{Binding Path=HexAngle,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 		<!--PreviewKeyDown="TextBoxHexAngle_PreviewKeyDown"-->
 		<TextBox Grid.Column="5" Grid.Row="9" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngle,Mode=TwoWay}"
-                 Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"/>
+                 Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1" Watermark="hex"/>
 		<TextBlock Grid.Column="8" Grid.Row="9" Grid.RowSpan="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#FFB1B1B1" Padding="2,0,0,0"/>
 
 		<Button Grid.Column="3" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="9"  Height="20" Width="30" HorizontalAlignment="Left">
@@ -123,15 +127,14 @@
 		</Button>
 
 		<ScrollViewer x:Name="scrollViewer" Grid.Column="12" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2">
-			<!--MouseLeftButtonDown="TileMapGrid_MouseLeftButtonDown"-->
 			<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="Default"
-                         />
+                         PointerPressed="TileMapGrid_OnPointerPressed"/>
 		</ScrollViewer>
-
+		
 		<!--Text="{Binding Path=ChosenTile,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}-->
 		<!--SPreviewKeyDown="SelectTileTextBox_PreviewKeyDown"-->
 		<TextBox Grid.Column="12" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
-                 Text="{Binding Path=ChosenTile,Mode=TwoWay}" />
+                 Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="tile index"/>
 		<Button  Grid.Column="13" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton"  IsEnabled="False" Content="Select Tile" Command="{Binding SelectTileCommand}"/>
 	</Grid>
 </Window>

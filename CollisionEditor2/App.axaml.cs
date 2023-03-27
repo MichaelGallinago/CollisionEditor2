@@ -6,7 +6,6 @@ using CollisionEditor2.Views;
 
 namespace CollisionEditor2
 {   
-   
     public partial class App : Application
     {
         public MainViewModel windowMain { get; set; }
