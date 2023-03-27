@@ -3,7 +3,7 @@
         xmlns:vm="using:CollisionEditor2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="664" d:DesignHeight="440"
+        mc:Ignorable="d" MinHeight="664" MinWidth="440" Width="664" Height="440"
         x:Class="CollisionEditor2.Views.MainWindow"
 		FontFamily="/Assets/DroidSansMono.ttf"
         Icon="/Assets/avalonia-logo.ico"
@@ -89,8 +89,8 @@
 		<!--MouseLeftButtonDown="RectanglesGrid_MouseLeftButtonDown" MouseRightButtonDown="RectanglesGrid_MouseRightButtonDown"-->
 		<!--MouseEnter="RectanglesGrid_MouseEnter" MouseLeave="RectanglesGrid_MouseLeave"-->
 		<Grid x:Name="RectanglesGrid"  Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Focusable="True" Background="Transparent"
-              PointerEnter="RectanglesGrid_MouseEnter" PointerLeave="RectanglesGrid_MouseLeave"	 PointerPressed="RectanglesGrid_OnPointerPressed"
-              RenderOptions.BitmapInterpolationMode="Default"/>
+              PointerEnter="RectanglesGrid_MouseEnter" PointerLeave="RectanglesGrid_MouseLeave"	PointerPressed="RectanglesGrid_OnPointerPressed"
+              RenderOptions.BitmapInterpolationMode="Default" />
 		<Canvas Grid.Column="0" Grid.Row="3"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="11" IsHitTestVisible="False"/>
 
 		<Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="8" Background="GhostWhite" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">

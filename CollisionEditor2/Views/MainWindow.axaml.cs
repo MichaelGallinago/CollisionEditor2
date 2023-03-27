@@ -72,7 +72,7 @@ namespace CollisionEditor2.Views
             //}
 
         }
-        private void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        public void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
 
             var pointControlCoords = e.GetCurrentPoint(RectanglesGrid);
