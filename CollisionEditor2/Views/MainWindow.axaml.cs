@@ -212,7 +212,7 @@ namespace CollisionEditor2.Views
                 {
                     TileMapGrid_MouseLeftButtonDown(e);
                 }
-                else if (Equals(e.Source, TileMapGrid))
+                else if (Equals(e.Source, RectanglesGrid))
                 {
                     RectanglesGrid_MouseLeftButtonDown(e);
                 }
@@ -220,7 +220,7 @@ namespace CollisionEditor2.Views
 
             if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                if (Equals(e.Source, TileMapGrid))
+                if (Equals(e.Source, RectanglesGrid))
                 {
                     RectanglesGrid_MouseRightButtonDown(e);
                 }
@@ -296,15 +296,6 @@ namespace CollisionEditor2.Views
             SelectTileButton.FontSize  = actualFontSize;
 
             DrawRedLine();
-        }
-
-        private void Help_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = "https://youtu.be/m5sbRiwQPMQ?t=87",
-                UseShellExecute = true,
-            });
         }
     }
 }

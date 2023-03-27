@@ -76,10 +76,9 @@
 				<!--InputGestureText="Alt+F4"-->
 				<MenuItem Header="Exit"     Command="{Binding ExitAppCommand}"/>
 
-			<!--Click="Help_Click"-->
 			</MenuItem>
 			<MenuItem Header="Help" >
-				<MenuItem Header="Call tech support"/>
+				<MenuItem Header="Call tech support" Command="{Binding HelpCommand}"/>
 			</MenuItem>
 		</Menu>
 
