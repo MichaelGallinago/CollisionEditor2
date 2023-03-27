@@ -16,6 +16,8 @@ using MessageBoxSlim.Avalonia;
 using MessageBoxSlim;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia.Enums;
+using Avalonia.Interactivity;
+using System.Diagnostics;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -38,6 +40,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     public ICommand AngleIncrementCommand { get; }
     public ICommand AngleDecrementCommand { get; }
     public ICommand ExitAppCommand { get; }
+    public ICommand HelpCommand { get; }
 
     public byte ByteAngle
     {
@@ -123,6 +126,8 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
 
         ExitAppCommand = new RelayCommand(ExitApp);
 
+        HelpCommand = new RelayCommand(Help);
+
         RectanglesGridUpdate();
         TileGridUpdate(TileSet, (int)chosenTile, window);
     }
@@ -169,7 +174,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
 
     private async void MenuOpenTileMap()
     {
-
         string filePath = ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
@@ -509,6 +513,15 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
                 window.TileGrid.Children.Add(Border);
             }
         }
+    }
+
+    private void Help()
+    {
+        Process.Start(new ProcessStartInfo()
+        {
+            FileName = "https://youtu.be/m5sbRiwQPMQ?t=87",
+            UseShellExecute = true
+        });
     }
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;

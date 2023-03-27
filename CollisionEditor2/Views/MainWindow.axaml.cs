@@ -36,13 +36,11 @@ namespace CollisionEditor2.Views
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Colors.Blue), new SquareAndPosition(Colors.Green));
         private Line redLine = new Line();
 
-        private MainViewModel windowMain { get; set; }
+        public MainViewModel windowMain { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            windowMain = new MainViewModel(this);
-           
         }
 
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition, Grid grid)
