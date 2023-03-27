@@ -110,6 +110,17 @@ namespace CollisionEditor2.Views
             if (e.Key == Key.Enter)
                 windowMain.SelectTile();
         }
+        //protected override void MouseDown(KeyEventArgs e)
+        //{
+        //    Keyboard.Keys.Add(e.Key);
+        //    base.OnKeyDown(e);
+        //}
+
+        //protected override void MouseUp(KeyEventArgs e)
+        //{
+        //    Keyboard.Keys.Remove(e.Key);
+        //    base.OnKeyUp(e);
+        //}
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
