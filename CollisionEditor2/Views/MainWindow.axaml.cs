@@ -1,17 +1,16 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Media;
-using CollisionEditor2.Models;
-using CollisionEditor2.ViewModels;
 using CollisionEditor2.ViewServices;
+using CollisionEditor2.ViewModels;
+using CollisionEditor2.Models;
+using Avalonia.Controls.Shapes;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System;
-using System.Numerics;
 
 namespace CollisionEditor2.Views
 {

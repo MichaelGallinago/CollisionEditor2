@@ -18,11 +18,11 @@ public class TileSet
     {
         TileSize = new Size(tileWidth, tileHeight);
 
-        Tiles = new List<Bitmap>();
+        Tiles     = new List<Bitmap>();
         WidthMap  = new List<byte[]>();
         HeightMap = new List<byte[]>();
 
-        Bitmap bitmap = new Bitmap(path);
+        var bitmap = new Bitmap(path);
 
         var cellCount = new Vector2<int>(
             (bitmap.Width  - offset.Width)  / TileSize.Width,
@@ -74,7 +74,7 @@ public class TileSet
     {
         TileSize = new Size(tileWidth, tileHeight);
 
-        Tiles = new List<Bitmap>(angleCount);
+        Tiles     = new List<Bitmap>(angleCount);
         WidthMap  = new List<byte[]>(angleCount);
         HeightMap = new List<byte[]>(angleCount);
 
@@ -86,7 +86,7 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, Size separation = new Size(), Size offset = new Size())
+    public void Save(string path, int columnCount, Size separation = new(), Size offset = new())
     {
         if (File.Exists(path))
         {
@@ -127,9 +127,10 @@ public class TileSet
     public Bitmap DrawTileMap(int columnCount, Size tileMapSize, Size separation, Size offset)
     {
         var tileMap = new Bitmap(tileMapSize.Width, tileMapSize.Height);
+
         using (var graphics = Graphics.FromImage(tileMap))
         {
-            var position = new Vector2<int>();
+            Vector2<int> position = new();
             foreach (Bitmap tile in Tiles)
             {
                 graphics.DrawImage(

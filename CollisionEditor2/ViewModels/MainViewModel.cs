@@ -61,14 +61,13 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         {
             hexAngle = value;
 
+            textboxValidator.ClearErrors(nameof(HexAngle));
             if (hexAngle.Length != 4 || hexAngle[0] != '0' || hexAngle[1] != 'x'
                 || !hexadecimalAlphabet.Contains(hexAngle[2]) || !hexadecimalAlphabet.Contains(hexAngle[3]))
             {
                 textboxValidator.AddError(nameof(HexAngle), "Error! Wrong hexadecimal number");
                 return;
             }
-
-            textboxValidator.ClearErrors(nameof(HexAngle));
 
             Angles angles = ViewModelAngleService.GetAngles(hexAngle);
             ByteAngle = angles.ByteAngle;

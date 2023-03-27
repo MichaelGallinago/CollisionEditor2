@@ -11,7 +11,7 @@ public class AngleMap
 
     public AngleMap(string path)
     {
-        BinaryReader reader = new(File.Open(path, FileMode.Open));
+        var reader = new BinaryReader(File.Open(path, FileMode.Open));
         Values = reader.ReadBytes((int)Math.Min(int.MaxValue, reader.BaseStream.Length)).ToList();
     }
 

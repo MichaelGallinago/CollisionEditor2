@@ -16,7 +16,8 @@ internal static class ViewModelAssistant
 
     public static string GetCollisionValues(byte[] collisionArray)
     {
-        var builder = new StringBuilder();
+        StringBuilder builder = new();
+
         foreach (byte value in collisionArray)
         {
             builder.Append((char)(value + (value < 10 ? 48 : 55)));
@@ -27,11 +28,13 @@ internal static class ViewModelAssistant
 
     public static Avalonia.Media.Imaging.Bitmap BitmapConvert(Bitmap bitmap)
     {
-        var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+        var bitmapData = bitmap.LockBits(
+            new Rectangle(0, 0, bitmap.Width, bitmap.Height),
             ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
         var avaloniaBitmap = new Avalonia.Media.Imaging.Bitmap(
-            Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul,
+            Avalonia.Platform.PixelFormat.Bgra8888, 
+            Avalonia.Platform.AlphaFormat.Premul,
             bitmapData.Scan0,
             new Avalonia.PixelSize(bitmapData.Width, bitmapData.Height),
             new Avalonia.Vector(96, 96),
