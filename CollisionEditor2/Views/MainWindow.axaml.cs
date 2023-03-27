@@ -50,25 +50,9 @@ namespace CollisionEditor2.Views
             var tileSize = windowMain.TileSet.TileSize;
             int tileWidth = tileSize.Width;
             int tileHeight = tileSize.Height;
-            position.X = (int)mousePosition.X / tileWidth;
-            position.Y = (int)mousePosition.Y / tileHeight;
+            position.X = (int)Math.Ceiling(2 * mousePosition.X / tileWidth);
+            position.Y = (int)Math.Ceiling(2 * mousePosition.Y / tileWidth);
             return position;
-
-
-            //foreach (var column in grid.ColumnDefinitions)
-            //{
-            //    if (mousePosition.X > column.Offset && mousePosition.X < (column.Offset + column.ActualWidth))
-            //        break;
-            //    position.X++;
-            //}
-
-            //foreach (var row in grid.RowDefinitions)
-            //{
-            //    if (mousePosition.Y > row.Offset && mousePosition.Y < (row.Offset + row.ActualHeight))
-            //        break;
-            //    position.Y++;
-            //}
-
         }
         public void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
