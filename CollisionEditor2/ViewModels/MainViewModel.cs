@@ -16,6 +16,8 @@ using MessageBoxSlim.Avalonia;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia.Enums;
 using System.Diagnostics;
+using ReactiveUI;
+using System.Reactive;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -24,21 +26,21 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     public AngleMap AngleMap { get; private set; }
     public TileSet TileSet { get; private set; }
     
-    public ICommand MenuOpenAngleMapCommand { get; }
-    public ICommand MenuOpenTileMapCommand { get; }
-    public ICommand MenuSaveTileMapCommand { get; }
-    public ICommand MenuSaveWidthMapCommand { get; }
-    public ICommand MenuSaveHeightMapCommand { get; }
-    public ICommand MenuSaveAngleMapCommand { get; }
-    public ICommand MenuSaveAllCommand { get; }
-    public ICommand MenuUnloadTileMapCommand { get; }
-    public ICommand MenuUnloadAngleMapCommand { get; }
-    public ICommand MenuUnloadAllCommand { get; }
-    public ICommand SelectTileCommand { get; }
-    public ICommand AngleIncrementCommand { get; }
-    public ICommand AngleDecrementCommand { get; }
-    public ICommand ExitAppCommand { get; }
-    public ICommand HelpCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuOpenAngleMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuOpenTileMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuSaveTileMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuSaveWidthMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuSaveHeightMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuSaveAngleMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuSaveAllCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuUnloadTileMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuUnloadAngleMapCommand { get; }
+    public ReactiveCommand<Unit, Unit> MenuUnloadAllCommand { get; }
+    public ReactiveCommand<Unit, Unit> SelectTileCommand { get; }
+    public ReactiveCommand<Unit, Unit> AngleIncrementCommand { get; }
+    public ReactiveCommand<Unit, Unit> AngleDecrementCommand { get; }
+    public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
+    public ReactiveCommand<Unit, Unit> HelpCommand { get; }
 
     public byte ByteAngle
     {
@@ -104,26 +106,26 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         hexAngle = "0x00";
         this.window = window;
 
-        MenuOpenAngleMapCommand = new RelayCommand(MenuOpenAngleMap);
-        MenuOpenTileMapCommand  = new RelayCommand(MenuOpenTileMap);
+        MenuOpenAngleMapCommand = ReactiveCommand.Create(MenuOpenAngleMap);
+        MenuOpenTileMapCommand  = ReactiveCommand.Create(MenuOpenTileMap);
 
-        MenuSaveTileMapCommand   = new RelayCommand(MenuSaveTileMap);
-        MenuSaveWidthMapCommand  = new RelayCommand(MenuSaveWidthMap);
-        MenuSaveHeightMapCommand = new RelayCommand(MenuSaveHeightMap);
-        MenuSaveAngleMapCommand  = new RelayCommand(MenuSaveAngleMap);
-        MenuSaveAllCommand       = new RelayCommand(MenuSaveAll);
+        MenuSaveTileMapCommand   = ReactiveCommand.Create(MenuSaveTileMap);
+        MenuSaveWidthMapCommand  = ReactiveCommand.Create(MenuSaveWidthMap);
+        MenuSaveHeightMapCommand = ReactiveCommand.Create(MenuSaveHeightMap);
+        MenuSaveAngleMapCommand  = ReactiveCommand.Create(MenuSaveAngleMap);
+        MenuSaveAllCommand       = ReactiveCommand.Create(MenuSaveAll);
 
-        MenuUnloadTileMapCommand  = new RelayCommand(MenuUnloadTileMap);
-        MenuUnloadAngleMapCommand = new RelayCommand(MenuUnloadAngleMap);
-        MenuUnloadAllCommand      = new RelayCommand(MenuUnloadAll);
+        MenuUnloadTileMapCommand  = ReactiveCommand.Create(MenuUnloadTileMap);
+        MenuUnloadAngleMapCommand = ReactiveCommand.Create(MenuUnloadAngleMap);
+        MenuUnloadAllCommand      = ReactiveCommand.Create(MenuUnloadAll);
 
-        AngleIncrementCommand = new RelayCommand(AngleIncrement);
-        AngleDecrementCommand = new RelayCommand(AngleDecrement);
-        SelectTileCommand     = new RelayCommand(SelectTile);
+        AngleIncrementCommand = ReactiveCommand.Create(AngleIncrement);
+        AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
+        SelectTileCommand     = ReactiveCommand.Create(SelectTile);
 
-        ExitAppCommand = new RelayCommand(ExitApp);
+        ExitAppCommand = ReactiveCommand.Create(ExitApp);
 
-        HelpCommand = new RelayCommand(Help);
+        HelpCommand = ReactiveCommand.Create(Help);
 
         RectanglesGridUpdate();
         TileGridUpdate(TileSet, (int)chosenTile, window);
@@ -347,16 +349,22 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         window.Widths.Text = null;
         ShowAngles(new Angles(0, "0x00", 0));
         window.SelectTileTextBox.Text = "0";
+
         window.ByteAngleIncrimentButton.IsEnabled = false;
         window.ByteAngleDecrementButton.IsEnabled = false;
-        window.HexAngleIncrimentButton.IsEnabled = false;
-        window.HexAngleDecrementButton.IsEnabled = false;
+        window.HexAngleIncrimentButton.IsEnabled  = false;
+        window.HexAngleDecrementButton.IsEnabled  = false;
+
         window.SelectTileTextBox.IsEnabled = false;
-        window.SelectTileButton.IsEnabled = false;
-        window.TextBoxByteAngle.IsEnabled = false;
-        window.TextBoxHexAngle.IsEnabled = false;
+        window.SelectTileButton.IsEnabled  = false;
+        window.TextBoxByteAngle.IsEnabled  = false;
+        window.TextBoxHexAngle.IsEnabled   = false;
+
         window.canvasForLine.Children.Clear();
         window.RectanglesGrid.Children.Clear();
+
+        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileGridUpdate(TileSet, 0, window);
     }
 
     private void AngleIncrement()
@@ -450,7 +458,9 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     public void UpdateAngles(Vector2<int> positionGreen, Vector2<int> positionBlue)
     {
         if (AngleMap.Values.Count == 0)
+        {
             return;
+        }
 
         byte byteAngle = AngleMap.SetAngleWithLine((int)chosenTile, positionGreen, positionBlue);
 
@@ -472,10 +482,14 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         var size = TileSet.TileSize;
 
         for (int x = 0; x < size.Width; x++)
+        {
             window.RectanglesGrid.ColumnDefinitions.Add(new ColumnDefinition());
+        }
 
         for (int y = 0; y < size.Height; y++)
+        {
             window.RectanglesGrid.RowDefinitions.Add(new RowDefinition());
+        }
     }
 
     private static void TileGridUpdate(TileSet tileSet, int ChosenTile, MainWindow window)

@@ -9,14 +9,12 @@ using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Linq;
 using System;
 
 namespace CollisionEditor2.Views
 {
     public partial class MainWindow : Window
     {
-        
         public int LastChosenTile { get; set; }
 
         private const int tileMapSeparation = 4;
@@ -50,22 +48,6 @@ namespace CollisionEditor2.Views
             position.X = (int)Math.Floor(2 * mousePosition.X / tileSize.Width);
             position.Y = (int)Math.Floor(2 * mousePosition.Y / tileSize.Height);
             return position;
-        }
-
-        public void RectanglesGrid_OnPointerPressed2(object? sender, PointerPressedEventArgs e)
-        {
-            var pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
-            var x = pointControlPosition.Position.X;
-            var y = pointControlPosition.Position.Y;
-
-            if (pointControlPosition.Properties.IsLeftButtonPressed)
-            {
-                RectanglesGrid_LeftButton(x, y);
-            }
-            else if (pointControlPosition.Properties.IsRightButtonPressed)
-            {
-                RectanglesGrid_RightButton(x, y);
-            }
         }
 
         public void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -136,18 +118,6 @@ namespace CollisionEditor2.Views
         {
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
-        }
-
-        private void TextBoxHexAngle_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            bool isCtrlKeyDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-            Key[] exceptions = new Key[] { Key.Back, Key.Delete, Key.Left, Key.Right };
-
-            if (TextBoxHexAngle.Text.Length >= 4 && !exceptions.Contains(e.Key) && !isCtrlKeyDown
-                || TextBoxHexAngle.Text.Length > 0 && e.Key == Key.C && isCtrlKeyDown)
-            {
-                e.Handled = true;
-            }
         }
 
         private async void RectanglesGridUpdate(bool isAppear)

@@ -10,7 +10,7 @@ internal static class SquaresService
         SquareAndPosition firstSquare, SquareAndPosition secondSquare)
     {
         firstSquare.Square.SetValue(Grid.ColumnProperty, position.X);
-        firstSquare.Square.SetValue(Grid.RowProperty, position.Y);
+        firstSquare.Square.SetValue(Grid.RowProperty,    position.Y);
 
         bool isFirstExists = mainWindow.RectanglesGrid.Children.Contains(firstSquare.Square);
         if (!Equals(position, firstSquare.Position) && isFirstExists || !isFirstExists)

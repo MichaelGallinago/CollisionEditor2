@@ -9,7 +9,7 @@ public static class ViewModelFileService
 {
     public enum Filters { TileMap, AngleMap, WidthMap, HeightMap }
 
-    private static Dictionary<Filters, FileDialogFilter> filters = new()
+    private readonly static Dictionary<Filters, FileDialogFilter> filters = new()
     {
         [Filters.TileMap]   = new FileDialogFilter() { Name = "Image Files(*.png)",  Extensions = { "png" } },
         [Filters.AngleMap]  = new FileDialogFilter() { Name = "Binary Files(*.bin)", Extensions = { "bin" } },
