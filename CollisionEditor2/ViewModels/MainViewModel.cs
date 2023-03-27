@@ -13,10 +13,8 @@ using Avalonia.Media;
 using CollisionEditor2.Views;
 using CollisionEditor2.ViewServices;
 using MessageBoxSlim.Avalonia;
-using MessageBoxSlim;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia.Enums;
-using Avalonia.Interactivity;
 using System.Diagnostics;
 
 namespace CollisionEditor2.ViewModels;
@@ -93,7 +91,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     private byte byteAngle;
     private string hexAngle;
     private uint chosenTile;
-    private TextboxValidator textboxValidator;
+    private readonly TextboxValidator textboxValidator;
 
     public MainViewModel(MainWindow window)
     {
@@ -140,7 +138,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         }
 
         AngleMap = new AngleMap(filePath);
-        if (TileSet is null)
+        if (TileSet.Tiles.Count <= 0)
         {
             TileSet = new TileSet(AngleMap.Values.Count);
         }
@@ -185,7 +183,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         AngleMap ??= new AngleMap(TileSet.Tiles.Count);
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
         ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
-            
+
         TileGridUpdate(TileSet, (int)ChosenTile, window);
         RectanglesGridUpdate();
             
@@ -214,18 +212,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
-    }
-
-    private async Task FuckME(string a)
-    {
-        _ = await BoxedMessage.Create(new MessageBoxParams
-        {
-            Buttons = ButtonEnum.Ok,
-            ContentTitle = "Error",
-            ContentMessage = a,
-            Location = WindowStartupLocation.CenterScreen,
-            Style = BoxStyle.UbuntuLinux
-        }).ShowDialogAsync(window);
     }
 
     public void TileMapGridUpdate(int tileCount)
@@ -406,7 +392,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
 
         Avalonia.Controls.Image newTile = GetTile((int)chosenTile);
 
-        Border border = new Border()
+        var border = new Border()
         {
             Width = TileSet.TileSize.Width * tileMapTileScale + tileMapSeparation,
             Height = TileSet.TileSize.Height * tileMapTileScale + tileMapSeparation,
@@ -445,12 +431,14 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
     internal Avalonia.Controls.Image GetTile(int index)
     {
         Bitmap tile = TileSet.Tiles[index];
-        var image = new Avalonia.Controls.Image()
+
+        var image = new Avalonia.Controls.Image
         {
             Width = TileSet.TileSize.Width * 2,
-            Height = TileSet.TileSize.Height * 2
+            Height = TileSet.TileSize.Height * 2,
+            Source = ViewModelAssistant.BitmapConvert(tile)
         };
-        image.Source = ViewModelAssistant.BitmapConvert(tile);
+
         return image;
     }
 
@@ -490,7 +478,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
             window.RectanglesGrid.RowDefinitions.Add(new RowDefinition());
     }
 
-    private async void TileGridUpdate(TileSet tileSet, int ChosenTile, MainWindow window)
+    private static void TileGridUpdate(TileSet tileSet, int ChosenTile, MainWindow window)
     {
         window.TileGrid.Children.Clear();
 
@@ -506,7 +494,7 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         {
             for (int x = 0; x < size.Width; x++)
             {
-                Border Border = new Border()
+                var Border = new Border()
                 {
                     BorderThickness = new Thickness(x == 0 ? 1d : 0d, y == 0 ? 1d : 0d, 1d, 1d),
                     Background = new SolidColorBrush(tile.GetPixel(x, y).A > 0 ? Colors.Black : Colors.Transparent),

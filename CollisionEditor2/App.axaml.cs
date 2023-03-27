@@ -1,14 +1,14 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
 using CollisionEditor2.ViewModels;
 using CollisionEditor2.Views;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using Avalonia;
 
 namespace CollisionEditor2
 {   
     public partial class App : Application
     {
-        public MainViewModel windowMain { get; set; }
+        public MainViewModel? WindowMain { get; set; }
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -19,10 +19,10 @@ namespace CollisionEditor2
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 MainWindow window = new();
-                windowMain = new MainViewModel(window);
-                window.windowMain = windowMain;
+                WindowMain = new MainViewModel(window);
+                window.windowMain = WindowMain;
                 desktop.MainWindow = window;
-                desktop.MainWindow.DataContext = windowMain;
+                desktop.MainWindow.DataContext = WindowMain;
             }
 
             base.OnFrameworkInitializationCompleted();

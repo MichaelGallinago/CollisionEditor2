@@ -33,7 +33,7 @@ namespace CollisionEditor2.Views
 
         private bool mouseInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Colors.Blue), new SquareAndPosition(Colors.Green));
-        private Line redLine = new Line();
+        private Line redLine = new();
 
         public MainViewModel windowMain { get; set; }
 
@@ -42,9 +42,9 @@ namespace CollisionEditor2.Views
             InitializeComponent();
         }
 
-        private Vector2<int> GetGridPosition(Vector2<double> mousePosition, Grid grid)
+        private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
-            Vector2<int> position = new Vector2<int>();
+            Vector2<int> position = new();
 
             var tileSize = windowMain.TileSet.TileSize;
             position.X = (int)Math.Floor(2 * mousePosition.X / tileSize.Width);
@@ -103,7 +103,7 @@ namespace CollisionEditor2.Views
                 return;
             }
             
-            Vector2<int> position = GetGridPosition(mousePosition, RectanglesGrid);
+            Vector2<int> position = GetGridPosition(mousePosition);
 
             SquaresService.MoveSquare(windowMain.window, position, firstSquare, secondSquare);
 
@@ -125,17 +125,6 @@ namespace CollisionEditor2.Views
             if (e.Key == Key.Enter)
                 windowMain.SelectTile();
         }
-        //protected override void MouseDownHandler(KeyEventArgs e)
-        //{
-        //    Keyboard.Keys.Add(e.Key);
-        //    base.OnKeyDown(e);
-        //}
-
-        //protected override void MouseUpHandler(KeyEventArgs e)
-        //{
-        //    Keyboard.Keys.Remove(e.Key);
-        //    base.OnKeyUp(e);
-        //}
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -216,7 +205,7 @@ namespace CollisionEditor2.Views
             Image newTile = windowMain.GetTile((int)windowMain.ChosenTile);
 
             var tileSize = windowMain.TileSet.TileSize;
-            Border border = new Border()
+            var border = new Border()
             {
                 Width = tileSize.Width * tileMapTileScale + tileMapSeparation,
                 Height = tileSize.Height * tileMapTileScale + tileMapSeparation,
@@ -231,23 +220,6 @@ namespace CollisionEditor2.Views
             windowMain.SelectTileFromTileMap();
             LastChosenTile = (int)windowMain.ChosenTile;
         }
-        
-        //protected void OnPointerPressed(PointerPressedEventArgs e)
-        //{
-        //    var point = e.GetCurrentPoint();
-        //    var x = point.Position.X;
-        //    var y = point.Position.Y;
-        //    if (point.Properties.IsLeftButtonPressed)
-        //    {
-        //        // left button pressed
-        //    }
-        //    if (point.Properties.IsRightButtonPressed)
-        //    {
-        //        // right button pressed
-        //    }
-        //    base.OnPointerPressed(e);
-
-        //}
 
         private void WindowSizeChanged(object sender, EventArgs e)
         {
