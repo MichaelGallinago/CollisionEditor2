@@ -11,11 +11,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Numerics;
 
 namespace CollisionEditor2.Views
 {
     public partial class MainWindow : Window
     {
+        
         public int LastChosenTile { get; set; }
 
         private const int tileMapSeparation = 4;
@@ -40,9 +42,10 @@ namespace CollisionEditor2.Views
         {
             InitializeComponent();
             windowMain = new MainViewModel(this);
+           
         }
 
-        private Vector2<int> GetGridPosition(Point mousePosition, Grid grid)
+        private Vector2<int> GetGridPosition(Vector2<double> mousePosition, Grid grid)
         {
             Vector2<int> position = new Vector2<int>();
 
@@ -69,25 +72,43 @@ namespace CollisionEditor2.Views
             //}
 
         }
-
-        private void RectanglesGrid_MouseLeftButtonDown(PointerPressedEventArgs e)
+        private void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            RectanglesGridUpdate(e, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
+
+            var pointControlCoords = e.GetCurrentPoint(RectanglesGrid);
+            var x = pointControlCoords.Position.X;
+            var y = pointControlCoords.Position.Y;
+            if (pointControlCoords.Properties.IsLeftButtonPressed)
+            {
+                RectanglesGrid_MouseLeftButtonDown(x,y);
+            }
+
+            if (pointControlCoords.Properties.IsRightButtonPressed)
+            {
+                RectanglesGrid_MouseRightButtonDown(x,y);
+            }
         }
 
-        private void RectanglesGrid_MouseRightButtonDown(PointerPressedEventArgs e)
+        private void RectanglesGrid_MouseLeftButtonDown(double x, double y)
         {
-            RectanglesGridUpdate(e, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
+            var mousePosition = new Vector2<double>(x, y);
+            RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
         }
 
-        private void RectanglesGridUpdate(PointerEventArgs e, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
+        private void RectanglesGrid_MouseRightButtonDown(double x, double y)
+        {
+            var mousePosition = new Vector2<double>(x, y);
+            RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
+        }
+
+        private void RectanglesGridUpdate(Vector2<double> mousePosition, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (windowMain.AngleMap.Values.Count <= 0)
             {
                 return;
             }
 
-            var mousePosition = e.GetPosition(RectanglesGrid);
+            
             Vector2<int> position = GetGridPosition(mousePosition, RectanglesGrid);
 
             SquaresService.MoveSquare(windowMain.window, position, firstSquare, secondSquare);
@@ -110,13 +131,13 @@ namespace CollisionEditor2.Views
             if (e.Key == Key.Enter)
                 windowMain.SelectTile();
         }
-        //protected override void MouseDown(KeyEventArgs e)
+        //protected override void MouseDownHandler(KeyEventArgs e)
         //{
         //    Keyboard.Keys.Add(e.Key);
         //    base.OnKeyDown(e);
         //}
 
-        //protected override void MouseUp(KeyEventArgs e)
+        //protected override void MouseUpHandler(KeyEventArgs e)
         //{
         //    Keyboard.Keys.Remove(e.Key);
         //    base.OnKeyUp(e);
@@ -213,30 +234,23 @@ namespace CollisionEditor2.Views
             windowMain.SelectTileFromTileMap();
             LastChosenTile = (int)windowMain.ChosenTile;
         }
-        protected override void OnPointerPressed(PointerPressedEventArgs e)
-        {
-            base.OnPointerPressed(e);
+        
+        //protected void OnPointerPressed(PointerPressedEventArgs e)
+        //{
+        //    var point = e.GetCurrentPoint();
+        //    var x = point.Position.X;
+        //    var y = point.Position.Y;
+        //    if (point.Properties.IsLeftButtonPressed)
+        //    {
+        //        // left button pressed
+        //    }
+        //    if (point.Properties.IsRightButtonPressed)
+        //    {
+        //        // right button pressed
+        //    }
+        //    base.OnPointerPressed(e);
 
-            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-            {
-                if (Equals(e.Source, TileMapGrid))
-                {
-                    TileMapGrid_MouseLeftButtonDown(e);
-                }
-                else if (Equals(e.Source, TileMapGrid))
-                {
-                    RectanglesGrid_MouseLeftButtonDown(e);
-                }
-            }
-
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-            {
-                if (Equals(e.Source, TileMapGrid))
-                {
-                    RectanglesGrid_MouseRightButtonDown(e);
-                }
-            }
-        }
+        //}
 
         private void WindowSizeChanged(object sender, EventArgs e)
         {
@@ -317,5 +331,7 @@ namespace CollisionEditor2.Views
                 UseShellExecute = true,
             });
         }
+
+        
     }
 }

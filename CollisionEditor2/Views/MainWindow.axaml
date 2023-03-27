@@ -89,6 +89,7 @@
 		<!--MouseLeftButtonDown="RectanglesGrid_MouseLeftButtonDown" MouseRightButtonDown="RectanglesGrid_MouseRightButtonDown"-->
 		<!--MouseEnter="RectanglesGrid_MouseEnter" MouseLeave="RectanglesGrid_MouseLeave"-->
 		<Grid x:Name="RectanglesGrid"  Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Focusable="True" Background="Transparent"
+              PointerEnter="RectanglesGrid_MouseEnter" PointerLeave="RectanglesGrid_MouseLeave"	 PointerPressed="RectanglesGrid_OnPointerPressed"
               RenderOptions.BitmapInterpolationMode="Default"/>
 		<Canvas Grid.Column="0" Grid.Row="3"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="11" IsHitTestVisible="False"/>
 
