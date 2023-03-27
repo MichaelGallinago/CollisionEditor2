@@ -195,14 +195,14 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
                 var image = new Avalonia.Controls.Image()
                 {
                     Width  = TileSet.TileSize.Width  * 2,
-                    Height = TileSet.TileSize.Height * 2
+                    Height = TileSet.TileSize.Height * 2,
+                    Source = ViewModelAssistant.BitmapConvert(tile)
                 };
-                image.Source = ViewModelAssistant.BitmapConvert(tile);
                 window.TileMapGrid.Children.Add(image);
             }
 
             window.SelectTileTextBox.IsEnabled = true;
-            window.SelectTileButton.IsEnabled = true;
+            window.SelectTileButton.IsEnabled  = true;
 
             TileMapGridUpdate(TileSet.Tiles.Count);
             window.DrawRedLine();

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="664" d:DesignHeight="440"
         x:Class="CollisionEditor2.Views.MainWindow"
+		FontFamily="/Assets/DroidSansMono.ttf"
         Icon="/Assets/avalonia-logo.ico"
         Title="CollisionEditor2">
-		<!--FontFamily="/Assets/dos.ttf#Droid Sans Mono"-->
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -83,14 +83,13 @@
 			</MenuItem>
 		</Menu>
 
-		<!--SnapsToDevicePixels="true"-->
-		<UniformGrid x:Name="TileGrid" Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Background="Transparent" 
-					 RenderOptions.BitmapInterpolationMode="LowQuality"/>
-		<!--SnapsToDevicePixels="true"-->
+		<UniformGrid x:Name="TileGrid" Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Background="Transparent"
+					 RenderOptions.BitmapInterpolationMode="Default"/>
+		
 		<!--MouseLeftButtonDown="RectanglesGrid_MouseLeftButtonDown" MouseRightButtonDown="RectanglesGrid_MouseRightButtonDown"-->
 		<!--MouseEnter="RectanglesGrid_MouseEnter" MouseLeave="RectanglesGrid_MouseLeave"-->
 		<Grid x:Name="RectanglesGrid"  Grid.Column="0" Grid.Row="3" Height="128" Width="128" Grid.ColumnSpan="11" Focusable="True" Background="Transparent"
-              RenderOptions.BitmapInterpolationMode="LowQuality"/>
+              RenderOptions.BitmapInterpolationMode="Default"/>
 		<Canvas Grid.Column="0" Grid.Row="3"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="11" IsHitTestVisible="False"/>
 
 		<Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="8" Background="GhostWhite" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
@@ -124,10 +123,8 @@
 		</Button>
 
 		<ScrollViewer x:Name="scrollViewer" Grid.Column="12" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2">
-			<!--SnapsToDevicePixels="true"-->
-			<!--RenderOptions.BitmapScalingMode="NearestNeighbor"-->
 			<!--MouseLeftButtonDown="TileMapGrid_MouseLeftButtonDown"-->
-			<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="LowQuality"
+			<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="Default"
                          />
 		</ScrollViewer>
 
