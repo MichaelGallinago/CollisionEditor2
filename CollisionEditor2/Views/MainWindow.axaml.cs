@@ -8,7 +8,6 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System;
 using System.Reactive.Linq;
 
@@ -195,10 +194,10 @@ namespace CollisionEditor2.Views
             LastChosenTile = (int)WindowMain.ChosenTile;
         }
 
-        private void WindowSizeChanged(object sender, EventArgs e)
+        private void WindowSizeChanged(Size size)
         {
-            int countOfTiles = windowMain.TileSet.Tiles.Count;
-            var tileSize = windowMain.TileSet.TileSize;
+            int countOfTiles = WindowMain.TileSet.Tiles.Count;
+            var tileSize = WindowMain.TileSet.TileSize;
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
@@ -229,7 +228,6 @@ namespace CollisionEditor2.Views
 
             TextBoxHexAngle.Height   = actualHeightTextAndButtons - 2;
             TextBoxHexAngle.FontSize = actualFontSize;
-
 
             ByteAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
             ByteAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
