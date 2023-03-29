@@ -40,9 +40,12 @@ namespace CollisionEditor2.Views
             InitializeComponent();
             WindowMain = new MainViewModel(this);
             this.GetObservable(ClientSizeProperty).Subscribe(WindowSizeChanged);
+#if DEBUG
+            this.AttachDevTools();
+#endif
         }
 
-        
+
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
             Vector2<int> position = new();
