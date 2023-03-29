@@ -213,7 +213,7 @@ namespace CollisionEditor2.Views
             TileGrid.Height = TileGridSize.Height;
 
             RectanglesGrid.Width  = TileGridSize.Width;
-            RectanglesGrid.Height = TileGridSize.Height;
+            RectanglesGrid.Height = TileGridSize.Height ;
 
             canvasForLine.Width  = TileGridSize.Width;
             canvasForLine.Height = TileGridSize.Height;
@@ -224,18 +224,18 @@ namespace CollisionEditor2.Views
             Widths.Height   = actualHeightTextAndButtons;
             Widths.FontSize = actualFontSize;
 
-            TextBlockFullAngle.Height   = actualHeightTextAndButtons - 2;
+            TextBlockFullAngle.Height = actualHeightTextAndButtons - 2;
             TextBlockFullAngle.FontSize = actualFontSize;
-
-            TextBoxByteAngle.Height   = actualHeightTextAndButtons - 2;
+            
+            TextBoxByteAngle.Height = actualHeightTextAndButtons - 2;
             TextBoxByteAngle.FontSize = actualFontSize;
 
-            TextBoxHexAngle.Height   = actualHeightTextAndButtons - 2;
+            TextBoxHexAngle.Height = actualHeightTextAndButtons - 2;
             TextBoxHexAngle.FontSize = actualFontSize;
 
             ByteAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
             ByteAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
-            ByteAngleDecrementButton.Height = actualHeightTextAndButtons / 2 - 1;
+            ByteAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
             ByteAngleDecrementButton.Width  = actualWidthUpAndDownButtons - 3;
 
             TriangleUpByteAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
@@ -245,7 +245,7 @@ namespace CollisionEditor2.Views
 
             HexAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
             HexAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
-            HexAngleDecrementButton.Height = actualHeightTextAndButtons / 2 - 1;
+            HexAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
             HexAngleDecrementButton.Width  = actualWidthUpAndDownButtons - 3;
 
             TriangleUpHexAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
