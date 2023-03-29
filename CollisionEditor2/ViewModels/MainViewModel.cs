@@ -15,7 +15,6 @@ using MessageBoxSlim.Avalonia;
 using System.Diagnostics;
 using ReactiveUI;
 using System.Reactive;
-using Color = Avalonia.Media.Color;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -142,7 +141,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             TileSet = new TileSet(AngleMap.Values.Count);
         }
-            
+
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
 
         ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
@@ -151,6 +150,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
+        SelectTile();
     }
 
     public void ShowAngles(Angles angles)
@@ -184,6 +184,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         TileSet = new TileSet(filePath);
         AngleMap ??= new AngleMap(TileSet.Tiles.Count);
+
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
         ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
 
@@ -203,6 +204,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
+        SelectTile();
     }
 
     private void TileMapGridReset()

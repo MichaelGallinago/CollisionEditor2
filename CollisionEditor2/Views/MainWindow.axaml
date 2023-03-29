@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" MinHeight="440" MinWidth="664" Width="664" Height="440"
         x:Class="CollisionEditor2.Views.MainWindow"
-		FontFamily="/Assets/FiraMonoOT-Regular.otf"
+		FontFamily="Consolas"
         Icon="/Assets/avalonia-logo.ico"
         Title="CollisionEditor2">
 	<Window.Styles>
