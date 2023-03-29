@@ -45,7 +45,6 @@ namespace CollisionEditor2.Views
 #endif
         }
 
-
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
             Vector2<int> position = new();
@@ -182,7 +181,9 @@ namespace CollisionEditor2.Views
             WindowMain.ChosenTile = GetUniformGridIndex(mousePosition);
 
             if (WindowMain.ChosenTile > WindowMain.TileSet.Tiles.Count - 1)
+            {
                 WindowMain.ChosenTile = (uint)WindowMain.TileSet.Tiles.Count - 1;
+            }
 
             Image newTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
 
