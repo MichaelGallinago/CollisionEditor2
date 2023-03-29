@@ -427,8 +427,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var border = new Border()
         {
-            Background = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 230, 230, 230)),
-            BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 211, 211, 211)),
+            Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(230, 230, 230)),
+            BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211)),
             BorderThickness = new Thickness(tileMapSeparation / 2d),
             Child = image
         };
