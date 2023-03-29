@@ -15,6 +15,7 @@ using MessageBoxSlim.Avalonia;
 using System.Diagnostics;
 using ReactiveUI;
 using System.Reactive;
+using Color = Avalonia.Media.Color;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -147,8 +148,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
-        window.TextBoxByteAngle.IsEnabled  = true;
-        window.TextBoxHexAngle.IsEnabled   = true;
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
@@ -156,6 +155,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public void ShowAngles(Angles angles)
     {
+        window.TextBoxByteAngle.IsEnabled = true;
+        window.TextBoxHexAngle.IsEnabled = true;
+        window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(84, 84, 84));
+        window.TextBlockFullAngle.Foreground = new SolidColorBrush(Avalonia.Media.Color.FromRgb(0, 0, 0));
+        window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
+
         byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngle));
         window.ByteAngleIncrimentButton.IsEnabled = true;
@@ -189,8 +194,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
             
         ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
-        window.TextBoxByteAngle.IsEnabled = true;
-        window.TextBoxHexAngle.IsEnabled  = true;
+        
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
@@ -338,6 +342,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.SelectTileButton.IsEnabled  = false;
         window.TextBoxByteAngle.IsEnabled  = false;
         window.TextBoxHexAngle.IsEnabled   = false;
+
+        //window.BorderFullAngle.BorderBrush = 
+
 
         window.canvasForLine.Children.Clear();
         window.RectanglesGrid.Children.Clear();
