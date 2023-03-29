@@ -19,10 +19,8 @@ namespace CollisionEditor2
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 MainWindow window = new();
-                WindowMain = new MainViewModel(window);
-                window.windowMain = WindowMain;
                 desktop.MainWindow = window;
-                desktop.MainWindow.DataContext = WindowMain;
+                desktop.MainWindow.DataContext = window.WindowMain;
             }
 
             base.OnFrameworkInitializationCompleted();

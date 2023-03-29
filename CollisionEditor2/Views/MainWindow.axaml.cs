@@ -10,6 +10,7 @@ using Avalonia;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System;
+using System.Reactive.Linq;
 
 namespace CollisionEditor2.Views
 {
@@ -33,18 +34,20 @@ namespace CollisionEditor2.Views
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Colors.Blue), new SquareAndPosition(Colors.Green));
         private Line redLine = new();
 
-        public MainViewModel windowMain { get; set; }
+        public MainViewModel WindowMain { get; }
 
         public MainWindow()
         {
             InitializeComponent();
+            WindowMain = new MainViewModel(this);
+            this.GetObservable(ClientSizeProperty).Subscribe(WindowSizeChanged);
         }
 
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
             Vector2<int> position = new();
 
-            var tileSize = windowMain.TileSet.TileSize;
+            var tileSize = WindowMain.TileSet.TileSize;
             position.X = (int)Math.Floor(2 * mousePosition.X / tileSize.Width);
             position.Y = (int)Math.Floor(2 * mousePosition.Y / tileSize.Height);
             return position;
@@ -80,32 +83,32 @@ namespace CollisionEditor2.Views
 
         private void RectanglesGridUpdate(Vector2<double> mousePosition, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
-            if (windowMain.AngleMap.Values.Count <= 0)
+            if (WindowMain.AngleMap.Values.Count <= 0)
             {
                 return;
             }
             
             Vector2<int> position = GetGridPosition(mousePosition);
 
-            SquaresService.MoveSquare(windowMain.window, position, firstSquare, secondSquare);
+            SquaresService.MoveSquare(WindowMain.window, position, firstSquare, secondSquare);
 
             if (RectanglesGrid.Children.Contains(firstSquare.Square) && RectanglesGrid.Children.Contains(secondSquare.Square))
             {
-                windowMain.UpdateAngles(blueAndGreenSquare.Item1.Position, blueAndGreenSquare.Item2.Position);
+                WindowMain.UpdateAngles(blueAndGreenSquare.Item1.Position, blueAndGreenSquare.Item2.Position);
                 DrawRedLine();
             }
         }
 
         internal void DrawRedLine()
         {
-            if (windowMain.AngleMap.Values.Count > 0)
-                RedLineService.DrawRedLine(windowMain.window, ref redLine);
+            if (WindowMain.AngleMap.Values.Count > 0)
+                RedLineService.DrawRedLine(WindowMain.window, ref redLine);
         }
 
         private void SelectTileTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                windowMain.SelectTile();
+                WindowMain.SelectTile();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -145,7 +148,7 @@ namespace CollisionEditor2.Views
 
         private uint GetUniformGridIndex(Point mousePosition)
         {
-            var tileSize = windowMain.TileSet.TileSize;
+            var tileSize = WindowMain.TileSet.TileSize;
             uint tileWidth = (uint)tileSize.Width * tileMapTileScale;
             uint tileHeight = (uint)tileSize.Height * tileMapTileScale;
             return (uint)mousePosition.X / (tileWidth  + tileMapSeparation) 
@@ -154,27 +157,27 @@ namespace CollisionEditor2.Views
 
         public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            if (windowMain.TileSet.Tiles.Count <= 0 || 
+            if (WindowMain.TileSet.Tiles.Count <= 0 || 
                 !e.GetCurrentPoint(RectanglesGrid).Properties.IsLeftButtonPressed)
             {
                 return;
             }
 
-            Image lastTile = windowMain.GetTile((int)windowMain.ChosenTile);
+            Image lastTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
 
-            TileMapGrid.Children.RemoveAt((int)windowMain.ChosenTile);
-            TileMapGrid.Children.Insert((int)windowMain.ChosenTile, lastTile);
+            TileMapGrid.Children.RemoveAt((int)WindowMain.ChosenTile);
+            TileMapGrid.Children.Insert((int)WindowMain.ChosenTile, lastTile);
 
             var mousePosition = e.GetPosition(TileMapGrid);
 
-            windowMain.ChosenTile = GetUniformGridIndex(mousePosition);
+            WindowMain.ChosenTile = GetUniformGridIndex(mousePosition);
 
-            if (windowMain.ChosenTile > windowMain.TileSet.Tiles.Count - 1)
-                windowMain.ChosenTile = (uint)windowMain.TileSet.Tiles.Count - 1;
+            if (WindowMain.ChosenTile > WindowMain.TileSet.Tiles.Count - 1)
+                WindowMain.ChosenTile = (uint)WindowMain.TileSet.Tiles.Count - 1;
 
-            Image newTile = windowMain.GetTile((int)windowMain.ChosenTile);
+            Image newTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
 
-            var tileSize = windowMain.TileSet.TileSize;
+            var tileSize = WindowMain.TileSet.TileSize;
             var border = new Border()
             {
                 Width = tileSize.Width * tileMapTileScale + tileMapSeparation,
@@ -184,23 +187,23 @@ namespace CollisionEditor2.Views
                 Child = newTile
             };
 
-            TileMapGrid.Children.RemoveAt((int)windowMain.ChosenTile);
-            TileMapGrid.Children.Insert((int)windowMain.ChosenTile, border);
+            TileMapGrid.Children.RemoveAt((int)WindowMain.ChosenTile);
+            TileMapGrid.Children.Insert((int)WindowMain.ChosenTile, border);
 
-            windowMain.SelectTileFromTileMap();
-            LastChosenTile = (int)windowMain.ChosenTile;
+            WindowMain.SelectTileFromTileMap();
+            LastChosenTile = (int)WindowMain.ChosenTile;
         }
 
-        private void WindowSizeChanged(object sender, EventArgs e)
+        private void WindowSizeChanged(Size size)
         {
-            int countOfTiles = windowMain.TileSet.Tiles.Count;
-            var tileSize = windowMain.TileSet.TileSize;
+            int countOfTiles = WindowMain.TileSet.Tiles.Count;
+            var tileSize = WindowMain.TileSet.TileSize;
 
-            double actualHeightTextAndButtons = (Height - menuHeight) / countHeightParts * textAndButtonsHeight;
-            double actualWidthUpAndDownButtons = Width / countWidthParts * upAndDownButtonsWidth;
-            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (Width / countHeightParts * 43)) / 0.35 - 21);
+            double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
+            double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
+            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (size.Width / countHeightParts * 43)) / 0.35 - 21);
 
-            double actualHeightGrid = (Height - menuHeight) / countHeightParts * gridHeight;
+            double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
 
             TileGrid.Width  = actualHeightGrid;
             TileGrid.Height = actualHeightGrid;
@@ -250,7 +253,7 @@ namespace CollisionEditor2.Views
             int tileWidth  = tileSize.Width  * tileMapTileScale;
             int tileHeight = tileSize.Height * tileMapTileScale;
 
-            TileMapGrid.Width   = baseTileMapGridWidth + (((int)(Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth) * tileWidth;
+            TileMapGrid.Width   = baseTileMapGridWidth + (((int)(size.Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth) * tileWidth;
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
             TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
 
@@ -261,16 +264,5 @@ namespace CollisionEditor2.Views
 
             DrawRedLine();
         }
-
-        private void Help_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = "https://youtu.be/m5sbRiwQPMQ?t=87",
-                UseShellExecute = true,
-            });
-        }
-
-        
     }
 }
