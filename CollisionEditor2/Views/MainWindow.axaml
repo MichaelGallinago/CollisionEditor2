@@ -129,8 +129,8 @@
 		
 		<!--Text="{Binding Path=ChosenTile,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}-->
 		<TextBox Grid.Column="12" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
-                 Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="tile index" KeyDown="SelectTileTextBox_KeyDown"/>
-		<Button  Grid.Column="13" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton"  IsEnabled="False" Content="Select Tile" Command="{Binding SelectTileCommand}"/>
+                 Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="tile index" KeyDown="SelectTileTextBox_KeyDown" MinHeight="20"/>
+		<Button  Grid.Column="13" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton"  IsEnabled="False" MinHeight="20" Content="Select Tile" Command="{Binding SelectTileCommand}"/>
 	</Grid>
 </Window>
 
