@@ -43,6 +43,7 @@ namespace CollisionEditor2.Views
             this.GetObservable(ClientSizeProperty).Subscribe(WindowSizeChanged);
         }
 
+        
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
             Vector2<int> position = new();
@@ -194,10 +195,10 @@ namespace CollisionEditor2.Views
             LastChosenTile = (int)WindowMain.ChosenTile;
         }
 
-        private void WindowSizeChanged(Size size)
+        private void WindowSizeChanged(object sender, EventArgs e)
         {
-            int countOfTiles = WindowMain.TileSet.Tiles.Count;
-            var tileSize = WindowMain.TileSet.TileSize;
+            int countOfTiles = windowMain.TileSet.Tiles.Count;
+            var tileSize = windowMain.TileSet.TileSize;
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
