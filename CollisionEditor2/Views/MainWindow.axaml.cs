@@ -38,6 +38,11 @@ namespace CollisionEditor2.Views
         public MainWindow()
         {
             InitializeComponent();
+            windowMain = new MainViewModel(this);
+            //while (true)
+            //{
+            //    WindowSizeChanged();
+            //}
         }
 
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
@@ -191,7 +196,28 @@ namespace CollisionEditor2.Views
             LastChosenTile = (int)windowMain.ChosenTile;
         }
 
-        private void WindowSizeChanged(object sender, EventArgs e)
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            {
+                if (Equals(e.Source, TileMapGrid))
+                {
+                    TileMapGrid_MouseLeftButtonDown(e);
+                }
+                else if (Equals(e.Source, TileMapGrid))
+                {
+                    RectanglesGrid_MouseLeftButtonDown(e);
+                }
+            }
+
+            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            {
+                if (Equals(e.Source, TileMapGrid))
+                {
+                    RectanglesGrid_MouseRightButtonDown(e);
+                }
+            }
+        }
+
+        private void WindowSizeChanged()
         {
             int countOfTiles = windowMain.TileSet.Tiles.Count;
             var tileSize = windowMain.TileSet.TileSize;
