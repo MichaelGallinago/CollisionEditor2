@@ -128,13 +128,9 @@
 		</ScrollViewer>
 		
 		<!--Text="{Binding Path=ChosenTile,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}-->
-		<!--SPreviewKeyDown="SelectTileTextBox_PreviewKeyDown"-->
-		<TextBox Grid.Column="12" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" MinHeight="20" MinWidth="20" IsEnabled="False" TextWrapping="Wrap"
-                 Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="tile index" />
-		<Border Grid.Column="13" Grid.Row="9" Grid.RowSpan ="2"  BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
-			<Button  Background="#FFD8D8D8" x:Name="SelectTileButton"  IsEnabled="False" Content="Select Tile" Command="{Binding SelectTileCommand}"/>
-		</Border>    
-        
+		<TextBox Grid.Column="12" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
+                 Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="tile index" KeyDown="SelectTileTextBox_KeyDown"/>
+		<Button  Grid.Column="13" Grid.Row="9" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton"  IsEnabled="False" Content="Select Tile" Command="{Binding SelectTileCommand}"/>
 	</Grid>
 </Window>
 

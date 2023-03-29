@@ -104,13 +104,17 @@ namespace CollisionEditor2.Views
         internal void DrawRedLine()
         {
             if (WindowMain.AngleMap.Values.Count > 0)
+            {
                 RedLineService.DrawRedLine(WindowMain.window, ref redLine);
+            }
         }
 
-        private void SelectTileTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void SelectTileTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 WindowMain.SelectTile();
+            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -131,7 +135,9 @@ namespace CollisionEditor2.Views
             while (isAppear && RectanglesGrid.Opacity < 1d || !isAppear && RectanglesGrid.Opacity > 0d)
             {
                 if (mouseInRectanglesGrid != isAppear)
+                {
                     return;
+                }
 
                 await Task.Delay(10);
                 RectanglesGrid.Opacity = Math.Clamp(RectanglesGrid.Opacity + (isAppear ? 0.05 : -0.05), 0d, 1d);
@@ -153,8 +159,9 @@ namespace CollisionEditor2.Views
             var tileSize = WindowMain.TileSet.TileSize;
             uint tileWidth = (uint)tileSize.Width * tileMapTileScale;
             uint tileHeight = (uint)tileSize.Height * tileMapTileScale;
-            return (uint)mousePosition.X / (tileWidth  + tileMapSeparation) 
-                + ((uint)mousePosition.Y / (tileHeight + tileMapSeparation)) * (uint)TileMapGrid.Columns;
+            return (uint)mousePosition.X / (tileWidth + tileMapSeparation) 
+                + (uint)mousePosition.Y / (tileHeight + tileMapSeparation) 
+                * (uint)TileMapGrid.Columns;
         }
 
         public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -213,7 +220,7 @@ namespace CollisionEditor2.Views
             TileGrid.Height = TileGridSize.Height;
 
             RectanglesGrid.Width  = TileGridSize.Width;
-            RectanglesGrid.Height = TileGridSize.Height ;
+            RectanglesGrid.Height = TileGridSize.Height;
 
             canvasForLine.Width  = TileGridSize.Width;
             canvasForLine.Height = TileGridSize.Height;
@@ -256,7 +263,7 @@ namespace CollisionEditor2.Views
             int tileWidth  = tileSize.Width  * tileMapTileScale;
             int tileHeight = tileSize.Height * tileMapTileScale;
 
-            TileMapGrid.Width   = baseTileMapGridWidth + (((int)(size.Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth) * tileWidth;
+            TileMapGrid.Width   = baseTileMapGridWidth + ((int)(size.Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth * tileWidth;
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
             TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
 

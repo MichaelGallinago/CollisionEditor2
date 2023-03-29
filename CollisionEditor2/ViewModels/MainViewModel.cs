@@ -18,7 +18,7 @@ using System.Reactive;
 
 namespace CollisionEditor2.ViewModels;
 
-public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataErrorInfo
+public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 {   
     public AngleMap AngleMap { get; private set; }
     public TileSet TileSet { get; private set; }
@@ -461,13 +461,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
         byte byteAngle = AngleMap.SetAngleWithLine((int)chosenTile, positionGreen, positionBlue);
 
         ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     private void RectanglesGridUpdate()
