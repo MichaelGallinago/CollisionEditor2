@@ -108,17 +108,17 @@
 		<Border Grid.Column="8" Grid.Row="9" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="Silver" Padding="2,0,0,0">
             <TextBlock TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#FFB1B1B1" />
 		</Border>
-		<Button Grid.Column="2" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="9"  Height="20" Width="30" VerticalAlignment="Bottom" >
+		<Button Grid.Column="2" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="9"  Height="20" Width="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
 			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpByteAngle"/>
 		</Button>
-		<Button Grid.Column="2" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="ByteAngleDecrementButton" Grid.Row="10" Height="20" Width="30" >
+		<Button Grid.Column="2" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="ByteAngleDecrementButton" Grid.Row="10" Height="20" Width="30" HorizontalAlignment="Right">
 			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownByteAngle"/>
 		</Button>
 
-		<Button Grid.Column="5" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="HexAngleIncrimentButton" Grid.Row="9" Height="20" Width="30" VerticalAlignment="Bottom" >
+		<Button Grid.Column="5" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="HexAngleIncrimentButton" Grid.Row="9" Height="20" Width="30" HorizontalAlignment="Right"  VerticalAlignment="Bottom" >
 			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpHexAngle"/>
 		</Button>
-		<Button Grid.Column="5" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="HexAngleDecrementButton" Grid.Row="10" Height="20" Width="30" >
+		<Button Grid.Column="5" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="HexAngleDecrementButton" Grid.Row="10" Height="20" Width="30" HorizontalAlignment="Right">
 			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownHexAngle"/>
 		</Button>
 		
