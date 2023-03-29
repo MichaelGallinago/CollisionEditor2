@@ -171,7 +171,7 @@ namespace CollisionEditor2.Views
                 return;
             }
 
-            Image lastTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
+            Border lastTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
 
             TileMapGrid.Children.RemoveAt((int)WindowMain.ChosenTile);
             TileMapGrid.Children.Insert((int)WindowMain.ChosenTile, lastTile);
@@ -185,7 +185,7 @@ namespace CollisionEditor2.Views
                 WindowMain.ChosenTile = (uint)WindowMain.TileSet.Tiles.Count - 1;
             }
 
-            Image newTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
+            Border newTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
 
             var tileSize = WindowMain.TileSet.TileSize;
             var border = new Border()

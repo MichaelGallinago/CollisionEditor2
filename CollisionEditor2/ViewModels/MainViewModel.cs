@@ -205,15 +205,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         window.TileMapGrid.Children.Clear();
 
-        foreach (Bitmap tile in TileSet.Tiles)
+        for (int i = 0; i < TileSet.Tiles.Count; i++)
         {
-            var image = new Avalonia.Controls.Image()
-            {
-                Width = TileSet.TileSize.Width * 2,
-                Height = TileSet.TileSize.Height * 2,
-                Source = ViewModelAssistant.BitmapConvert(tile)
-            };
-            window.TileMapGrid.Children.Add(image);
+            window.TileMapGrid.Children.Add(GetTile(i));
         }
     }
 
@@ -232,7 +226,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             Icon = new Avalonia.Media.Imaging.Bitmap("../../../../CollisionEditor2/Assets/avalonia-logo.ico"),
             Location = WindowStartupLocation.CenterScreen,
             CanResize = false,
-            
         }).ShowDialogAsync(window);
     }
 
@@ -379,24 +372,16 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             OnPropertyChanged("ChosenTile");
         }
         
-        Avalonia.Controls.Image lastTile = GetTile(window.LastChosenTile);
+        Border lastTile = GetTile(window.LastChosenTile);
 
         window.TileMapGrid.Children.RemoveAt(window.LastChosenTile);
         window.TileMapGrid.Children.Insert(window.LastChosenTile, lastTile);
 
-        Avalonia.Controls.Image newTile = GetTile((int)chosenTile);
-
-        var border = new Border()
-        {
-            Width = TileSet.TileSize.Width * tileMapTileScale + tileMapSeparation,
-            Height = TileSet.TileSize.Height * tileMapTileScale + tileMapSeparation,
-            BorderBrush = new SolidColorBrush(Colors.Red),
-            BorderThickness = new Thickness(2),
-            Child = newTile
-        };
+        Border currentTile = GetTile((int)chosenTile);
+        currentTile.BorderBrush = new SolidColorBrush(Colors.Red);
 
         window.TileMapGrid.Children.RemoveAt((int)chosenTile);
-        window.TileMapGrid.Children.Insert((int)chosenTile, border);
+        window.TileMapGrid.Children.Insert((int)chosenTile, currentTile);
 
         window.LastChosenTile = (int)chosenTile;
         TileGridUpdate(TileSet, (int)ChosenTile, window);
@@ -422,18 +407,26 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.RectanglesGrid.Children.Clear();
     }
 
-    internal Avalonia.Controls.Image GetTile(int index)
+    internal Border GetTile(int index)
     {
         Bitmap tile = TileSet.Tiles[index];
 
         var image = new Avalonia.Controls.Image
         {
-            Width = TileSet.TileSize.Width * 2,
+            Width  = TileSet.TileSize.Width * 2,
             Height = TileSet.TileSize.Height * 2,
             Source = ViewModelAssistant.BitmapConvert(tile)
         };
 
-        return image;
+        var border = new Border()
+        {
+            Background = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 230, 230, 230)),
+            BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 211, 211, 211)),
+            BorderThickness = new Thickness(tileMapSeparation / 2d),
+            Child = image
+        };
+
+        return border;
     }
 
     private void ExitApp()
