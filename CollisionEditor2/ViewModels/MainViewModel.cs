@@ -229,9 +229,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             Buttons = ButtonEnum.Ok,
             ContentTitle = "Error",
             ContentMessage = message,
+            Icon = new Avalonia.Media.Imaging.Bitmap("../../../../CollisionEditor2/Assets/avalonia-logo.ico"),
             Location = WindowStartupLocation.CenterScreen,
             CanResize = false,
-            Style = BoxStyle.UbuntuLinux
+            
         }).ShowDialogAsync(window);
     }
 
