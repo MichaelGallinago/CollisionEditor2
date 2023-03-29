@@ -222,19 +222,24 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) * (TileSet.TileSize.Height * tileMapTileScale + tileMapSeparation);
     }
 
+    private async void OurMessageBox(string message)
+    {
+        _ = await BoxedMessage.Create(new MessageBoxParams
+        {
+            Buttons = ButtonEnum.Ok,
+            ContentTitle = "Error",
+            ContentMessage = message,
+            Location = WindowStartupLocation.CenterScreen,
+            CanResize = false,
+            Style = BoxStyle.UbuntuLinux
+        }).ShowDialogAsync(window);
+    }
+
     private async void MenuSaveTileMap()
     {
         if (TileSet.Tiles.Count == 0)
         {
-            _ = await BoxedMessage.Create(new MessageBoxParams
-            {
-                Buttons = ButtonEnum.Ok,
-                ContentTitle = "Error",
-                ContentMessage = "Error: You haven't chosen TileMap to save",
-                Location = WindowStartupLocation.CenterScreen,
-                
-                Style = BoxStyle.UbuntuLinux
-            }).ShowDialogAsync(window);
+            OurMessageBox("Error: You haven't chosen TileMap to save");
             return;
         }
 
@@ -249,15 +254,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         if (TileSet.Tiles.Count == 0)
         {
-            _ = await BoxedMessage.Create(new MessageBoxParams
-            {
-                Buttons = ButtonEnum.Ok,
-                ContentTitle = "Error",
-                ContentMessage = "Error: The WidthMap isn't generated!",
-                Location = WindowStartupLocation.CenterScreen,
-                
-                Style = BoxStyle.UbuntuLinux
-            }).ShowDialogAsync(window);
+            OurMessageBox("Error: The WidthMap isn't generated!");
             return;
         }
 
@@ -272,15 +269,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         if (TileSet.Tiles.Count == 0)
         {
-            _ = await BoxedMessage.Create(new MessageBoxParams
-            {
-                Buttons = ButtonEnum.Ok,
-                ContentTitle = "Error",
-                ContentMessage = "Error: The HeightMap isn't generated!",
-                Location = WindowStartupLocation.CenterScreen,
-                
-                Style = BoxStyle.UbuntuLinux
-            }).ShowDialogAsync(window);
+            
+            OurMessageBox("Error: The HeightMap isn't generated!");
             return;
         }
 
@@ -295,15 +285,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         if (AngleMap.Values.Count == 0)
         {
-            _ = await BoxedMessage.Create(new MessageBoxParams
-            {
-                Buttons = ButtonEnum.Ok,
-                ContentTitle = "Error",
-                ContentMessage = "Error: You haven't chosen AngleMap to save",
-                Location = WindowStartupLocation.CenterScreen,
-                
-                Style = BoxStyle.UbuntuLinux
-            }).ShowDialogAsync(window);
+            OurMessageBox("Error: You haven't chosen AngleMap to save");
             return;
         }
 

@@ -92,10 +92,10 @@
 		<Canvas Grid.Column="0" Grid.Row="3"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="11" IsHitTestVisible="False"/>
 
 		<Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="8" Background="GhostWhite" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
-			<TextBlock x:Name="Heights"  HorizontalAlignment="Center"/>
+			<TextBlock x:Name="Heights"  HorizontalAlignment="Center" Padding="2,4,0,0"/>
 		</Border>
 		<Border Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="8" Background="GhostWhite" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
-			<TextBlock x:Name="Widths" HorizontalAlignment="Center"/>
+			<TextBlock x:Name="Widths" HorizontalAlignment="Center" Padding="2,4,0,0"/>
 		</Border>
 
 		<!--Text="{Binding Path=ByteAngle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
