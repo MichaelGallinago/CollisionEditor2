@@ -59,7 +59,7 @@
         <Border Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="10" Grid.RowSpan="5" BorderThickness="1" BorderBrush="Black"></Border>
         <Border Grid.Column="2" Grid.Row="11" Grid.ColumnSpan="10" Grid.RowSpan="4" BorderThickness="1" BorderBrush="Black"></Border>
         
-		<Menu VerticalAlignment="Center" Grid.Column="0"  Grid.ColumnSpan="15" Foreground="Black" Height="20" Background="White">
+		<Menu VerticalAlignment="Center" Grid.Column="0"  Grid.ColumnSpan="17" Foreground="Black" Height="20" Background="White">
 			<MenuItem Header="File">
 				<MenuItem Header="Load" >
 					<!--InputGestureText="Ctrl+D"-->
