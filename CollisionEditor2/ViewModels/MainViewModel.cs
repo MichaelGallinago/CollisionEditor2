@@ -386,7 +386,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         if (chosenTile > TileSet.Tiles.Count - 1)
         {
             chosenTile = (uint)TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(ChosenTile));
+            OnPropertyChanged("ChosenTile");
         }
         
         Avalonia.Controls.Image lastTile = GetTile(window.LastChosenTile);
