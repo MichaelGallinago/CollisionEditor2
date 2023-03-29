@@ -3,7 +3,7 @@
         xmlns:vm="using:CollisionEditor2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" MinHeight="664" MinWidth="440" Width="664" Height="440"
+        mc:Ignorable="d" MinHeight="440" MinWidth="664" Width="664" Height="440"
         x:Class="CollisionEditor2.Views.MainWindow"
 		FontFamily="/Assets/DroidSansMono.ttf"
         Icon="/Assets/avalonia-logo.ico"
