@@ -192,24 +192,29 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TextBoxByteAngle.IsEnabled = true;
         window.TextBoxHexAngle.IsEnabled  = true;
 
+        window.SelectTileTextBox.IsEnabled = true;
+        window.SelectTileButton.IsEnabled  = true;
+
+
+        TileMapGridReset();
+        TileMapGridUpdate(TileSet.Tiles.Count);
+        window.DrawRedLine();
+    }
+
+    private void TileMapGridReset()
+    {
         window.TileMapGrid.Children.Clear();
 
         foreach (Bitmap tile in TileSet.Tiles)
         {
             var image = new Avalonia.Controls.Image()
             {
-                Width  = TileSet.TileSize.Width  * 2,
+                Width = TileSet.TileSize.Width * 2,
                 Height = TileSet.TileSize.Height * 2,
                 Source = ViewModelAssistant.BitmapConvert(tile)
             };
             window.TileMapGrid.Children.Add(image);
         }
-
-        window.SelectTileTextBox.IsEnabled = true;
-        window.SelectTileButton.IsEnabled  = true;
-
-        TileMapGridUpdate(TileSet.Tiles.Count);
-        window.DrawRedLine();
     }
 
     public void TileMapGridUpdate(int tileCount)
@@ -319,8 +324,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void MenuUnloadTileMap()
     {
-        window.TileMapGrid.Children.Clear();
         TileSet = new TileSet(AngleMap.Values.Count);
+        TileMapGridReset();
 
         TileGridUpdate(TileSet, (int)ChosenTile, window);
         window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
@@ -333,6 +338,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         AngleMap = new AngleMap(TileSet.Tiles.Count);
         ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        window.RectanglesGrid.Children.Clear();
+        window.DrawRedLine();
     }
 
     private void MenuUnloadAll()
