@@ -51,7 +51,8 @@
             <ColumnDefinition Width="10*" />
             <ColumnDefinition Width="17*" />
             <ColumnDefinition Width="139*" />
-            <ColumnDefinition Width="139*" />
+            <ColumnDefinition Width="55*" />
+            <ColumnDefinition Width="84*" />
             <ColumnDefinition Width="10*" />
         </Grid.ColumnDefinitions>
         
@@ -115,7 +116,7 @@
 		<!--Text="{Binding Path=HexAngle,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 		<TextBox Grid.Column="7" Grid.Row="12" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngle,Mode=TwoWay}"
                  Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="hex"  MinHeight="10" MinWidth="10"/>
-		<Border Grid.Column="9" Grid.Row="12" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="Silver" Background="#FFB1B1B1" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
+		<Border Grid.Column="9" Grid.Row="12" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="Silver" Background="#FFB1B1B1" BorderThickness="2,1,2,1" CornerRadius="3,3,3,3">
             <TextBlock TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#FFB1B1B1" />
 		</Border>
 		<Button Grid.Column="3" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="12"  Height="20" Width="30" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Gray" VerticalAlignment="Bottom">
@@ -132,7 +133,7 @@
 			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownHexAngle"/>
 		</Button>
 		
-		<Border Grid.Column="14" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="2" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5">
+		<Border Grid.Column="14" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5">
 			<ScrollViewer x:Name="scrollViewer">
 				<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="Default"
 							 PointerPressed="TileMapGrid_OnPointerPressed"/>
@@ -142,8 +143,11 @@
 		<!--Text="{Binding Path=ChosenTile,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}-->
 		<TextBox Grid.Column="14" Grid.Row="12" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
                  Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="Tile index" Padding="2,0,0,0" KeyDown="SelectTileTextBox_KeyDown" MinHeight="20"/>
-		<Button  Grid.Column="15" Grid.Row="12" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton" Padding="2,0,5,0" 
-				 IsEnabled="False" MinHeight="20" Content="Select Tile" Command="{Binding SelectTileCommand}"  BorderThickness="1" BorderBrush="Gray"/>
-	</Grid>
+        
+        <Button  Grid.Column="15" Grid.Row="12" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton" Padding="2,0,5,0" 
+                 IsEnabled="False" MinHeight="20" Content="Select Tile" Command="{Binding SelectTileCommand}"  BorderThickness="1" BorderBrush="Silver"
+                 CornerRadius="3,3,3,3" />
+       
+    </Grid>
 </Window>
 
