@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace CollisionEditor2.ViewModels;
 
-public class ViewModelBase : ReactiveObject
+public class ViewModelBase : ReactiveObject, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
