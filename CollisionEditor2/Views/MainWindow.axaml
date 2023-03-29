@@ -112,7 +112,7 @@
 
 		<!--Text="{Binding Path=ByteAngle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
 		<TextBox Grid.Column="4" Grid.Row="12" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngle,Mode=TwoWay}" 
-                 Name="TextBoxByteAngle" Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="byte" MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>
+                 Name="TextBoxByteAngle"  Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="byte" MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>
 		<!--Text="{Binding Path=HexAngle,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 		<TextBox Grid.Column="7" Grid.Row="12" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngle,Mode=TwoWay}"
                  Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="hex"  MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>

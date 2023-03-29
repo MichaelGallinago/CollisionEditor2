@@ -242,9 +242,9 @@ namespace CollisionEditor2.Views
             TextBoxHexAngle.FontSize = actualFontSize;
 
             ByteAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
-            ByteAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
+            ByteAngleIncrimentButton.Width  = actualWidthUpAndDownButtons;
             ByteAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
-            ByteAngleDecrementButton.Width  = actualWidthUpAndDownButtons - 3;
+            ByteAngleDecrementButton.Width  = actualWidthUpAndDownButtons;
 
             TriangleUpByteAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
             TriangleUpByteAngle.Width    = actualWidthUpAndDownButtons / 2 - 5;
@@ -252,9 +252,9 @@ namespace CollisionEditor2.Views
             TriangleDownByteAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
 
             HexAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
-            HexAngleIncrimentButton.Width  = actualWidthUpAndDownButtons - 3;
+            HexAngleIncrimentButton.Width  = actualWidthUpAndDownButtons;
             HexAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
-            HexAngleDecrementButton.Width  = actualWidthUpAndDownButtons - 3;
+            HexAngleDecrementButton.Width  = actualWidthUpAndDownButtons;
 
             TriangleUpHexAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
             TriangleUpHexAngle.Width    = actualWidthUpAndDownButtons / 2 - 5;
