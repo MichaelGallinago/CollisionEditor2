@@ -205,14 +205,16 @@ namespace CollisionEditor2.Views
 
             double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
 
-            TileGrid.Width  = actualHeightGrid;
-            TileGrid.Height = actualHeightGrid;
+            var TileGridSize = new Size((int)actualHeightGrid / 16, (int)actualHeightGrid / 16) * 16;
 
-            RectanglesGrid.Width  = actualHeightGrid;
-            RectanglesGrid.Height = actualHeightGrid;
+            TileGrid.Width  = TileGridSize.Width;
+            TileGrid.Height = TileGridSize.Height;
 
-            canvasForLine.Width  = actualHeightGrid;
-            canvasForLine.Height = actualHeightGrid;
+            RectanglesGrid.Width  = TileGridSize.Width;
+            RectanglesGrid.Height = TileGridSize.Height;
+
+            canvasForLine.Width  = TileGridSize.Width;
+            canvasForLine.Height = TileGridSize.Height;
 
             Heights.Height   = actualHeightTextAndButtons;
             Heights.FontSize = actualFontSize;
