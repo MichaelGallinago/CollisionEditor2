@@ -33,14 +33,14 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="10*" />
 			<ColumnDefinition Width="20*" />
-			<ColumnDefinition Width="43*" />
 			<ColumnDefinition Width="23*" />
+			<ColumnDefinition Width="43*" />
 			<ColumnDefinition Width="20*" />
-			<ColumnDefinition Width="43*" />
 			<ColumnDefinition Width="23*" />
+			<ColumnDefinition Width="43*" />
 			<ColumnDefinition Width="20*" />
-			<ColumnDefinition Width="43*" />
 			<ColumnDefinition Width="23*" />
+			<ColumnDefinition Width="43*" />
 			<ColumnDefinition Width="20*" />
 			<ColumnDefinition Width="17*" />
 			<ColumnDefinition Width="139*" />
@@ -99,26 +99,26 @@
 		</Border>
 
 		<!--Text="{Binding Path=ByteAngle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
-		<TextBox Grid.Column="2" Grid.Row="9" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngle,Mode=TwoWay}" 
+		<TextBox Grid.Column="3" Grid.Row="9" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngle,Mode=TwoWay}" 
                  Name="TextBoxByteAngle" Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="byte" MinHeight="10" MinWidth="10" />
 		<!--Text="{Binding Path=HexAngle,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 		<!--PreviewKeyDown="TextBoxHexAngle_PreviewKeyDown"-->
-		<TextBox Grid.Column="5" Grid.Row="9" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngle,Mode=TwoWay}"
+		<TextBox Grid.Column="6" Grid.Row="9" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngle,Mode=TwoWay}"
                  Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="hex"  MinHeight="10" MinWidth="10"/>
 		<Border Grid.Column="8" Grid.Row="9" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="Silver" Padding="2,0,0,0">
             <TextBlock TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#FFB1B1B1" />
 		</Border>
-		<Button Grid.Column="3" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="9"  Height="20" Width="30" VerticalAlignment="Bottom" >
+		<Button Grid.Column="2" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="9"  Height="20" Width="30" VerticalAlignment="Bottom" >
 			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpByteAngle"/>
 		</Button>
-		<Button Grid.Column="3" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="ByteAngleDecrementButton" Grid.Row="10" Height="20" Width="30" >
+		<Button Grid.Column="2" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="ByteAngleDecrementButton" Grid.Row="10" Height="20" Width="30" >
 			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownByteAngle"/>
 		</Button>
 
-		<Button Grid.Column="6" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="HexAngleIncrimentButton" Grid.Row="9" Height="20" Width="30" VerticalAlignment="Bottom" >
+		<Button Grid.Column="5" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="HexAngleIncrimentButton" Grid.Row="9" Height="20" Width="30" VerticalAlignment="Bottom" >
 			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpHexAngle"/>
 		</Button>
-		<Button Grid.Column="6" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="HexAngleDecrementButton" Grid.Row="10" Height="20" Width="30" >
+		<Button Grid.Column="5" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="HexAngleDecrementButton" Grid.Row="10" Height="20" Width="30" >
 			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownHexAngle"/>
 		</Button>
 
