@@ -1,20 +1,17 @@
 ﻿using CollisionEditor2.Models;
-using System.Windows.Input;
-using System.Windows;
 using System.ComponentModel;
 using System.Collections;
 using System.Drawing;
 using System.IO;
 using System;
-using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using CollisionEditor2.Views;
+using Avalonia;
 using CollisionEditor2.ViewServices;
-using MessageBoxSlim.Avalonia;
-using MessageBoxSlim.Avalonia.DTO;
+using CollisionEditor2.Views;
 using MessageBoxSlim.Avalonia.Enums;
+using MessageBoxSlim.Avalonia.DTO;
+using MessageBoxSlim.Avalonia;
 using System.Diagnostics;
 using ReactiveUI;
 using System.Reactive;
@@ -159,7 +156,6 @@ public class MainViewModel : ViewModelBase, INotifyPropertyChanged, INotifyDataE
 
     public void ShowAngles(Angles angles)
     {
-        
         byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngle));
         window.ByteAngleIncrimentButton.IsEnabled = true;

@@ -46,10 +46,9 @@ namespace CollisionEditor2.Views
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
             Vector2<int> position = new();
-
             var tileSize = WindowMain.TileSet.TileSize;
-            position.X = (int)Math.Floor(2 * mousePosition.X / tileSize.Width);
-            position.Y = (int)Math.Floor(2 * mousePosition.Y / tileSize.Height);
+            position.X = (int)mousePosition.X / ((int)TileGrid.Width  / tileSize.Width);
+            position.Y = (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height);
             return position;
         }
 
