@@ -38,13 +38,10 @@ namespace CollisionEditor2.Views
         public MainWindow()
         {
             InitializeComponent();
-            windowMain = new MainViewModel(this);
-            //while (true)
-            //{
-            //    WindowSizeChanged();
-            //}
+            windowMain = new MainViewModel(this);     
         }
 
+        
         private Vector2<int> GetGridPosition(Vector2<double> mousePosition)
         {
             Vector2<int> position = new();
@@ -196,29 +193,21 @@ namespace CollisionEditor2.Views
             LastChosenTile = (int)windowMain.ChosenTile;
         }
 
-            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-            {
-                if (Equals(e.Source, TileMapGrid))
-                {
-                    TileMapGrid_MouseLeftButtonDown(e);
-                }
-                else if (Equals(e.Source, TileMapGrid))
-                {
-                    RectanglesGrid_MouseLeftButtonDown(e);
-                }
-            }
+            
 
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-            {
-                if (Equals(e.Source, TileMapGrid))
-                {
-                    RectanglesGrid_MouseRightButtonDown(e);
-                }
-            }
-        }
-
-        private void WindowSizeChanged()
+        private void WindowSizeChanged(object? sender, PointerPressedEventArgs e)
         {
+            _ = await BoxedMessage.Create(new MessageBoxParams
+            {
+                Buttons = ButtonEnum.Ok,
+                ContentTitle = "Error",
+                ContentMessage = "Error: You haven't chosen TileMap to save",
+                Location = WindowStartupLocation.CenterScreen,
+
+                Style = BoxStyle.UbuntuLinux
+            }).ShowDialogAsync(window);
+
+
             int countOfTiles = windowMain.TileSet.Tiles.Count;
             var tileSize = windowMain.TileSet.TileSize;
 

@@ -8,9 +8,7 @@
 		FontFamily="/Assets/DroidSansMono.ttf"
         Icon="/Assets/avalonia-logo.ico"
         Title="CollisionEditor2"
-		I	
-		
-		>
+		PointerPressed="WindowSizeChanged">
 		<!--FontFamily="/Assets/dos.ttf#Droid Sans Mono"-->
 		
     <Design.DataContext>
