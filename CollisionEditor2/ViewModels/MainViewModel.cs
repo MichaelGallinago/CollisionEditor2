@@ -369,7 +369,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         if (chosenTile > TileSet.Tiles.Count - 1)
         {
             chosenTile = (uint)TileSet.Tiles.Count - 1;
-            OnPropertyChanged("ChosenTile");
+            OnPropertyChanged(nameof(ChosenTile));
         }
         
         Border lastTile = GetTile(window.LastChosenTile);
