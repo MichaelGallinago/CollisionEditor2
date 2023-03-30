@@ -154,13 +154,14 @@ namespace CollisionEditor2.Views
         }
 
         private uint GetUniformGridIndex(Point mousePosition)
-        {
+        {   
+
             var tileSize = WindowMain.TileSet.TileSize;
-            uint tileWidth = (uint)tileSize.Width * tileMapTileScale;
-            uint tileHeight = (uint)tileSize.Height * tileMapTileScale;
-            return (uint)mousePosition.X / (tileWidth + tileMapSeparation) 
-                + (uint)mousePosition.Y / (tileHeight + tileMapSeparation) 
-                * (uint)TileMapGrid.Columns;
+            double tileWidth = tileSize.Width * tileMapTileScale;
+            double tileHeight = tileSize.Height * tileMapTileScale;
+            //WindowMain.OurMessageBox(((uint)mousePosition.X)+" " + ((uint)mousePosition.Y));
+            return (uint)Math.Ceiling(mousePosition.X / (tileWidth + tileMapSeparation)) 
+                + (uint)Math.Floor(mousePosition.Y / (tileHeight + tileMapSeparation))* (uint)TileMapGrid.Columns - 1 ;
         }
 
         public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)

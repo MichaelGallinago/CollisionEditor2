@@ -222,7 +222,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) * (TileSet.TileSize.Height * tileMapTileScale + tileMapSeparation);
     }
 
-    private async void OurMessageBox(string message)
+    public async void OurMessageBox(string message)
     {
         _ = await BoxedMessage.Create(new MessageBoxParams
         {
