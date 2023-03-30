@@ -109,16 +109,15 @@
 		<Border Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="8" Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
 			<TextBlock x:Name="Widths" HorizontalAlignment="Center" Padding="2,4,0,0"/>
 		</Border>
-
-		<!--Text="{Binding Path=ByteAngle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
+		
 		<TextBox Grid.Column="4" Grid.Row="12" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngle,Mode=TwoWay}" 
                  Name="TextBoxByteAngle"  Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="byte" MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>
-		<!--Text="{Binding Path=HexAngle,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 		<TextBox Grid.Column="7" Grid.Row="12" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngle,Mode=TwoWay}"
                  Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="hex"  MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>
 		<Border x:Name="BorderFullAngle" Grid.Column="9" Grid.Row="12" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="#B0B0B0" Background="#FFB1B1B1" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
             <TextBlock TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#C4C4C4" Foreground="Gray" Padding="2,0,0,0"/>
 		</Border>
+		
 		<Button Grid.Column="3" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="12"  
 				Height="20" Width="30" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Gray" CornerRadius="3,0,0,0" VerticalAlignment="Bottom">
 			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpByteAngle"/>
@@ -138,13 +137,12 @@
 		</Button>
 		
 		<Border Grid.Column="14" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5">
-			<ScrollViewer x:Name="scrollViewer">
+			<ScrollViewer x:Name="TileMapScrollViewer">
 				<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="Default"
 							 PointerPressed="TileMapGrid_OnPointerPressed"/>
 			</ScrollViewer>
 		</Border>
 		
-		<!--Text="{Binding Path=ChosenTile,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}-->
 		<TextBox Grid.Column="14" Grid.Row="12" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
                  Text="{Binding Path=ChosenTile,Mode=TwoWay}" Watermark="Tile index" Padding="2,0,0,0" KeyDown="SelectTileTextBox_KeyDown" MinHeight="20"/>
         
