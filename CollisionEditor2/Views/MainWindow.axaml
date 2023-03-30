@@ -16,24 +16,24 @@
 	</Window.Styles>
     <Grid Background="WhiteSmoke">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="69*"/>
+            <RowDefinition Height="20"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="69*" />
             <RowDefinition Height="164*"/>
-            <RowDefinition Height="18*"/>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="6*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="47*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="18*" />
+            <RowDefinition Height="8*"  />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="4*"  />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="6*"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="47*" />
+            <RowDefinition Height="3*"  />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*" />
@@ -50,8 +50,8 @@
             <ColumnDefinition Width="10*" />
             <ColumnDefinition Width="10*" />
             <ColumnDefinition Width="12*" />
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="139*" />
+            <ColumnDefinition Width="5*"  />
+            <ColumnDefinition Width="139*"/>
             <ColumnDefinition Width="75*" />
             <ColumnDefinition Width="64*" />
             <ColumnDefinition Width="10*" />
