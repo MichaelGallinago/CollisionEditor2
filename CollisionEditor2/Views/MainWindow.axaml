@@ -142,7 +142,7 @@
 		<Border Grid.Column="15" Grid.Row="3" Grid.RowSpan="8" Grid.ColumnSpan="3" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5">
 			<ScrollViewer x:Name="TileMapScrollViewer">
 				<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="Default"
-							 PointerPressed="TileMapGrid_OnPointerPressed"/>
+							 PointerPressed="TileMapGrid_OnPointerPressed" HorizontalAlignment="Left"/>
 			</ScrollViewer>
 		</Border>
 		

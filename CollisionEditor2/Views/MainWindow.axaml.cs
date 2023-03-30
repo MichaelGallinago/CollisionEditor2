@@ -26,8 +26,8 @@ namespace CollisionEditor2.Views
         private const int tileMapGridWidth = 278;
         private const int countHeightParts = 404;
         private const int countWidthParts = 587;
-        private const int baseTileMapGridWidth = 288;
-        private const int startTileMapGridWidth = 314;
+        private const int baseTileMapGridWidthParts = 288;
+        private const int startTileMapGridWidth = 313;
 
         private bool mouseInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Colors.Blue), new SquareAndPosition(Colors.Green));
@@ -264,7 +264,7 @@ namespace CollisionEditor2.Views
             int tileWidth  = tileSize.Width  * tileMapTileScale;
             int tileHeight = tileSize.Height * tileMapTileScale;
 
-            TileMapGrid.Width   = baseTileMapGridWidth + ((int)(size.Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth * tileWidth;
+            TileMapGrid.Width   = startTileMapGridWidth + ((int)(size.Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth * tileWidth -18;
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
             TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
 
