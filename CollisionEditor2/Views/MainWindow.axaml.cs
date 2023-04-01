@@ -23,11 +23,8 @@ namespace CollisionEditor2.Views
         private const int textAndButtonsHeight = 20;
         private const int upAndDownButtonsWidth = 23;
         private const int gridHeight = 128;
-        private const int tileMapGridWidth = 278;
         private const int countHeightParts = 404;
         private const int countWidthParts = 587;
-        private const int baseTileMapGridWidthParts = 288;
-        private const int startTileMapGridWidth = 313;
 
         private bool mouseInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
@@ -254,9 +251,10 @@ namespace CollisionEditor2.Views
             int tileWidth  = tileSize.Width  * tileMapTileScale;
             int tileHeight = tileSize.Height * tileMapTileScale;
 
-            TileMapGrid.Width   = startTileMapGridWidth + ((int)(size.Width / countWidthParts * tileMapGridWidth) - startTileMapGridWidth) / tileWidth * tileWidth -18;
+            TileMapGrid.Width   = 300 * (int)size.Width / 664 / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
             TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
+            TileMapBorder.Width = TileMapGrid.Width + 16;
 
             SelectTileTextBox.Height   = actualHeightTextAndButtons - 2;
             SelectTileTextBox.FontSize = actualFontSize;
