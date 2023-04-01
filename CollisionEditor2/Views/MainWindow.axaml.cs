@@ -30,7 +30,7 @@ namespace CollisionEditor2.Views
         private const int startTileMapGridWidth = 313;
 
         private bool mouseInRectanglesGrid = false;
-        private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Colors.Blue), new SquareAndPosition(Colors.Green));
+        private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
 
         public MainViewModel WindowMain { get; }
