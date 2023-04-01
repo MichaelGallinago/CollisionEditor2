@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CollisionEditor2.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CollisionEditor2.Views.OpenTileMap"
+        Title="OpenTileMap"
+        FontFamily="Consolas"
+        Icon="/Assets/avalonia-logo.ico">
+	<Window.Styles>
+		<Style Selector="DataValidationErrors">
+			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}" />
+			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}" />
+		</Style>
+	</Window.Styles>
+	<Grid Background="WhiteSmoke">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20"  />
+			<RowDefinition Height="5*"  />
+			
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10*" />
+			<ColumnDefinition Width="10*" />
+			
+		</Grid.ColumnDefinitions>
+    </Grid>
+    
+	
+    
+</Window>
