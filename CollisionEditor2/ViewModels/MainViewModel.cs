@@ -182,6 +182,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return; 
         }
 
+        OpenTileMap openTileMap = new OpenTileMap();
+        openTileMap.Show();
+
         TileSet = new TileSet(filePath);
         AngleMap ??= new AngleMap(TileSet.Tiles.Count);
 
@@ -195,7 +198,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
             
         ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
-        
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
