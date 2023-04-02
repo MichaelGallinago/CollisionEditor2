@@ -174,6 +174,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
     }
 
+    
+
     private async void MenuOpenTileMap()
     {
         string filePath = await ViewModelFileService.GetFileOpenPath(window, ViewModelFileService.Filters.TileMap);
@@ -183,8 +185,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         OpenTileMap openTileMap = new OpenTileMap();
-        openTileMap.SetOwner(window);
-        openTileMap.Show();
+        await openTileMap.ShowDialog(window);
 
         TileSet = new TileSet(filePath);
         AngleMap ??= new AngleMap(TileSet.Tiles.Count);
@@ -192,7 +193,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
         ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
 
-        TileGridUpdate(TileSet, (int)ChosenTile, window);
+        TileGridUpdate(TileSet, (int)chosenTile, window);
         RectanglesGridUpdate();
             
         window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
