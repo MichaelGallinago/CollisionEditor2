@@ -205,11 +205,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return; 
         }
 
-        OpenTileMap openTileMap = new OpenTileMap();
-        await openTileMap.ShowDialog(window);
+        await new OpenTileMap().ShowDialog(window);
 
         TileSet = new TileSet(filePath);
-        AngleMap ??= new AngleMap(TileSet.Tiles.Count);
+        if (AngleMap.Values.Count <= 0)
+        {
+            AngleMap = new AngleMap(TileSet.Tiles.Count);
+        }
 
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
         ViewModelAssistant.BitmapConvert(TileSet.Tiles[SelectedTile]);
