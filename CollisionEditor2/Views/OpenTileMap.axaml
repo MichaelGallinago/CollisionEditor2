@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollisionEditor2.Views"
-        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="400"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="400"
         x:Class="CollisionEditor2.Views.OpenTileMap"
         Title="OpenTileMap"
         FontFamily="Consolas"
@@ -18,15 +18,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="15*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="20*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="25*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="20*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="25*"/>
+			<RowDefinition Height="15*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="20*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="55*"/>
+            <RowDefinition Height="35*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -41,19 +43,23 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="1" Grid.Row="2" Text="Tile Height:" FontSize="12"/>
-        <TextBox Grid.Column="1" Grid.Row="3" />
+        <TextBox Grid.Column="1" Grid.Row="3"/>
         <TextBlock Grid.Column="3" Grid.Row="2" Text="Tile Width:" FontSize="12"/>
         <TextBox Grid.Column="3" Grid.Row="3" />
 
-        <TextBlock Grid.Column="1" Grid.Row="5" Text="Vertical Separation:" FontSize="12"/>
-        <TextBox Grid.Column="1" Grid.Row="6" />
-        <TextBlock Grid.Column="3" Grid.Row="5" Text="Horizontal Separation:" FontSize="12"/>
-        <TextBox Grid.Column="3" Grid.Row="6" />
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="Vertical" FontSize="12"/>
+        <TextBlock Grid.Column="1" Grid.Row="6" Text="Separation:" FontSize="12"/>
+        <TextBox Grid.Column="1" Grid.Row="7" />
+        <TextBlock Grid.Column="3" Grid.Row="5" Text="Horizontal" FontSize="12"/>
+		<TextBlock Grid.Column="3" Grid.Row="6" Text="Separation:" FontSize="12"/>
+		<TextBox Grid.Column="3" Grid.Row="7" />
 
-        <TextBlock Grid.Column="1" Grid.Row="8" Text="Vertical Offset:" FontSize="12"/>
-        <TextBox Grid.Column="1" Grid.Row="9" />
-        <TextBlock Grid.Column="3" Grid.Row="8" Text="Horizontal Offset:" FontSize="12"/>
-        <TextBox Grid.Column="3" Grid.Row="9" />
+        <TextBlock Grid.Column="1" Grid.Row="9" Text="Vertical" FontSize="12"/>
+        <TextBlock Grid.Column="1" Grid.Row="10" Text="Offset:" FontSize="12"/>
+        <TextBox Grid.Column="1" Grid.Row="11" />
+        <TextBlock Grid.Column="3" Grid.Row="9" Text="Horizontal" FontSize="12"/>
+        <TextBlock Grid.Column="3" Grid.Row="10" Text="Offset:" FontSize="12"/>
+        <TextBox Grid.Column="3" Grid.Row="11" />
         
         <ScrollViewer Grid.Column="5" Grid.Row="5"/>
                     
