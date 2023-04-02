@@ -7,6 +7,7 @@ namespace CollisionEditor2.Views
         public OpenTileMap()
         {
             InitializeComponent();
+            
         }
     }
 }
