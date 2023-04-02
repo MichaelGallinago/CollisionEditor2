@@ -359,7 +359,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = null;
         window.Widths.Text = null;
         ShowAngles(new Angles(0, "0x00", 0));
-        chosenTile = 0;
+        SelectedTile = 0;
         window.SelectTileTextBox.Text = "0";
 
         window.ByteAngleIncrimentButton.IsEnabled = false;
