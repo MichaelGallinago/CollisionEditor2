@@ -7,6 +7,12 @@ namespace CollisionEditor2.Views
         public OpenTileMap()
         {
             InitializeComponent();
+            
+        }
+
+        public void SetOwner(Window window)
+        {
+            this.Owner = window;
         }
     }
 }

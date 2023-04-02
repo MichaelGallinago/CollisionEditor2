@@ -30,6 +30,7 @@ namespace CollisionEditor2.Views
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
 
+
         public MainViewModel WindowMain { get; }
 
         public MainWindow()
