@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace CollisionEditor2.ViewServices;
 
-internal class SquareAndPosition
+public class SquareAndPosition
 {
     public Vector2<int> Position { get; set; } = new();
     public Rectangle Square { get; set; } = new();

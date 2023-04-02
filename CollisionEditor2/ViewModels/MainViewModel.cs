@@ -13,8 +13,8 @@ using MessageBoxSlim.Avalonia.Enums;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia;
 using System.Diagnostics;
-using ReactiveUI;
 using System.Reactive;
+using ReactiveUI;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -39,66 +39,87 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
 
-    public byte ByteAngle
+    public string ByteAngleText
     {
-        get => byteAngle;
+        get => byteAngle.ToString();
         set
-        {   
-            byteAngle = value;
+        {
+            textboxValidator.ClearErrors(nameof(ByteAngleText));
+            if (!byte.TryParse(value, out byte newAngle))
+            {
+                textboxValidator.AddError(nameof(ByteAngleText), "Wrong byte number");
+                return;
+            }
+
+            byteAngle = newAngle;
             ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
 
             window.DrawRedLine();
         }
     }
 
-    public string HexAngle
+    public string HexAngleText
     {
         get => hexAngle;
         set
         {
             hexAngle = value;
 
-            textboxValidator.ClearErrors(nameof(HexAngle));
+            textboxValidator.ClearErrors(nameof(HexAngleText));
+
             if (hexAngle.Length != 4 || hexAngle[0] != '0' || hexAngle[1] != 'x'
                 || !hexadecimalAlphabet.Contains(hexAngle[2]) || !hexadecimalAlphabet.Contains(hexAngle[3]))
             {
-                textboxValidator.AddError(nameof(HexAngle), "Error! Wrong hexadecimal number");
+                textboxValidator.AddError(nameof(HexAngleText), "Wrong hexadecimal number!");
                 return;
             }
 
             Angles angles = ViewModelAngleService.GetAngles(hexAngle);
-            ByteAngle = angles.ByteAngle;
-            AngleMap.SetAngle((int)ChosenTile, angles.ByteAngle);
+
+            ByteAngleText = angles.ByteAngle.ToString();
+            AngleMap.SetAngle(int.Parse(SelectedTileText), angles.ByteAngle);
             window.DrawRedLine();
         }
     }
 
-    public uint ChosenTile
+    public string SelectedTileText
     {
-        get => chosenTile;
+        get => SelectedTile.ToString();
         set
-        {   
-            chosenTile = value;
+        {
+            textboxValidator.ClearErrors(nameof(SelectedTileText));
+
+            if (!int.TryParse(value, out int newSelectedTile) || newSelectedTile < 0)
+            {
+                textboxValidator.AddError(nameof(SelectedTileText), "Wrong tile index");
+                return;
+            }
+
+            SelectedTile = newSelectedTile;
         }
     }
+
+    public int SelectedTile { get; set; }
+
+    public MainWindow window;
 
     private const string hexadecimalAlphabet = "0123456789ABCDEF";
     private const int tileMapSeparation = 4;
     private const int tileMapTileScale = 2;
 
-    public MainWindow window;
     private byte byteAngle;
     private string hexAngle;
-    private uint chosenTile;
     private readonly TextboxValidator textboxValidator;
 
     public MainViewModel(MainWindow window)
     {
         textboxValidator = new TextboxValidator();
+
         textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
+
         AngleMap = new AngleMap(0);
         TileSet  = new TileSet(0);
-        chosenTile = 0;
+
         byteAngle = 0;
         hexAngle = "0x00";
         this.window = window;
@@ -125,7 +146,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         HelpCommand = ReactiveCommand.Create(Help);
 
         RectanglesGridUpdate();
-        TileGridUpdate(TileSet, (int)chosenTile, window);
+        TileGridUpdate(TileSet, SelectedTile, window);
     }
 
     private async void MenuOpenAngleMap()
@@ -144,7 +165,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
 
-        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
 
@@ -162,12 +183,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
 
         byteAngle = angles.ByteAngle;
-        OnPropertyChanged(nameof(ByteAngle));
+        OnPropertyChanged(nameof(HexAngleText));
         window.ByteAngleIncrimentButton.IsEnabled = true;
         window.ByteAngleDecrementButton.IsEnabled = true;
 
         hexAngle = angles.HexAngle;
-        OnPropertyChanged(nameof(HexAngle));
+        OnPropertyChanged(nameof(HexAngleText));
         window.HexAngleIncrimentButton.IsEnabled = true;
         window.HexAngleDecrementButton.IsEnabled = true;
 
@@ -182,22 +203,20 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return; 
         }
 
-        OpenTileMap openTileMap = new OpenTileMap();
-        openTileMap.Show();
-
         TileSet = new TileSet(filePath);
         AngleMap ??= new AngleMap(TileSet.Tiles.Count);
 
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-        ViewModelAssistant.BitmapConvert(TileSet.Tiles[(int)chosenTile]);
+        ViewModelAssistant.BitmapConvert(TileSet.Tiles[SelectedTile]);
 
-        TileGridUpdate(TileSet, (int)ChosenTile, window);
+        TileGridUpdate(TileSet, SelectedTile, window);
         RectanglesGridUpdate();
             
-        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
-        window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
+        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
             
-        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
+        
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
@@ -241,7 +260,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         if (TileSet.Tiles.Count == 0)
         {
-            OurMessageBox("Error: You haven't chosen TileMap to save");
+            OurMessageBox("Error: You haven't selected TileMap to save");
             return;
         }
 
@@ -287,7 +306,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         if (AngleMap.Values.Count == 0)
         {
-            OurMessageBox("Error: You haven't chosen AngleMap to save");
+            OurMessageBox("Error: You haven't selected AngleMap to save");
             return;
         }
 
@@ -311,17 +330,17 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileSet = new TileSet(AngleMap.Values.Count);
         TileMapGridReset();
 
-        TileGridUpdate(TileSet, (int)ChosenTile, window);
-        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
-        window.Widths.Text = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
+        TileGridUpdate(TileSet, SelectedTile, window);
+        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)SelectedTile]);
+        window.Widths.Text = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)SelectedTile]);
 
-        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
     }
 
     private void MenuUnloadAngleMap()
     {
         AngleMap = new AngleMap(TileSet.Tiles.Count);
-        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
         window.RectanglesGrid.Children.Clear();
         window.DrawRedLine();
     }
@@ -359,7 +378,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void AngleIncrement()
     {
-        byte byteAngle = AngleMap.ChangeAngle((int)chosenTile, 1);
+        byte byteAngle = AngleMap.ChangeAngle(SelectedTile, 1);
 
         ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
 
@@ -368,7 +387,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void AngleDecrement()
     {
-        byte byteAngle = AngleMap.ChangeAngle((int)chosenTile, -1);
+        byte byteAngle = AngleMap.ChangeAngle(SelectedTile, -1);
 
         ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
 
@@ -377,29 +396,29 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public void SelectTile()
     {
-        if (chosenTile > TileSet.Tiles.Count - 1)
+        if (SelectedTile > TileSet.Tiles.Count - 1)
         {
-            chosenTile = (uint)TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(ChosenTile));
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTile));
         }
         
-        Border lastTile = GetTile(window.LastChosenTile);
+        Border lastTile = GetTile(window.LastSelectedTile);
 
-        window.TileMapGrid.Children.RemoveAt(window.LastChosenTile);
-        window.TileMapGrid.Children.Insert(window.LastChosenTile, lastTile);
+        window.TileMapGrid.Children.RemoveAt(window.LastSelectedTile);
+        window.TileMapGrid.Children.Insert(window.LastSelectedTile, lastTile);
 
-        Border currentTile = GetTile((int)chosenTile);
+        Border currentTile = GetTile(SelectedTile);
         currentTile.BorderBrush = new SolidColorBrush(Colors.Red);
 
-        window.TileMapGrid.Children.RemoveAt((int)chosenTile);
-        window.TileMapGrid.Children.Insert((int)chosenTile, currentTile);
+        window.TileMapGrid.Children.RemoveAt(SelectedTile);
+        window.TileMapGrid.Children.Insert(SelectedTile, currentTile);
 
-        window.LastChosenTile = (int)chosenTile;
-        TileGridUpdate(TileSet, (int)ChosenTile, window);
-        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
-        window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
+        window.LastSelectedTile = SelectedTile;
+        TileGridUpdate(TileSet, SelectedTile, window);
+        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        window.Widths.Text  = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
         
-        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
 
         window.DrawRedLine();
         window.RectanglesGrid.Children.Clear();
@@ -407,18 +426,18 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public void SelectTileFromTileMap()
     {
-        OnPropertyChanged(nameof(ChosenTile));
-        TileGridUpdate(TileSet, (int)ChosenTile, window);
-        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)chosenTile]);
-        window.Widths.Text = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)chosenTile]);
+        OnPropertyChanged(nameof(SelectedTileText));
+        TileGridUpdate(TileSet, SelectedTile, window);
+        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        window.Widths.Text = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
 
-        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, chosenTile));
+        ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
 
         window.DrawRedLine();
         window.RectanglesGrid.Children.Clear();
     }
 
-    internal Border GetTile(int index)
+    public Border GetTile(int index)
     {
         Bitmap tile = TileSet.Tiles[index];
 
@@ -452,7 +471,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        byte byteAngle = AngleMap.SetAngleWithLine((int)chosenTile, positionGreen, positionBlue);
+        byte byteAngle = AngleMap.SetAngleWithLine(SelectedTile, positionGreen, positionBlue);
 
         ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
     }
@@ -517,7 +536,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     private void TextboxValidator_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
     {
         ErrorsChanged?.Invoke(this, e);
-        OnPropertyChanged(nameof(HexAngle));
+        OnPropertyChanged(nameof(HexAngleText));
     }
 
     public IEnumerable GetErrors(string? propertyName)

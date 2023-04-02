@@ -7,7 +7,7 @@ using static System.Math;
 
 namespace CollisionEditor2.ViewServices;
 
-internal static class RedLineService
+public static class RedLineService
 {
     public static void DrawRedLine(MainWindow mainWindow, ref Line redLine)
     {

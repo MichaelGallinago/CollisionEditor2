@@ -15,7 +15,7 @@ namespace CollisionEditor2.Views
 {
     public partial class MainWindow : Window
     {
-        public int LastChosenTile { get; set; }
+        public int LastSelectedTile { get; set; }
 
         private const int tileMapSeparation = 4;
         private const int tileMapTileScale = 2;
@@ -79,7 +79,8 @@ namespace CollisionEditor2.Views
             RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
         }
 
-        private void RectanglesGridUpdate(Point mousePosition, SquareAndPosition firstSquare, SquareAndPosition secondSquare)
+        private void RectanglesGridUpdate(Point mousePosition, 
+            SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (WindowMain.AngleMap.Values.Count <= 0)
             {
@@ -90,7 +91,8 @@ namespace CollisionEditor2.Views
 
             SquaresService.MoveSquare(WindowMain.window, position, firstSquare, secondSquare);
 
-            if (RectanglesGrid.Children.Contains(firstSquare.Square) && RectanglesGrid.Children.Contains(secondSquare.Square))
+            if (RectanglesGrid.Children.Contains(firstSquare.Square) 
+                && RectanglesGrid.Children.Contains(secondSquare.Square))
             {
                 WindowMain.UpdateAngles(blueAndGreenSquare.Item1.Position, blueAndGreenSquare.Item2.Position);
                 DrawRedLine();
@@ -138,16 +140,13 @@ namespace CollisionEditor2.Views
             RectanglesGridUpdate(false);
         }
 
-        private uint GetUniformGridIndex(Point mousePosition)
-        {   
-
-            var tileSize = WindowMain.TileSet.TileSize;
-            uint tileWidth = (uint)tileSize.Width * tileMapTileScale;
-            uint tileHeight = (uint)tileSize.Height * tileMapTileScale;
+        private int GetUniformGridIndex(Point mousePosition)
+        {
+            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize * tileMapTileScale
+                + new System.Drawing.Size(tileMapSeparation, tileMapSeparation);
             
-            return (uint)mousePosition.X / (tileWidth + tileMapSeparation) 
-                + (uint)mousePosition.Y / (tileHeight + tileMapSeparation) 
-                * (uint)TileMapGrid.Columns;
+            return (int)mousePosition.X / tileSize.Width 
+                + (int)mousePosition.Y / tileSize.Height * TileMapGrid.Columns;
         }
 
         public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -158,21 +157,21 @@ namespace CollisionEditor2.Views
                 return;
             }
 
-            Border lastTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
+            Border lastTile = WindowMain.GetTile(WindowMain.SelectedTile);
 
-            TileMapGrid.Children.RemoveAt((int)WindowMain.ChosenTile);
-            TileMapGrid.Children.Insert((int)WindowMain.ChosenTile, lastTile);
+            TileMapGrid.Children.RemoveAt(WindowMain.SelectedTile);
+            TileMapGrid.Children.Insert(WindowMain.SelectedTile, lastTile);
 
             var mousePosition = e.GetPosition(TileMapGrid);
 
-            WindowMain.ChosenTile = GetUniformGridIndex(mousePosition);
+            WindowMain.SelectedTile = GetUniformGridIndex(mousePosition);
 
-            if (WindowMain.ChosenTile > WindowMain.TileSet.Tiles.Count - 1)
+            if (WindowMain.SelectedTile > WindowMain.TileSet.Tiles.Count - 1)
             {
-                WindowMain.ChosenTile = (uint)WindowMain.TileSet.Tiles.Count - 1;
+                WindowMain.SelectedTile = WindowMain.TileSet.Tiles.Count - 1;
             }
 
-            Border newTile = WindowMain.GetTile((int)WindowMain.ChosenTile);
+            Border newTile = WindowMain.GetTile(WindowMain.SelectedTile);
 
             var tileSize = WindowMain.TileSet.TileSize;
             var border = new Border()
@@ -184,17 +183,17 @@ namespace CollisionEditor2.Views
                 Child = newTile
             };
 
-            TileMapGrid.Children.RemoveAt((int)WindowMain.ChosenTile);
-            TileMapGrid.Children.Insert((int)WindowMain.ChosenTile, border);
+            TileMapGrid.Children.RemoveAt(WindowMain.SelectedTile);
+            TileMapGrid.Children.Insert(WindowMain.SelectedTile, border);
 
             WindowMain.SelectTileFromTileMap();
-            LastChosenTile = (int)WindowMain.ChosenTile;
+            LastSelectedTile = WindowMain.SelectedTile;
         }
 
         private void WindowSizeChanged(Size size)
         {
             int countOfTiles = WindowMain.TileSet.Tiles.Count;
-            var tileSize = WindowMain.TileSet.TileSize;
+            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize;
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;

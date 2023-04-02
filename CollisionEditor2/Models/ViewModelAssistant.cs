@@ -6,18 +6,18 @@ using System;
 
 namespace CollisionEditor2.Models;
 
-internal static class ViewModelAssistant
+public static class ViewModelAssistant
 {
-    public static Angles GetAngles(AngleMap angleMap, uint chosenTile)
+    public static Angles GetAngles(AngleMap angleMap, int chosenTile)
     {
-        byte angle = angleMap.Values[(int)chosenTile];
+        byte angle = angleMap.Values[chosenTile];
+
         return new Angles(angle, GetHexAngle(angle), GetFullAngle(angle));
     }
 
     public static string GetCollisionValues(byte[] collisionArray)
     {
         StringBuilder builder = new();
-
         foreach (byte value in collisionArray)
         {
             builder.Append((char)(value + (value < 10 ? 48 : 55)));

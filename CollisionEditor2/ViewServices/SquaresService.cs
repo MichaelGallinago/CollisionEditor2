@@ -4,7 +4,7 @@ using Avalonia.Controls;
 
 namespace CollisionEditor2.ViewServices;
 
-internal static class SquaresService
+public static class SquaresService
 {
     public static void MoveSquare(MainWindow mainWindow, Vector2<int> position, 
         SquareAndPosition firstSquare, SquareAndPosition secondSquare)

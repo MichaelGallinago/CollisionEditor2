@@ -6,7 +6,7 @@ using System;
 
 namespace CollisionEditor2.ViewServices;
 
-internal class TextboxValidator : INotifyDataErrorInfo
+public class TextboxValidator : INotifyDataErrorInfo
 {
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     public bool HasErrors => propertyErrors.Any();
