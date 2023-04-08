@@ -1,19 +1,19 @@
-﻿using CollisionEditor2.Models;
+﻿using CollisionEditor2.ViewServices;
+using CollisionEditor2.Models;
+using CollisionEditor2.Views;
+using MessageBoxSlim.Avalonia.Enums;
+using MessageBoxSlim.Avalonia.DTO;
+using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
 using System.Drawing;
 using System.IO;
 using System;
+using System.Diagnostics;
+using System.Reactive;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia;
-using CollisionEditor2.ViewServices;
-using CollisionEditor2.Views;
-using MessageBoxSlim.Avalonia.Enums;
-using MessageBoxSlim.Avalonia.DTO;
-using MessageBoxSlim.Avalonia;
-using System.Diagnostics;
-using System.Reactive;
 using ReactiveUI;
 
 namespace CollisionEditor2.ViewModels;
@@ -63,12 +63,27 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         get => hexAngle;
         set
         {
-            textboxValidator.ClearErrors(nameof(HexAngleText));
-
-            if (hexAngle.Length != 4 || hexAngle[0] != '0' || hexAngle[1] != 'x'
-                || !hexadecimalAlphabet.Contains(hexAngle[2]) || !hexadecimalAlphabet.Contains(hexAngle[3]))
+            textboxValidator.ClearErrors(nameof(HexAngleText));
+
+            string prefix = value[..ViewModelAssistant.HexAnglePrefixLength];
+            if (prefix != "0x" || prefix != "0X")
             {
-                textboxValidator.AddError(nameof(HexAngleText), "Wrong hexadecimal number!");
+                textboxValidator.AddError(nameof(HexAngleText), 
+                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
+                return;
+            }
+            else if (value.Length <= ViewModelAssistant.HexAnglePrefixLength)
+            {
+                textboxValidator.AddError(nameof(HexAngleText), 
+                    $"Wrong hexadecimal number length!\nMust be between {ViewModelAssistant.HexAnglePrefixLength} and "
+                    + $"{ViewModelAssistant.HexAnglePrefixLength + ViewModelAssistant.HexAngleMaxLength}");
+                return;
+            }
+            else if (!int.TryParse(value[ViewModelAssistant.HexAnglePrefixLength..], 
+                System.Globalization.NumberStyles.HexNumber, null, out _))
+            {
+                textboxValidator.AddError(nameof(HexAngleText), 
+                    "Wrong hexadecimal number alphabet!\nMust be '0123456789ABCDEFabcdef'");
                 return;
             }
 
@@ -103,10 +118,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public MainWindow window;
 
-    private const string hexadecimalAlphabet = "0123456789ABCDEF";
     private const int tileMapSeparation = 4;
-    private const int tileMapTileScale = 2;
-
+    private const double tileGridBorderThickness = 1d;
+    private const double thicknessToSeparationRatio = 2d;
     private byte byteAngle;
     private string hexAngle;
     private readonly TextboxValidator textboxValidator;
@@ -117,8 +131,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
 
-        AngleMap = new AngleMap(0);
-        TileSet  = new TileSet(0);
+        AngleMap = new AngleMap();
+        TileSet  = new TileSet();
 
         byteAngle = 0;
         hexAngle = "0x00";
@@ -179,7 +193,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TextBoxByteAngle.IsEnabled = true;
         window.TextBoxHexAngle.IsEnabled = true;
         window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(84, 84, 84));
-        window.TextBlockFullAngle.Foreground = new SolidColorBrush(Avalonia.Media.Color.FromRgb(0, 0, 0));
+        window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Black);
         window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
 
         byteAngle = angles.ByteAngle;
@@ -194,8 +208,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
     }
-
-    
 
     private async void MenuOpenTileMap()
     {
@@ -250,7 +262,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public void TileMapGridUpdate(int tileCount)
     {
-        window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) * (TileSet.TileSize.Height * tileMapTileScale + tileMapSeparation);
+        window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) 
+            * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
     }
 
     public async void OurMessageBox(string message)
@@ -268,7 +281,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuSaveTileMap()
     {
-        if (TileSet.Tiles.Count == 0)
+        if (TileSet.Tiles.Count <= 0)
         {
             OurMessageBox("Error: You haven't selected TileMap to save");
             return;
@@ -283,7 +296,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuSaveWidthMap()
     {
-        if (TileSet.Tiles.Count == 0)
+        if (TileSet.Tiles.Count <= 0)
         {
             OurMessageBox("Error: The WidthMap isn't generated!");
             return;
@@ -298,7 +311,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuSaveHeightMap()
     {
-        if (TileSet.Tiles.Count == 0)
+        if (TileSet.Tiles.Count <= 0)
         {
             
             OurMessageBox("Error: The HeightMap isn't generated!");
@@ -314,7 +327,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuSaveAngleMap()
     {
-        if (AngleMap.Values.Count == 0)
+        if (AngleMap.Values.Count <= 0)
         {
             OurMessageBox("Error: You haven't selected AngleMap to save");
             return;
@@ -341,8 +354,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[(int)SelectedTile]);
-        window.Widths.Text = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[(int)SelectedTile]);
+        window.Heights.Text = ViewModelAssistant.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        window.Widths.Text = ViewModelAssistant.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
 
         ShowAngles(ViewModelAssistant.GetAngles(AngleMap, SelectedTile));
     }
@@ -358,8 +371,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     private void MenuUnloadAll()
     {
         window.TileMapGrid.Children.Clear();
-        TileSet = new TileSet(0);
-        AngleMap = new AngleMap(0);
+        TileSet = new TileSet();
+        AngleMap = new AngleMap();
 
         window.Heights.Text = null;
         window.Widths.Text = null;
@@ -376,9 +389,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.SelectTileButton.IsEnabled  = false;
         window.TextBoxByteAngle.IsEnabled  = false;
         window.TextBoxHexAngle.IsEnabled   = false;
-
-        //window.BorderFullAngle.BorderBrush = 
-
 
         window.canvasForLine.Children.Clear();
         window.RectanglesGrid.Children.Clear();
@@ -454,8 +464,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var image = new Avalonia.Controls.Image
         {
-            Width  = TileSet.TileSize.Width * 2,
-            Height = TileSet.TileSize.Height * 2,
+            Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
+            Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
             Source = ViewModelAssistant.BitmapConvert(tile)
         };
 
@@ -463,7 +473,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(230, 230, 230)),
             BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211)),
-            BorderThickness = new Thickness(tileMapSeparation / 2d),
+            BorderThickness = new Thickness(tileMapSeparation / thicknessToSeparationRatio),
             Child = image
         };
 
@@ -477,7 +487,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public void UpdateAngles(Vector2<int> positionGreen, Vector2<int> positionBlue)
     {
-        if (AngleMap.Values.Count == 0)
+        if (AngleMap.Values.Count <= 0)
         {
             return;
         }
@@ -523,7 +533,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             {
                 var Border = new Border()
                 {
-                    BorderThickness = new Thickness(x == 0 ? 1d : 0d, y == 0 ? 1d : 0d, 1d, 1d),
+                    BorderThickness = new Thickness(
+                        x == 0 ? tileGridBorderThickness : 0d, 
+                        y == 0 ? tileGridBorderThickness : 0d, 
+                        tileGridBorderThickness, 
+                        tileGridBorderThickness),
+
                     Background = new SolidColorBrush(tile.GetPixel(x, y).A > 0 ? Colors.Black : Colors.Transparent),
                     BorderBrush = new SolidColorBrush(Colors.Gray),
                 };
@@ -555,5 +570,5 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         return textboxValidator.GetErrors(propertyName);
     }
 
-    public bool HasErrors => textboxValidator.HasErrors;
+    public bool HasErrors => textboxValidator.HasErrors;
 }

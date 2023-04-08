@@ -4,7 +4,6 @@ using System.Collections;
 using System.ComponentModel;
 using Avalonia.Controls;
 using CollisionEditor2.Views;
-using CollisionEditor2.Models;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia.Enums;
 using MessageBoxSlim.Avalonia;

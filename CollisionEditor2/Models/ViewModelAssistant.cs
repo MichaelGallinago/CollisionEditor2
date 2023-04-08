@@ -8,6 +8,9 @@ namespace CollisionEditor2.Models;
 
 public static class ViewModelAssistant
 {
+    public const int HexAngleMaxLength = 2;
+    public const int HexAnglePrefixLength = 2;
+
     public static Angles GetAngles(AngleMap angleMap, int chosenTile)
     {
         byte angle = angleMap.Values[chosenTile];
@@ -52,7 +55,7 @@ public static class ViewModelAssistant
 
     public static double GetFullAngle(byte angle)
     {
-        return Math.Round((256 - angle) * 1.40625, 1);
+        return Math.Round((byte.MaxValue - angle) * 1.40625, 1);
     }
 
     public static byte GetByteAngle(string hexAngle)
