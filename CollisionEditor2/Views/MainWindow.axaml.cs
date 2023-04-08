@@ -3,12 +3,10 @@ using CollisionEditor2.ViewModels;
 using CollisionEditor2.Models;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
-using System.Reactive.Linq;
 using System;
 
 namespace CollisionEditor2.Views

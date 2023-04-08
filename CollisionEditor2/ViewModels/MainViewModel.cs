@@ -205,7 +205,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return; 
         }
 
-        await new OpenTileMap().ShowDialog(window);
+        OpenTileMap openTileMap = new OpenTileMap();
+        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap);
+        await openTileMap.ShowDialog(window);
+        
 
         TileSet = new TileSet(filePath);
         if (AngleMap.Values.Count <= 0)
