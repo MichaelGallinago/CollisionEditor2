@@ -7,25 +7,29 @@ using CollisionEditor2.Views;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia.Enums;
 using MessageBoxSlim.Avalonia;
+using ReactiveUI;
+using System.Reactive;
 
 namespace CollisionEditor2.ViewModels
 {
     public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     {
-        
-        public int TileWidth;
+
+        public ReactiveCommand<Unit, Unit> SaveCommand { get; }
         public string TileHeightText
         {
             get => tileHeight.ToString();
             set
             {
                 textboxValidator.ClearErrors(nameof(TileHeightText));
+                CheckErrors();
                 int intTileHeight;
                 bool isNumber = int.TryParse(value, out intTileHeight);
 
-                if (isNumber && intTileHeight<=4)
+                if (isNumber && intTileHeight<4)
                 {
                     textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
+                    CheckErrors();
                     return;
                 }
                 
@@ -35,16 +39,18 @@ namespace CollisionEditor2.ViewModels
 
         public string TileWidthText
         {
-            get => tileHeight.ToString();
+            get => tileWidth.ToString();
             set
             {
                 textboxValidator.ClearErrors(nameof(TileWidthText));
+                CheckErrors();
                 int intTileWidth;
                 bool isNumber = int.TryParse(value, out intTileWidth);
 
-                if (isNumber && intTileWidth <= 4)
+                if (isNumber && intTileWidth < 4)
                 {
                     textboxValidator.AddError(nameof(TileWidthText), "Wrong Tile Width!");
+                    CheckErrors();
                     return;
                 }
 
@@ -57,12 +63,14 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(VerticalSeparationText));
+                CheckErrors();
                 int intVerticalSeparation;
                 bool isNumber = int.TryParse(value, out intVerticalSeparation);
 
                 if (isNumber && intVerticalSeparation <0)
                 {
                     textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
+                    CheckErrors();
                     return;
                 }
 
@@ -75,12 +83,14 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(HorizontalSeparationText));
+                CheckErrors();
                 int intHorizontalSeparation;
                 bool isNumber = int.TryParse(value, out intHorizontalSeparation);
 
                 if (isNumber && intHorizontalSeparation < 0)
                 {
                     textboxValidator.AddError(nameof(HorizontalSeparationText), "Wrong Horizontal Separation!");
+                    CheckErrors();
                     return;
                 }
 
@@ -94,12 +104,14 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(VerticalOffsetText));
+                CheckErrors();
                 int intVerticalOffset;
                 bool isNumber = int.TryParse(value, out intVerticalOffset);
 
                 if (isNumber && intVerticalOffset <0)
                 {
                     textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
+                    CheckErrors();
                     return;
                 }
 
@@ -112,18 +124,33 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(HorizontalOffsetText));
+                CheckErrors();
                 int intHorizontalOffset;
                 bool isNumber = int.TryParse(value, out intHorizontalOffset);
 
                 if (isNumber && intHorizontalOffset <0)
                 {
                     textboxValidator.AddError(nameof(HorizontalOffsetText), "Wrong Horizontal Offset!");
+                    CheckErrors();
                     return;
                 }
 
                 horizontalOffset = intHorizontalOffset;
             }
         }
+
+        private void CheckErrors()
+        {
+            if (textboxValidator.HasErrors)
+            {
+                window.SaveButton.IsEnabled = false;
+            }
+            else
+            {
+                window.SaveButton.IsEnabled = true;
+            }
+        }
+
 
         private int tileHeight;
         private int tileWidth;
@@ -135,13 +162,25 @@ namespace CollisionEditor2.ViewModels
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public OpenTileMap window;
-        public OpenTileMapViewModel(OpenTileMap window)
+        public OpenTileMapViewModel(OpenTileMap window,string filepath)
         {
             textboxValidator = new TextboxValidator();
             textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
+            SaveCommand = ReactiveCommand.Create(Save);
 
             this.window = window;
+            tileHeight = 4;
+            tileWidth = 4;
+
         }
+
+        private void Save()
+        {   
+
+            window.Close();
+        }
+
+
         public async void OurMessageBox(string message)
         {
             _ = await BoxedMessage.Create(new MessageBoxParams

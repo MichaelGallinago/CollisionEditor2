@@ -63,7 +63,7 @@
         
         <ScrollViewer Grid.Column="5" Grid.Row="5"/>
 
-        <Button Grid.Column="7" Grid.Row="12" Content="Save" Click="SaveButtonClick"/>
+        <Button x:Name="SaveButton" Grid.Column="7" Grid.Row="12" Content="Save" Command="{Binding SaveCommand}"/>
                     
     </Grid>
 </Window>
