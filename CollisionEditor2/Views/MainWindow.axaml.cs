@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
+using Avalonia.Controls.Primitives;
 
 namespace CollisionEditor2.Views
 {
@@ -24,6 +25,8 @@ namespace CollisionEditor2.Views
         private const int gridHeight = 128;
         private const int countHeightParts = 404;
         private const int countWidthParts = 587;
+        private const int tileMapBorderWidthWithoutScrollBar = 300;
+        private const int tileMapScrollBarWidth = 18;
 
         private bool mouseInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
@@ -234,10 +237,11 @@ namespace CollisionEditor2.Views
             int tileWidth  = tileSize.Width  * TileMapTileScale;
             int tileHeight = tileSize.Height * TileMapTileScale;
 
-            TileMapGrid.Width   = 300 * (int)size.Width / 664 / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
+
+            TileMapGrid.Width   = tileMapBorderWidthWithoutScrollBar * (int)size.Width / (int)MinWidth / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
             TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
-            TileMapBorder.Width = TileMapGrid.Width + 16;
+            TileMapBorder.Width = TileMapGrid.Width + tileMapScrollBarWidth;
 
             SelectTileTextBox.Height   = actualHeightTextAndButtons - 2;
             SelectTileTextBox.FontSize = actualFontSize;
