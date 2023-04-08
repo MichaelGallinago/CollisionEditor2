@@ -1,14 +1,14 @@
 ﻿using CollisionEditor2.ViewServices;
-using System;
-using System.Collections;
-using System.ComponentModel;
-using Avalonia.Controls;
 using CollisionEditor2.Views;
-using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia.Enums;
+using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia;
-using ReactiveUI;
+using System.ComponentModel;
+using System.Collections;
 using System.Reactive;
+using System;
+using Avalonia.Controls;
+using ReactiveUI;
 
 namespace CollisionEditor2.ViewModels
 {
@@ -25,8 +25,7 @@ namespace CollisionEditor2.ViewModels
             {
                 textboxValidator.ClearErrors(nameof(TileHeightText));
                 CheckErrors();
-                int intTileHeight;
-                bool isNumber = int.TryParse(value, out intTileHeight);
+                bool isNumber = int.TryParse(value, out int intTileHeight);
 
                 if (isNumber && intTileHeight< minTileHeight)
                 {
@@ -46,8 +45,7 @@ namespace CollisionEditor2.ViewModels
             {
                 textboxValidator.ClearErrors(nameof(TileWidthText));
                 CheckErrors();
-                int intTileWidth;
-                bool isNumber = int.TryParse(value, out intTileWidth);
+                bool isNumber = int.TryParse(value, out int intTileWidth);
 
                 if (isNumber && intTileWidth < minTileWidth)
                 {
@@ -66,10 +64,9 @@ namespace CollisionEditor2.ViewModels
             {
                 textboxValidator.ClearErrors(nameof(VerticalSeparationText));
                 CheckErrors();
-                int intVerticalSeparation;
-                bool isNumber = int.TryParse(value, out intVerticalSeparation);
+                bool isNumber = int.TryParse(value, out int intVerticalSeparation);
 
-                if (isNumber && intVerticalSeparation <0)
+                if (isNumber && intVerticalSeparation < 0)
                 {
                     textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
                     CheckErrors();
@@ -86,8 +83,7 @@ namespace CollisionEditor2.ViewModels
             {
                 textboxValidator.ClearErrors(nameof(HorizontalSeparationText));
                 CheckErrors();
-                int intHorizontalSeparation;
-                bool isNumber = int.TryParse(value, out intHorizontalSeparation);
+                bool isNumber = int.TryParse(value, out int intHorizontalSeparation);
 
                 if (isNumber && intHorizontalSeparation < 0)
                 {
@@ -107,8 +103,7 @@ namespace CollisionEditor2.ViewModels
             {
                 textboxValidator.ClearErrors(nameof(VerticalOffsetText));
                 CheckErrors();
-                int intVerticalOffset;
-                bool isNumber = int.TryParse(value, out intVerticalOffset);
+                bool isNumber = int.TryParse(value, out int intVerticalOffset);
 
                 if (isNumber && intVerticalOffset <0)
                 {
@@ -127,8 +122,7 @@ namespace CollisionEditor2.ViewModels
             {
                 textboxValidator.ClearErrors(nameof(HorizontalOffsetText));
                 CheckErrors();
-                int intHorizontalOffset;
-                bool isNumber = int.TryParse(value, out intHorizontalOffset);
+                bool isNumber = int.TryParse(value, out int intHorizontalOffset);
 
                 if (isNumber && intHorizontalOffset <0)
                 {

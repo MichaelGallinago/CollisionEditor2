@@ -105,7 +105,7 @@ public class TileSet
         tileMap.Save(path, ImageFormat.Png);
     }
 
-    public void SaveCollisionMap(string path, List<byte[]> collisionMap)
+    public static void SaveCollisionMap(string path, List<byte[]> collisionMap)
     {
         if (File.Exists(path))
         {

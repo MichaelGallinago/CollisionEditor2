@@ -1,4 +1,5 @@
-﻿using CollisionEditor2.Models;
+﻿using CollisionEditor2.Models.ForAvalonia;
+using CollisionEditor2.Models;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -6,13 +7,13 @@ public static class ViewModelAngleService
 {
     public static Angles GetAngles(byte byteAngle)
     {
-        return new Angles(byteAngle, ViewModelAssistant.GetHexAngle(byteAngle), ViewModelAssistant.GetFullAngle(byteAngle));
+        return new Angles(byteAngle, AngleService.GetHexAngle(byteAngle), AngleService.GetFullAngle(byteAngle));
     }
 
     public static Angles GetAngles(string hexAngle)
     {
-        var byteAngle = ViewModelAssistant.GetByteAngle(hexAngle);
+        var byteAngle = AngleService.GetByteAngle(hexAngle);
 
-        return new Angles(byteAngle, hexAngle, ViewModelAssistant.GetFullAngle(byteAngle));
+        return new Angles(byteAngle, hexAngle, AngleService.GetFullAngle(byteAngle));
     }
 }
