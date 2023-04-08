@@ -6,11 +6,9 @@ namespace CollisionEditor2.Views
 {
     public partial class OpenTileMap : Window
     {
-        public OpenTileMapViewModel OpenTileMapMainViewModel { get; }
         public OpenTileMap()
         {
             InitializeComponent();
-            OpenTileMapMainViewModel = new OpenTileMapViewModel(this);
         }
     }
 }

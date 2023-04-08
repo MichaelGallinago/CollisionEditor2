@@ -163,7 +163,7 @@ namespace CollisionEditor2.ViewModels
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public OpenTileMap window;
-        public OpenTileMapViewModel(OpenTileMap window)
+        public OpenTileMapViewModel(OpenTileMap window,string filepath)
         {
             textboxValidator = new TextboxValidator();
             textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
@@ -172,10 +172,12 @@ namespace CollisionEditor2.ViewModels
             this.window = window;
             tileHeight = 4;
             tileWidth = 4;
+
         }
 
         private void Save()
-        {
+        {   
+
             window.Close();
         }
 
