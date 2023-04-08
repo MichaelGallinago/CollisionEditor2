@@ -12,11 +12,5 @@ namespace CollisionEditor2.Views
             InitializeComponent();
             OpenTileMapMainViewModel = new OpenTileMapViewModel(this);
         }
-
-        private void SaveButtonClick(object? sender, RoutedEventArgs e)
-        {   
-            
-            Close();
-        }
     }
 }
