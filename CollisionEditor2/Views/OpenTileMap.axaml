@@ -39,7 +39,8 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="20*"/>
             <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="1" Grid.Row="2" Text="Tile Height:" FontSize="12"/>
@@ -61,11 +62,11 @@
         <TextBlock Grid.Column="3" Grid.Row="10" Text="Offset:" FontSize="12"/>
         <TextBox x:Name="horizontalOffset" Text="{Binding Path=HorizontalOffsetText,Mode=TwoWay}" Grid.Column="3" Grid.Row="11" />
 
-		<ScrollViewer Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="11">
+		<ScrollViewer Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="11" HorizontalScrollBarVisibility="Visible">
             <Image x:Name="ImageFromFile"/>
         </ScrollViewer>
 
-        <Button x:Name="SaveButton" Grid.Column="7" Grid.Row="12" Content="Save" Command="{Binding SaveCommand}"/>
+        <Button x:Name="SaveButton" Grid.Column="7" Grid.Row="12" Grid.ColumnSpan="2" Content="Save" Command="{Binding SaveCommand}"/>
                     
     </Grid>
 </Window>
