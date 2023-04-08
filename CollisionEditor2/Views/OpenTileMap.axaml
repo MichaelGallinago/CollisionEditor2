@@ -60,8 +60,10 @@
         <TextBlock Grid.Column="3" Grid.Row="9" Text="Horizontal" FontSize="12"/>
         <TextBlock Grid.Column="3" Grid.Row="10" Text="Offset:" FontSize="12"/>
         <TextBox x:Name="horizontalOffset" Text="{Binding Path=HorizontalOffsetText,Mode=TwoWay}" Grid.Column="3" Grid.Row="11" />
-        
-        <ScrollViewer Grid.Column="5" Grid.Row="5"/>
+
+		<ScrollViewer Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="11">
+            <Image x:Name="ImageFromFile"/>
+        </ScrollViewer>
 
         <Button x:Name="SaveButton" Grid.Column="7" Grid.Row="12" Content="Save" Command="{Binding SaveCommand}"/>
                     

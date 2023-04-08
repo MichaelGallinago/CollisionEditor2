@@ -9,6 +9,7 @@ using System.Reactive;
 using System;
 using Avalonia.Controls;
 using ReactiveUI;
+using CollisionEditor2.Models.ForAvalonia;
 
 namespace CollisionEditor2.ViewModels
 {
@@ -167,7 +168,8 @@ namespace CollisionEditor2.ViewModels
             this.window = window;
             tileHeight = minTileHeight;
             tileWidth = minTileWidth;
-
+            
+            window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath);
         }
 
         private void Save()
