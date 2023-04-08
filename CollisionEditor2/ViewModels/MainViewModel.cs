@@ -192,7 +192,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.HexAngleIncrimentButton.IsEnabled = true;
         window.HexAngleDecrementButton.IsEnabled = true;
 
-        window.TextBlockFullAngle.Text = angles.FullAngle.ToString() + "°";
+        window.TextBlockFullAngle.Text = angles.FullAngle + "°";
     }
 
     
@@ -206,7 +206,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         OpenTileMap openTileMap = new OpenTileMap();
-        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap);
+        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
         await openTileMap.ShowDialog(window);
         
 
