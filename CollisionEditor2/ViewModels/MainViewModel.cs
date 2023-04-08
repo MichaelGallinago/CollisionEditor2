@@ -183,7 +183,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
 
         byteAngle = angles.ByteAngle;
-        OnPropertyChanged(nameof(HexAngleText));
+        OnPropertyChanged(nameof(ByteAngleText));
         window.ByteAngleIncrimentButton.IsEnabled = true;
         window.ByteAngleDecrementButton.IsEnabled = true;
 
