@@ -15,8 +15,9 @@ namespace CollisionEditor2.Views
     {
         public int LastSelectedTile { get; set; }
 
+        public const int TileMapTileScale = 2;
+
         private const int tileMapSeparation = 4;
-        private const int tileMapTileScale = 2;
         private const int menuHeight = 20;
         private const int textAndButtonsHeight = 20;
         private const int upAndDownButtonsWidth = 23;
@@ -141,7 +142,7 @@ namespace CollisionEditor2.Views
 
         private int GetUniformGridIndex(Point mousePosition)
         {
-            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize * tileMapTileScale
+            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize * TileMapTileScale
                 + new System.Drawing.Size(tileMapSeparation, tileMapSeparation);
             
             return (int)mousePosition.X / tileSize.Width 
@@ -230,8 +231,8 @@ namespace CollisionEditor2.Views
             TriangleDownHexAngle.Height = actualHeightTextAndButtons  / 2 - 5;
             TriangleDownHexAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
 
-            int tileWidth  = tileSize.Width  * tileMapTileScale;
-            int tileHeight = tileSize.Height * tileMapTileScale;
+            int tileWidth  = tileSize.Width  * TileMapTileScale;
+            int tileHeight = tileSize.Height * TileMapTileScale;
 
             TileMapGrid.Width   = 300 * (int)size.Width / 664 / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
             TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);

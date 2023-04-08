@@ -70,7 +70,7 @@ public class TileSet
         }
     }
 
-    public TileSet(int angleCount, int tileWidth = 16, int tileHeight = 16)
+    public TileSet(int angleCount = 0, int tileWidth = 16, int tileHeight = 16)
     {
         TileSize = new Size(tileWidth, tileHeight);
 

@@ -9,13 +9,15 @@ public class AngleMap
 {
     public List<byte> Values { get; private set; }
 
+    private const double convertRadiansToByte = 128 / Math.PI;
+
     public AngleMap(string path)
     {
         var reader = new BinaryReader(File.Open(path, FileMode.Open));
         Values = reader.ReadBytes((int)Math.Min(int.MaxValue, reader.BaseStream.Length)).ToList();
     }
 
-    public AngleMap(int tileCount)
+    public AngleMap(int tileCount = 0)
     {
         Values = new List<byte>(new byte[tileCount]);
     }
@@ -38,7 +40,7 @@ public class AngleMap
 
     public byte SetAngleWithLine(int tileIndex, Vector2<int> positionGreen, Vector2<int> positionBlue)
     {
-        return Values[tileIndex] = (byte)(Math.Atan2(positionBlue.Y - positionGreen.Y, positionBlue.X - positionGreen.X) * 128 / Math.PI);
+        return Values[tileIndex] = (byte)(Math.Atan2(positionBlue.Y - positionGreen.Y, positionBlue.X - positionGreen.X) * convertRadiansToByte);
     }
 
     public byte SetAngle(int tileIndex, byte value)
