@@ -158,10 +158,7 @@ namespace CollisionEditor2.Views
                 return;
             }
 
-            Border lastTile = WindowMain.GetTile(WindowMain.SelectedTile);
-
-            TileMapGrid.Children.RemoveAt(WindowMain.SelectedTile);
-            TileMapGrid.Children.Insert(WindowMain.SelectedTile, lastTile);
+            ((Border)TileMapGrid.Children[WindowMain.SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Transparent);
 
             var mousePosition = e.GetPosition(TileMapGrid);
 
@@ -172,20 +169,7 @@ namespace CollisionEditor2.Views
                 WindowMain.SelectedTile = WindowMain.TileSet.Tiles.Count - 1;
             }
 
-            Border newTile = WindowMain.GetTile(WindowMain.SelectedTile);
-
-            var tileSize = WindowMain.TileSet.TileSize;
-            var border = new Border()
-            {
-                Width = tileSize.Width * tileMapTileScale + tileMapSeparation,
-                Height = tileSize.Height * tileMapTileScale + tileMapSeparation,
-                BorderBrush = new SolidColorBrush(Colors.Red),
-                BorderThickness = new Thickness(2),
-                Child = newTile
-            };
-
-            TileMapGrid.Children.RemoveAt(WindowMain.SelectedTile);
-            TileMapGrid.Children.Insert(WindowMain.SelectedTile, border);
+            ((Border)TileMapGrid.Children[WindowMain.SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
 
             WindowMain.SelectTileFromTileMap();
             LastSelectedTile = WindowMain.SelectedTile;

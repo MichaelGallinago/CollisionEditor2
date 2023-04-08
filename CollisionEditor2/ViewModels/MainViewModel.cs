@@ -63,8 +63,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         get => hexAngle;
         set
         {
-            hexAngle = value;
-
             textboxValidator.ClearErrors(nameof(HexAngleText));
 
             if (hexAngle.Length != 4 || hexAngle[0] != '0' || hexAngle[1] != 'x'
@@ -73,6 +71,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                 textboxValidator.AddError(nameof(HexAngleText), "Wrong hexadecimal number!");
                 return;
             }
+
+            hexAngle = value;
 
             Angles angles = ViewModelAngleService.GetAngles(hexAngle);
 

@@ -1,9 +1,8 @@
-﻿using ReactiveUI;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace CollisionEditor2.ViewModels;
 
-public class ViewModelBase : ReactiveObject, INotifyPropertyChanged
+public class ViewModelBase : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
