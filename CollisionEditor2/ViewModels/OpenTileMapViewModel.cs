@@ -14,7 +14,9 @@ namespace CollisionEditor2.ViewModels
 {
     public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     {
-
+        private const int minTileHeight = 4;
+        private const int minTileWidth = 4;
+        //Glory to RuChat!!!!!
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
         public string TileHeightText
         {
@@ -169,8 +171,8 @@ namespace CollisionEditor2.ViewModels
             SaveCommand = ReactiveCommand.Create(Save);
 
             this.window = window;
-            tileHeight = 4;
-            tileWidth = 4;
+            tileHeight = minTileHeight;
+            tileWidth = minTileWidth;
 
         }
 
