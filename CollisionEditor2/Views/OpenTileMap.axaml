@@ -16,7 +16,7 @@
 	</Window.Styles>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+			<RowDefinition Height="10"/>
             <RowDefinition Height="27"/>
             <RowDefinition Height="18"/>
             <RowDefinition Height="36"/>
@@ -24,12 +24,14 @@
             <RowDefinition Height="18"/>
             <RowDefinition Height="18"/>
             <RowDefinition Height="36"/>
-			<RowDefinition Height="28"/>
+            <RowDefinition Height="28"/>
             <RowDefinition Height="18"/>
             <RowDefinition Height="18"/>
             <RowDefinition Height="36"/>
-            <RowDefinition Height="63*"/>
-            <RowDefinition Height="9"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="29"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="14"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9"/>
@@ -40,7 +42,7 @@
             <ColumnDefinition Width="20*"/>
             <ColumnDefinition Width="20*"/>
             <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
         
@@ -65,11 +67,11 @@
         <TextBox x:Name="verticalOffset" Text="{Binding Path=VerticalOffsetText,Mode=TwoWay}" Grid.Column="3" Grid.Row="11" />
         
 
-		<ScrollViewer Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="11" HorizontalScrollBarVisibility="Visible">
+		<ScrollViewer Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="14" HorizontalScrollBarVisibility="Visible">
             <Image x:Name="ImageFromFile"/>
         </ScrollViewer>
 
-        <Button x:Name="SaveButton" Grid.Column="7" Grid.Row="12" Grid.ColumnSpan="2" Content="Save" Command="{Binding SaveCommand}"/>
+        <Button x:Name="SaveButton" Grid.Column="3" Grid.Row="13" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
                     
     </Grid>
 </Window>
