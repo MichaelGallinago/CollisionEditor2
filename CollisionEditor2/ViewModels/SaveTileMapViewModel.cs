@@ -137,6 +137,26 @@ namespace CollisionEditor2.ViewModels
             }
         }
 
+        public string AmountOfTilesInLineText
+        {
+            get => amountOfTilesInLine.ToString();
+            set
+            {
+                textboxValidator.ClearErrors(nameof(AmountOfTilesInLineText));
+                CheckErrors();
+                bool isNumber = int.TryParse(value, out int intAmountOfTilesInLine);
+
+                if (!isNumber || intAmountOfTilesInLine < 0)
+                {
+                    textboxValidator.AddError(nameof(AmountOfTilesInLineText), "Wrong Amount of Tiles in Line!");
+                    CheckErrors();
+                    return;
+                }
+
+                amountOfTilesInLine = intAmountOfTilesInLine;
+            }
+        }
+
         private void CheckErrors()
         {
             if (textboxValidator.HasErrors)
@@ -156,6 +176,7 @@ namespace CollisionEditor2.ViewModels
         private int horizontalSeparation;
         private int verticalOffset;
         private int horizontalOffset;
+        private int amountOfTilesInLine;
 
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
@@ -173,14 +194,6 @@ namespace CollisionEditor2.ViewModels
 
         private void Save()
         {
-            window.IsSaved = true;
-
-            window.TileHeight = tileHeight;
-            window.TileWidth = tileWidth;
-            window.VerticalSeparation = verticalSeparation;
-            window.HorizontalSeparation = horizontalSeparation;
-            window.VerticalOffset = verticalOffset;
-            window.HorizontalOffset = horizontalOffset;
 
             window.Close();
         }
