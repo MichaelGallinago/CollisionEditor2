@@ -99,6 +99,8 @@
 			</MenuItem>
 		</Menu>
         
+        <Button Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="4" Content="EDIT Button" Click="Button_OnClick"/>
+
         <UniformGrid x:Name="TileGrid" Grid.Column="1" Grid.Row="4" Height="128" Width="128" Grid.ColumnSpan="11"
                      RenderOptions.BitmapInterpolationMode="Default"/>
 		
