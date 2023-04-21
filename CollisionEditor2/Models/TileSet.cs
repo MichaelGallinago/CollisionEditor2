@@ -43,6 +43,10 @@ public class TileSet
         {
             if (i % 4 == 3)
             {
+                if (ColorValues[i] > 0)
+                {
+                    ColorValues[i] = 255;
+                }
                 continue;
             }
             ColorValues[i] = 0;
