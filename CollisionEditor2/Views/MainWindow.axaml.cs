@@ -27,7 +27,7 @@ namespace CollisionEditor2.Views
         private const int tileMapBorderWidthWithoutScrollBar = 300;
         private const int tileMapScrollBarWidth = 18;
 
-        private bool isTileEditorMode = false;
+        private bool isTileEditorMode = true;
         private bool isPointerInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
@@ -51,7 +51,7 @@ namespace CollisionEditor2.Views
 
             Vector2<int> position = new()
             {
-                X = (int)mousePosition.X / ((int)TileGrid.Width / tileSize.Width),
+                X = (int)mousePosition.X / ((int)TileGrid.Width  / tileSize.Width),
                 Y = (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height)
             };
 
@@ -78,7 +78,7 @@ namespace CollisionEditor2.Views
         {
             if (isTileEditorMode)
             {
-                TileUpdate(gridPosition, WindowMain.SelectedTile);
+                WindowMain.TileSet.TileChangeLine(WindowMain.SelectedTile, gridPosition, true);
             }
             else
             {
@@ -90,17 +90,12 @@ namespace CollisionEditor2.Views
         {
             if (isTileEditorMode)
             {
-                TileUpdate(gridPosition, WindowMain.SelectedTile);
+                WindowMain.TileSet.TileChangeLine(WindowMain.SelectedTile, gridPosition, false);
             }
             else
             {
                 RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
             }
-        }
-
-        private void TileUpdate(Vector2<int> gridPosition, int tileIndex)
-        {
-            WindowMain.TileSet.SetTile(tileIndex, new System.Drawing.Bitmap(0, 0));
         }
 
         private void RectanglesGridUpdate(Vector2<int> gridPosition, 
@@ -207,7 +202,9 @@ namespace CollisionEditor2.Views
 
             double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
 
-            var TileGridSize = new Size((int)actualHeightGrid / 16, (int)actualHeightGrid / 16) * 16;
+            var TileGridSize = new Size(
+                (int)actualHeightGrid / tileSize.Width  * tileSize.Width, 
+                (int)actualHeightGrid / tileSize.Height * tileSize.Height);
 
             TileGrid.Width  = TileGridSize.Width;
             TileGrid.Height = TileGridSize.Height;

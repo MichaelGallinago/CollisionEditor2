@@ -152,6 +152,49 @@ public class TileSet
         return tileMap;
     }
 
+    public void TileChangeLine(int tileIndex, Vector2<int> tilePosition, bool isLeftButtonPressed)
+    {
+        Bitmap tile = Tiles[tileIndex];
+        Color CurrentPixel = tile.GetPixel(tilePosition.X, tilePosition.Y);
+
+        if (isLeftButtonPressed)
+        {
+            if (CurrentPixel == Color.Transparent || CurrentPixel != Color.Transparent 
+                && (tilePosition.Y == 0 || tile.GetPixel(tilePosition.X, tilePosition.Y - 1) != Color.Transparent))
+            {
+                for (int y = 0; y < TileSize.Height; y++)
+                {
+                    tile.SetPixel(tilePosition.X, y, y < tilePosition.Y ? Color.Transparent : Color.Black);
+                }
+            }
+            else
+            {
+                for (int y = 0; y < TileSize.Height; y++)
+                {
+                    tile.SetPixel(tilePosition.X, y, Color.Transparent);
+                }
+            }
+        }
+        else
+        {
+            if (CurrentPixel == Color.Transparent || CurrentPixel != Color.Transparent
+                && (tilePosition.X == 0 || tile.GetPixel(tilePosition.X - 1, tilePosition.Y) != Color.Transparent))
+            {
+                for (int x = 0; x < TileSize.Height; x++)
+                {
+                    tile.SetPixel(x, tilePosition.Y, x < tilePosition.X ? Color.Transparent : Color.Black);
+                }
+            }
+            else
+            {
+                for (int x = 0; x < TileSize.Height; x++)
+                {
+                    tile.SetPixel(x, tilePosition.Y, Color.Transparent);
+                }
+            }
+        }
+    }
+
     public Bitmap SetTile(int tileIndex, Bitmap tile)
     {
         return Tiles[tileIndex] = tile;
