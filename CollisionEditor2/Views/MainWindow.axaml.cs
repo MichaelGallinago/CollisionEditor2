@@ -179,7 +179,7 @@ namespace CollisionEditor2.Views
                 return;
             }
 
-            ((Border)TileMapGrid.Children[WindowMain.SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Transparent);
+            ((Border)TileMapGrid.Children[WindowMain.SelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
 
             var mousePosition = e.GetPosition(TileMapGrid);
 
