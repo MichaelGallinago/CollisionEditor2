@@ -16,6 +16,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia;
 using ReactiveUI;
+using Size = Avalonia.Size;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -221,8 +222,14 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         OpenTileMap openTileMap = new OpenTileMap();
         openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
         await openTileMap.ShowDialog(window);
+        if (!openTileMap.IsSaved)
+        {
+            return;
+        }
 
-        TileSet = new TileSet(filePath);
+        TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
+            new System.Drawing.Size(openTileMap.HorizontalSeparation,openTileMap.VerticalSeparation), 
+            new System.Drawing.Size(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
         if (AngleMap.Values.Count <= 0)
         {
             AngleMap = new AngleMap(TileSet.Tiles.Count);

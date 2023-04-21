@@ -173,7 +173,18 @@ namespace CollisionEditor2.ViewModels
         }
 
         private void Save()
-        {   
+        {
+            window.IsSaved=true;
+
+            window.TileHeight = tileHeight;
+            window.TileWidth = tileWidth;
+            window.VerticalSeparation = verticalSeparation;
+            window.HorizontalSeparation = horizontalSeparation;
+            window.VerticalOffset = verticalOffset;
+            window.HorizontalOffset = horizontalOffset;
+
+            OurMessageBox(tileHeight + " " + tileWidth + " " + verticalSeparation + " " + horizontalSeparation + " " +
+                          verticalOffset + " " + horizontalOffset);
 
             window.Close();
         }
