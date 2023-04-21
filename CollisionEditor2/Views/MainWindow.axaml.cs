@@ -8,7 +8,6 @@ using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
-using Avalonia.Controls.Primitives;
 
 namespace CollisionEditor2.Views
 {
@@ -28,7 +27,8 @@ namespace CollisionEditor2.Views
         private const int tileMapBorderWidthWithoutScrollBar = 300;
         private const int tileMapScrollBarWidth = 18;
 
-        private bool mouseInRectanglesGrid = false;
+        private bool isTileEditorMode = false;
+        private bool isPointerInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
 
@@ -62,37 +62,56 @@ namespace CollisionEditor2.Views
         {
             PointerPoint pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
 
+            Vector2<int> gridPosition = GetGridPosition(pointControlPosition.Position);
+
             if (pointControlPosition.Properties.IsLeftButtonPressed)
             {
-                RectanglesGrid_LeftButton(pointControlPosition.Position);
+                RectanglesGrid_LeftButton(gridPosition);
             }
             else if (pointControlPosition.Properties.IsRightButtonPressed)
             {
-                RectanglesGrid_RightButton(pointControlPosition.Position);
+                RectanglesGrid_RightButton(gridPosition);
             }
         }
 
-        private void RectanglesGrid_LeftButton(Point mousePosition)
+        private void RectanglesGrid_LeftButton(Vector2<int> gridPosition)
         {
-            RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
+            if (isTileEditorMode)
+            {
+                TileUpdate(gridPosition, WindowMain.SelectedTile);
+            }
+            else
+            {
+                RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
+            }
         }
 
-        private void RectanglesGrid_RightButton(Point mousePosition)
+        private void RectanglesGrid_RightButton(Vector2<int> gridPosition)
         {
-            RectanglesGridUpdate(mousePosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
+            if (isTileEditorMode)
+            {
+                TileUpdate(gridPosition, WindowMain.SelectedTile);
+            }
+            else
+            {
+                RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
+            }
         }
 
-        private void RectanglesGridUpdate(Point mousePosition, 
+        private void TileUpdate(Vector2<int> gridPosition, int tileIndex)
+        {
+            WindowMain.TileSet.SetTile(tileIndex, new System.Drawing.Bitmap(0, 0));
+        }
+
+        private void RectanglesGridUpdate(Vector2<int> gridPosition, 
             SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (WindowMain.AngleMap.Values.Count <= 0)
             {
                 return;
             }
-            
-            Vector2<int> position = GetGridPosition(mousePosition);
 
-            SquaresService.MoveSquare(WindowMain.window, position, firstSquare, secondSquare);
+            SquaresService.MoveSquare(WindowMain.window, gridPosition, firstSquare, secondSquare);
 
             if (RectanglesGrid.Children.Contains(firstSquare.Square) 
                 && RectanglesGrid.Children.Contains(secondSquare.Square))
@@ -120,10 +139,10 @@ namespace CollisionEditor2.Views
 
         private async void RectanglesGridUpdate(bool isAppear)
         {
-            mouseInRectanglesGrid = isAppear;
+            isPointerInRectanglesGrid = isAppear;
             while (isAppear && RectanglesGrid.Opacity < 1d || !isAppear && RectanglesGrid.Opacity > 0d)
             {
-                if (mouseInRectanglesGrid != isAppear)
+                if (isPointerInRectanglesGrid != isAppear)
                 {
                     return;
                 }

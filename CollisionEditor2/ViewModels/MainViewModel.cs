@@ -16,7 +16,6 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia;
 using ReactiveUI;
-using Size = Avalonia.Size;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -199,7 +198,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public void ShowAngles(Angles angles)
     {
         window.TextBoxByteAngle.IsEnabled = true;
-        window.TextBoxHexAngle.IsEnabled = true;
+        window.TextBoxHexAngle.IsEnabled  = true;
+
         window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(84, 84, 84));
         window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Black);
         window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
@@ -236,6 +236,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
             new System.Drawing.Size(openTileMap.HorizontalSeparation,openTileMap.VerticalSeparation), 
             new System.Drawing.Size(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
+
         if (AngleMap.Values.Count <= 0)
         {
             AngleMap = new AngleMap(TileSet.Tiles.Count);
