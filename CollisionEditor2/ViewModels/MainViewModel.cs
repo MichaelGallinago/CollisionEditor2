@@ -65,21 +65,27 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         get => hexAngle;
         set
         {
-            textboxValidator.ClearErrors(nameof(HexAngleText));
-
-            string prefix = value[..AngleService.HexAnglePrefixLength];
+            textboxValidator.ClearErrors(nameof(HexAngleText));
+
+
+
+            string prefix = value[..AngleService.HexAnglePrefixLength];
+
             if (prefix != "0x" || prefix != "0X")
             {
                 textboxValidator.AddError(nameof(HexAngleText), 
                     "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
-                return;
+                return;
+
             }
-            else if (value.Length <= AngleService.HexAnglePrefixLength)
+            else if (value.Length <= AngleService.HexAnglePrefixLength)
+
             {
                 textboxValidator.AddError(nameof(HexAngleText), 
                     $"Wrong hexadecimal number length!\nMust be between {AngleService.HexAnglePrefixLength} and "
                     + $"{AngleService.HexAnglePrefixLength + AngleService.HexAngleMaxLength}");
-                return;
+                return;
+
             }
             else if (!int.TryParse(value[AngleService.HexAnglePrefixLength..], 
                 System.Globalization.NumberStyles.HexNumber, null, out _))
@@ -255,6 +261,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
+        window.WindowSizeChanged(new Size(window.Width, window.Height));
     }
 
     private void TileMapGridReset()
@@ -581,5 +588,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         return textboxValidator.GetErrors(propertyName);
     }
 
-    public bool HasErrors => textboxValidator.HasErrors;
+    public bool HasErrors => textboxValidator.HasErrors;
+
 }

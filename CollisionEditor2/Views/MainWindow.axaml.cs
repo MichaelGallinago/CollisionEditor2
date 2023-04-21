@@ -177,7 +177,7 @@ namespace CollisionEditor2.Views
             LastSelectedTile = WindowMain.SelectedTile;
         }
 
-        private void WindowSizeChanged(Size size)
+        public void WindowSizeChanged(Size size)
         {
             int countOfTiles = WindowMain.TileSet.Tiles.Count;
             System.Drawing.Size tileSize = WindowMain.TileSet.TileSize;
