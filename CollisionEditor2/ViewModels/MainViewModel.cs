@@ -301,6 +301,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             OurMessageBox("Error: You haven't selected TileMap to save");
             return;
         }
+        SaveTileMap saveTileMap = new();
+        saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap);
+        await saveTileMap.ShowDialog(window);
+        if (!saveTileMap.IsSaved)
+        {
+            return;
+        }
 
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
