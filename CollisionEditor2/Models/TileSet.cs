@@ -53,8 +53,8 @@ public class TileSet
     {
         for (int i = 0; i < Tiles.Count; i++)
         {
-            WidthMap.Add(new byte[TileSize.Width]);
-            HeightMap.Add(new byte[TileSize.Height]);
+            WidthMap.Add(new byte[TileSize.Height]);
+            HeightMap.Add(new byte[TileSize.Width]);
 
             for (int x = 0; x < TileSize.Width; x++)
             {
