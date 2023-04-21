@@ -183,11 +183,8 @@ namespace CollisionEditor2.ViewModels
             window.HorizontalSeparation = horizontalSeparation;
             window.VerticalOffset = verticalOffset;
             window.HorizontalOffset = horizontalOffset;
-
-            OurMessageBox(tileWidth+" "+ tileHeight + " " + horizontalSeparation + " " + verticalSeparation + " " +
-                          horizontalOffset + " " + verticalOffset);
-
-            //window.Close();
+            
+            window.Close();
         }
 
         public async void OurMessageBox(string message)
