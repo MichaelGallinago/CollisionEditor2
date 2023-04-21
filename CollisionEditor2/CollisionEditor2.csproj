@@ -25,4 +25,10 @@
     <PackageReference Include="MessageBoxSlim.Avalonia.2" Version="0.9.9" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\SaveTileMap.axaml.cs">
+      <DependentUpon>SaveTileMap.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
