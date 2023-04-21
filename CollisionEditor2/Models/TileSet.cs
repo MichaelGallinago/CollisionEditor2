@@ -2,6 +2,7 @@
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
+using System;
 
 namespace CollisionEditor2.Models;
 
@@ -22,11 +23,42 @@ public class TileSet
         WidthMap  = new List<byte[]>();
         HeightMap = new List<byte[]>();
 
-        var bitmap = new Bitmap(path);
+        Bitmap tileMap = RecolorTileMap(new Bitmap(path));
 
+        CreateTiles(tileMap, separate, offset);
+    }
+
+    private Bitmap RecolorTileMap(Bitmap tileMap)
+    {
+        BitmapData bitmapData = tileMap.LockBits(
+            new Rectangle(0, 0, tileMap.Width, tileMap.Height), 
+            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+        IntPtr ptr = bitmapData.Scan0;
+        int bytes = Math.Abs(bitmapData.Stride) * TileSize.Height;
+        var ColorValues = new byte[bytes];
+
+        System.Runtime.InteropServices.Marshal.Copy(ptr, ColorValues, 0, bytes);
+        for (int i = 0; i < ColorValues.Length; i++)
+        {
+            if (i % 4 == 3)
+            {
+                continue;
+            }
+            ColorValues[i] = 0;
+        }
+        System.Runtime.InteropServices.Marshal.Copy(ColorValues, 0, ptr, bytes);
+
+        tileMap.UnlockBits(bitmapData);
+
+        return tileMap;
+    }
+
+    private void CreateTiles(Bitmap tileMap, Size separate, Size offset)
+    {
         var cellCount = new Vector2<int>(
-            (bitmap.Width  - offset.Width)  / TileSize.Width,
-            (bitmap.Height - offset.Height) / TileSize.Height);
+            (tileMap.Width  - offset.Width)  / TileSize.Width,
+            (tileMap.Height - offset.Height) / TileSize.Height);
 
         for (int y = 0; y < cellCount.Y; y++)
         {
@@ -37,7 +69,7 @@ public class TileSet
                     y * (TileSize.Height + separate.Height) + offset.Height,
                     TileSize.Width, TileSize.Height);
 
-                Tiles.Add(bitmap.Clone(tileBounds, bitmap.PixelFormat));
+                Tiles.Add(tileMap.Clone(tileBounds, tileMap.PixelFormat));
                 if (Tiles.Count == int.MaxValue)
                 {
                     CreateCollisionMap();
@@ -156,15 +188,37 @@ public class TileSet
     {
         Bitmap tile = Tiles[tileIndex];
         Color CurrentPixel = tile.GetPixel(tilePosition.X, tilePosition.Y);
+        Rectangle rectangle = new Rectangle(0, 0, TileSize.Width, TileSize.Height);
 
         if (isLeftButtonPressed)
         {
-            if (CurrentPixel == Color.Transparent || CurrentPixel != Color.Transparent 
-                && (tilePosition.Y == 0 || tile.GetPixel(tilePosition.X, tilePosition.Y - 1) != Color.Transparent))
+            BitmapData bitmapData = tile.LockBits(rectangle, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            IntPtr ptr = bitmapData.Scan0;
+            int bytes = Math.Abs(bitmapData.Stride) * TileSize.Height;
+            byte[] argbValues = new byte[bytes];
+            System.Runtime.InteropServices.Marshal.Copy(ptr, argbValues, 0, bytes);
+
+            for (int counter = 2; counter < argbValues.Length; counter += 3)
+                argbValues[counter] = 255;
+
+            System.Runtime.InteropServices.Marshal.Copy(argbValues, 0, ptr, bytes);
+            tile.UnlockBits(bitmapData);
+
+
+
+            if (CompareColors(CurrentPixel, Color.Transparent) || tilePosition.Y == 0 ||
+                !CompareColors(tile.GetPixel(tilePosition.X, tilePosition.Y - 1), Color.Transparent))
             {
                 for (int y = 0; y < TileSize.Height; y++)
                 {
+                    tile.MakeTransparent();
                     tile.SetPixel(tilePosition.X, y, y < tilePosition.Y ? Color.Transparent : Color.Black);
+                    Color color = tile.GetPixel(tilePosition.X, y);
+                    if (CompareColors(Color.Transparent, color))
+                    {
+                        Color test = Color.FromArgb(0, 0, 0, 0);
+                        continue;
+                    }
                 }
             }
             else
@@ -193,6 +247,11 @@ public class TileSet
                 }
             }
         }
+    }
+
+    private bool CompareColors(Color first, Color second)
+    {
+        return first.ToArgb() == second.ToArgb();
     }
 
     public Bitmap SetTile(int tileIndex, Bitmap tile)

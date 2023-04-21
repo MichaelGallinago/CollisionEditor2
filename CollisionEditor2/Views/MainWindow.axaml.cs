@@ -79,7 +79,7 @@ namespace CollisionEditor2.Views
         {
             if (isTileEditorMode)
             {
-                WindowMain.TileSet.TileChangeLine(WindowMain.SelectedTile, gridPosition, true);
+                WindowMain.EditTile(gridPosition, true);
             }
             else
             {
@@ -91,7 +91,7 @@ namespace CollisionEditor2.Views
         {
             if (isTileEditorMode)
             {
-                WindowMain.TileSet.TileChangeLine(WindowMain.SelectedTile, gridPosition, false);
+                WindowMain.EditTile(gridPosition, false);
             }
             else
             {

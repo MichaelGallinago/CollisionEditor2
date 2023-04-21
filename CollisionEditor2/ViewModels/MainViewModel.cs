@@ -579,6 +579,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
+    public void EditTile(Vector2<int> tilePosition, bool isLeftButtonPressed)
+    {
+        TileSet.TileChangeLine(SelectedTile, tilePosition, isLeftButtonPressed);
+        TileGridUpdate(TileSet, SelectedTile, window);
+    }
+
     private void Help()
     {
         Process.Start(new ProcessStartInfo()
