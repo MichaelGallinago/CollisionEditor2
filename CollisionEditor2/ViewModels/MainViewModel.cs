@@ -262,7 +262,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
-        window.WindowSizeChanged(new Size(window.Width, window.Height));
+        window.WindowSizeChanged(new Avalonia.Size(window.Width, window.Height));
     }
 
     private void TileMapGridReset()
