@@ -15,9 +15,10 @@ namespace CollisionEditor2.ViewModels
 {
     public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     {
-        private const int minTileHeight = 4;
-        private const int minTileWidth = 4;
         //Glory to RuChat!!!!!
+        private const int minTileHeight = 4;
+        private const int minTileWidth  = 4;
+
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
         public string TileHeightText
         {
