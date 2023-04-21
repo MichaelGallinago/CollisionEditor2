@@ -29,7 +29,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intTileHeight);
 
-                if (isNumber && intTileHeight< minTileHeight)
+                if (!isNumber || intTileHeight< minTileHeight)
                 {
                     textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
                     CheckErrors();
@@ -49,7 +49,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intTileWidth);
 
-                if (isNumber && intTileWidth < minTileWidth)
+                if (!isNumber || intTileWidth < minTileWidth)
                 {
                     textboxValidator.AddError(nameof(TileWidthText), "Wrong Tile Width!");
                     CheckErrors();
@@ -68,7 +68,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intVerticalSeparation);
 
-                if (isNumber && intVerticalSeparation < 0)
+                if (!isNumber || intVerticalSeparation < 0)
                 {
                     textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
                     CheckErrors();
@@ -87,7 +87,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intHorizontalSeparation);
 
-                if (isNumber && intHorizontalSeparation < 0)
+                if (!isNumber || intHorizontalSeparation < 0)
                 {
                     textboxValidator.AddError(nameof(HorizontalSeparationText), "Wrong Horizontal Separation!");
                     CheckErrors();
@@ -107,7 +107,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intVerticalOffset);
 
-                if (isNumber && intVerticalOffset <0)
+                if (!isNumber || intVerticalOffset <0)
                 {
                     textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
                     CheckErrors();
@@ -126,7 +126,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intHorizontalOffset);
 
-                if (isNumber && intHorizontalOffset <0)
+                if (!isNumber || intHorizontalOffset < 0)
                 {
                     textboxValidator.AddError(nameof(HorizontalOffsetText), "Wrong Horizontal Offset!");
                     CheckErrors();
