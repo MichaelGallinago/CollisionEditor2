@@ -33,7 +33,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="29"/>
             <RowDefinition Height="29*"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -79,7 +79,7 @@
         <TextBox   Grid.Column="5" Grid.Row="12" x:Name="verticalOffset" Text="{Binding Path=VerticalOffsetText,Mode=TwoWay}"/>
         
 
-		<ScrollViewer Grid.Column="10" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="16" HorizontalScrollBarVisibility="Visible">
+		<ScrollViewer Grid.Column="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="15" HorizontalScrollBarVisibility="Visible">
             <Image x:Name="ImageFromFile"/>
         </ScrollViewer>
 
