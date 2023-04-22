@@ -28,7 +28,7 @@ namespace CollisionEditor2.Views
         private const int tileMapBorderWidthWithoutScrollBar = 300;
         private const int tileMapScrollBarWidth = 18;
 
-        private bool isTileEditorMode = true;
+        private bool isTileEditorMode = false;
         private bool isPointerInRectanglesGrid = false;
         private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
