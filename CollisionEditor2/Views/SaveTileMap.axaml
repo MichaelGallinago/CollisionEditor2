@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollisionEditor2.Views"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="400" Width="500" MinWidth="500" Height="400" MinHeight="400"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500" Width="500" MinWidth="500" Height="500" MinHeight="500"
         x:Class="CollisionEditor2.Views.SaveTileMap"
         Title="SaveTileMap"
         FontFamily="Consolas"
@@ -34,6 +34,10 @@
 			<RowDefinition Height="30"/>
 			<RowDefinition Height="5"/>
 			<RowDefinition Height="20"/>
+			<RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+
 			<RowDefinition Height="30"/>
 			<RowDefinition/>
 			<RowDefinition Height="5"/>
