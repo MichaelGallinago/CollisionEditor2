@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
 using System;
+using DynamicData;
 
 namespace CollisionEditor2.Models;
 
@@ -220,6 +221,8 @@ public class TileSet
             colorValues[alphaOnPositionIndex] = (byte)(colorValues[alphaOnPositionIndex] == 0 ? 255 : 0);
         }
 
+        WidthMap.Replace(WidthMap[tileIndex],   new byte[TileSize.Width]);
+        HeightMap.Replace(HeightMap[tileIndex], new byte[TileSize.Height]);
         CalculateCollisionArrays(tileIndex, colorValues);
 
         EndBitmapEdit(tile, colorValues, ptr, bitmapData);
