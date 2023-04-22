@@ -199,6 +199,7 @@ namespace CollisionEditor2.Views
             {
                 isTileEditorMode = false;
                 ModSwitchButton.Content = "Angle mode";
+                DrawRedLine();
             }
             else
             {
