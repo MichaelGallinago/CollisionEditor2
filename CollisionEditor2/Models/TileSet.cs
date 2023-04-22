@@ -4,7 +4,6 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
 using System;
-using Microsoft.CodeAnalysis.Text;
 
 namespace CollisionEditor2.Models;
 
@@ -32,15 +31,8 @@ public class TileSet
 
     private Bitmap RecolorTileMap(Bitmap tileMap)
     {
-        BitmapData bitmapData = tileMap.LockBits(
-            new Rectangle(0, 0, tileMap.Width, tileMap.Height), 
-            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+        byte[] colorValues = BeginBitmapEdit(tileMap, TileSize, out nint ptr, out BitmapData bitmapData);
 
-        IntPtr ptr = bitmapData.Scan0;
-        int bytes = Math.Abs(bitmapData.Stride) * TileSize.Height;
-        var colorValues = new byte[bytes];
-
-        Marshal.Copy(ptr, colorValues, 0, bytes);
         for (int i = 0; i < colorValues.Length; i++)
         {
             if (i % 4 == 3)
@@ -53,9 +45,8 @@ public class TileSet
             }
             colorValues[i] = 0;
         }
-        Marshal.Copy(colorValues, 0, ptr, bytes);
 
-        tileMap.UnlockBits(bitmapData);
+        EndBitmapEdit(tileMap, colorValues, ptr, bitmapData);
 
         return tileMap;
     }
@@ -94,29 +85,21 @@ public class TileSet
             WidthMap.Add(new byte[TileSize.Height]);
             HeightMap.Add(new byte[TileSize.Width]);
 
-            BitmapData bitmapData = Tiles[i].LockBits(
-                new Rectangle(0, 0, TileSize.Width, TileSize.Height),
-                ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            byte[] colorValues = BeginBitmapEdit(Tiles[i], TileSize, out nint ptr, out BitmapData bitmapData);
 
-            IntPtr ptr = bitmapData.Scan0;
-            int bytes = Math.Abs(bitmapData.Stride) * TileSize.Height;
-            var colorValues = new byte[bytes];
-
-            Marshal.Copy(ptr, colorValues, 0, bytes);
             for (int x = 0; x < TileSize.Width; x++)
             {
                 for (int y = 0; y < TileSize.Height; y++)
                 {
-                    if (colorValues[(y * TileSize.Width + x) * 4 + 3] > 0)
+                    if (colorValues[GetAlphaIndex(x, y)] > 0)
                     {
                         WidthMap[i][y]++;
                         HeightMap[i][x]++;
                     }
                 }
             }
-            Marshal.Copy(colorValues, 0, ptr, bytes);
 
-            Tiles[i].UnlockBits(bitmapData);
+            EndBitmapEdit(Tiles[i], colorValues, ptr, bitmapData);
         }
     }
 
@@ -206,15 +189,7 @@ public class TileSet
     {
         Bitmap tile = Tiles[tileIndex];
 
-        BitmapData bitmapData = tile.LockBits(
-            new Rectangle(0, 0, TileSize.Width, TileSize.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-        IntPtr ptr = bitmapData.Scan0;
-        int bytes = Math.Abs(bitmapData.Stride) * TileSize.Height;
-        var colorValues = new byte[bytes];
-
-        Marshal.Copy(ptr, colorValues, 0, bytes);
+        byte[] colorValues = BeginBitmapEdit(tile, TileSize, out nint ptr, out BitmapData bitmapData);
 
         if (isLeftButtonPressed)
         {
@@ -240,9 +215,28 @@ public class TileSet
             colorValues[alphaOnPositionIndex] = (byte)(colorValues[alphaOnPositionIndex] == 0 ? 255 : 0);
         }
 
-        Marshal.Copy(colorValues, 0, ptr, bytes);
+        EndBitmapEdit(tile, colorValues, ptr, bitmapData);
+    }
 
-        tile.UnlockBits(bitmapData);
+    private byte[] BeginBitmapEdit(Bitmap bitmap, Size areaSize, out nint ptr, out BitmapData bitmapData)
+    {
+        bitmapData = bitmap.LockBits(
+            new Rectangle(0, 0, areaSize.Width, areaSize.Height),
+            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+        ptr = bitmapData.Scan0;
+        int bytes = Math.Abs(bitmapData.Stride) * areaSize.Height;
+        var colorValues = new byte[bytes];
+
+        Marshal.Copy(ptr, colorValues, 0, bytes);
+
+        return colorValues;
+    }
+
+    private void EndBitmapEdit(Bitmap bitmap, byte[] colorValues, nint ptr, BitmapData bitmapData)
+    {
+        Marshal.Copy(colorValues, 0, ptr, colorValues.Length);
+        bitmap.UnlockBits(bitmapData);
     }
 
     private int GetAlphaIndex(int positionX, int positionY)
