@@ -193,17 +193,17 @@ namespace CollisionEditor2.Views
             LastSelectedTile = WindowMain.SelectedTile;
         }
 
-        private void ModSwitchButton(object? sender, RoutedEventArgs e)
+        private void ModSwitchButtonClick(object? sender, RoutedEventArgs e)
         {
             if (isTileEditorMode)
             {
                 isTileEditorMode = false;
-                Content = "Angle mode";
+                ModSwitchButton.Content = "Angle mode";
             }
             else
             {
                 isTileEditorMode = true;
-                Content = "Editor mode";
+                ModSwitchButton.Content = "Editor mode";
             }
         }
 

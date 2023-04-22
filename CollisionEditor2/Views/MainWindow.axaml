@@ -20,8 +20,8 @@
             <RowDefinition Height="5*"  />
             <RowDefinition Height="5*"  />
             <RowDefinition Height="64*" />
-            <RowDefinition Height="154*"/>
-            <RowDefinition Height="24*" />
+            <RowDefinition Height="149*"/>
+            <RowDefinition Height="29*" />
             <RowDefinition Height="4*" />
             <RowDefinition Height="8*"  />
             <RowDefinition Height="20*" />
@@ -100,7 +100,7 @@
 			</MenuItem>
 		</Menu>
         
-        <Button Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="4" Content="Angle mode" Click="ModSwitchButton"/>
+        <Button x:Name="ModSwitchButton" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="4" Content="Angle mode" Click="ModSwitchButtonClick"/>
 
         <UniformGrid x:Name="TileGrid" Grid.Column="1" Grid.Row="4" Height="128" Width="128" Grid.ColumnSpan="11"
                      RenderOptions.BitmapInterpolationMode="Default"/>
