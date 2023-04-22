@@ -87,19 +87,24 @@ public class TileSet
 
             byte[] colorValues = BeginBitmapEdit(Tiles[i], TileSize, out nint ptr, out BitmapData bitmapData);
 
-            for (int x = 0; x < TileSize.Width; x++)
-            {
-                for (int y = 0; y < TileSize.Height; y++)
-                {
-                    if (colorValues[GetAlphaIndex(x, y)] > 0)
-                    {
-                        WidthMap[i][y]++;
-                        HeightMap[i][x]++;
-                    }
-                }
-            }
+            CalculateCollisionArrays(i, colorValues);
 
             EndBitmapEdit(Tiles[i], colorValues, ptr, bitmapData);
+        }
+    }
+
+    private void CalculateCollisionArrays(int tileIndex, byte[] colorValues)
+    {
+        for (int x = 0; x < TileSize.Width; x++)
+        {
+            for (int y = 0; y < TileSize.Height; y++)
+            {
+                if (colorValues[GetAlphaIndex(x, y)] > 0)
+                {
+                    WidthMap[tileIndex][y]++;
+                    HeightMap[tileIndex][x]++;
+                }
+            }
         }
     }
 
@@ -214,6 +219,8 @@ public class TileSet
             int alphaOnPositionIndex = GetAlphaIndex(tilePosition.X, tilePosition.Y);
             colorValues[alphaOnPositionIndex] = (byte)(colorValues[alphaOnPositionIndex] == 0 ? 255 : 0);
         }
+
+        CalculateCollisionArrays(tileIndex, colorValues);
 
         EndBitmapEdit(tile, colorValues, ptr, bitmapData);
     }
