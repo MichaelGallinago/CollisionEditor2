@@ -204,6 +204,9 @@ namespace CollisionEditor2.Views
             {
                 isTileEditorMode = true;
                 ModSwitchButton.Content = "Editor mode";
+
+                canvasForLine.Children.Clear();
+                RectanglesGrid.Children.Clear();
             }
         }
 
