@@ -258,8 +258,13 @@ public class TileSet
         return first.ToArgb() == second.ToArgb();
     }
 
-    public Bitmap SetTile(int tileIndex, Bitmap tile)
+    public void AddTile(int tileIndex)
     {
-        return Tiles[tileIndex] = tile;
+        Tiles.Insert(tileIndex, new Bitmap(TileSize.Width, TileSize.Height));
+    }
+
+    public void RemoveTile(int tileIndex)
+    {
+        Tiles.RemoveAt(tileIndex);
     }
 }
