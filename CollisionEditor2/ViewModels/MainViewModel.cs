@@ -583,6 +583,11 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         TileSet.TileChangeLine(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, window);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        Border newTile = GetTile(SelectedTile);
+        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
+        window.TileMapGrid.Children[SelectedTile]=newTile;
     }
 
     private void Help()
