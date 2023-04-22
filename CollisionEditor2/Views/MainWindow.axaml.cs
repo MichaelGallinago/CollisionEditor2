@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
+using System.Net.Mime;
 using Avalonia.Interactivity;
 
 namespace CollisionEditor2.Views
@@ -192,6 +193,20 @@ namespace CollisionEditor2.Views
             LastSelectedTile = WindowMain.SelectedTile;
         }
 
+        private void ModSwitchButton(object? sender, RoutedEventArgs e)
+        {
+            if (isTileEditorMode)
+            {
+                isTileEditorMode = false;
+                Content = "Angle mode";
+            }
+            else
+            {
+                isTileEditorMode = true;
+                Content = "Editor mode";
+            }
+        }
+
         public void WindowSizeChanged(Size size)
         {
             int countOfTiles = WindowMain.TileSet.Tiles.Count;
@@ -268,16 +283,6 @@ namespace CollisionEditor2.Views
             DrawRedLine();
         }
 
-        private void Button_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (isTileEditorMode)
-            {
-                isTileEditorMode= false;
-            }
-            else
-            {
-                isTileEditorMode = true;
-            }
-        }
+        
     }
 }
