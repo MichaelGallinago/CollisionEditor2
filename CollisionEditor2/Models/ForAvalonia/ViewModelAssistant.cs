@@ -38,7 +38,7 @@ public class ViewModelAssistant
             Avalonia.Platform.PixelFormat.Bgra8888,
             Avalonia.Platform.AlphaFormat.Premul,
             bitmapData.Scan0,
-        new Avalonia.PixelSize(bitmapData.Width, bitmapData.Height),
+            new Avalonia.PixelSize(bitmapData.Width, bitmapData.Height),
             new Avalonia.Vector(dpi, dpi),
             bitmapData.Stride);
 
