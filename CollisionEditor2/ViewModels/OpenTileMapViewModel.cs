@@ -167,8 +167,8 @@ namespace CollisionEditor2.ViewModels
             SaveCommand = ReactiveCommand.Create(Save);
 
             this.window = window;
-            tileHeight = minTileHeight;
-            tileWidth = minTileWidth;
+            tileHeight = 16;
+            tileWidth = 16;
             
             window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath);
         }
