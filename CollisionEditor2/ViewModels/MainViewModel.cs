@@ -189,6 +189,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
+        window.ModSwitchButton.IsEnabled = true;
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
@@ -256,7 +257,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
-
+        window.ModSwitchButton.IsEnabled = true;
 
         TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
@@ -413,6 +414,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SelectTileTextBox.IsEnabled = false;
         window.SelectTileButton.IsEnabled  = false;
+        window.ModSwitchButton.IsEnabled = false;
+
         window.TextBoxByteAngle.IsEnabled  = false;
         window.TextBoxHexAngle.IsEnabled   = false;
 
