@@ -37,8 +37,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> SelectTileCommand { get; }
     public ReactiveCommand<Unit, Unit> AngleIncrementCommand { get; }
     public ReactiveCommand<Unit, Unit> AngleDecrementCommand { get; }
+    public ReactiveCommand<Unit, Unit> DeleteTileCommand { get; }
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
+    
 
     public string ByteAngleText
     {
@@ -162,6 +164,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
         SelectTileCommand     = ReactiveCommand.Create(SelectTile);
 
+        DeleteTileCommand     = ReactiveCommand.Create(DeleteTile);
+
         ExitAppCommand = ReactiveCommand.Create(ExitApp);
 
         HelpCommand = ReactiveCommand.Create(Help);
@@ -190,6 +194,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
         window.ModSwitchButton.IsEnabled = true;
+        window.DeleteTileButton.IsEnabled = true;
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
@@ -258,6 +263,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
         window.ModSwitchButton.IsEnabled = true;
+        window.DeleteTileButton.IsEnabled = true;
 
         TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
@@ -415,6 +421,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.SelectTileTextBox.IsEnabled = false;
         window.SelectTileButton.IsEnabled  = false;
         window.ModSwitchButton.IsEnabled = false;
+        window.DeleteTileButton.IsEnabled = false;
 
         window.TextBoxByteAngle.IsEnabled  = false;
         window.TextBoxHexAngle.IsEnabled   = false;
@@ -512,6 +519,18 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         };
 
         return border;
+    }
+
+    public void DeleteTile()
+    {   
+        
+        TileSet.RemoveTile(SelectedTile);
+        
+
+        TileGridUpdate(TileSet, SelectedTile, window);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        TileMapGridReset();
     }
 
     private void ExitApp()

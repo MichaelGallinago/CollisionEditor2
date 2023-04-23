@@ -235,6 +235,9 @@ namespace CollisionEditor2.Views
             canvasForLine.Width  = TileGridSize.Width;
             canvasForLine.Height = TileGridSize.Height;
 
+            ModSwitchButton.Height = actualHeightTextAndButtons+5;
+            ModSwitchButton.FontSize = actualFontSize;
+
             Heights.Height   = actualHeightTextAndButtons;
             Heights.FontSize = actualFontSize;
 
@@ -283,6 +286,10 @@ namespace CollisionEditor2.Views
             SelectTileTextBox.FontSize = actualFontSize;
             SelectTileButton.Height    = actualHeightTextAndButtons - 2;
             SelectTileButton.FontSize  = actualFontSize;
+            AddTileButton.Height       = actualHeightTextAndButtons - 2;
+            AddTileButton.FontSize     = actualFontSize;
+            DeleteTileButton.Height       = actualHeightTextAndButtons - 2;
+            DeleteTileButton.FontSize     = actualFontSize;
 
             DrawRedLine();
         }
