@@ -531,6 +531,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
         window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
         TileMapGridReset();
+        SelectTile();
     }
 
     private void ExitApp()
