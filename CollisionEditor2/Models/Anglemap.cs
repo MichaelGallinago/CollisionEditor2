@@ -52,4 +52,14 @@ public class AngleMap
     {
         return Values[tileIndex] = (byte)(Values[tileIndex] + value);
     }
+
+    public void InsertAngle(int tileIndex)
+    {
+        Values.Insert(tileIndex, 0);
+    }
+
+    public void RemoveAngle(int tileIndex)
+    {
+        Values.RemoveAt(tileIndex);
+    }
 }
