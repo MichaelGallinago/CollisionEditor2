@@ -456,7 +456,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         if (SelectedTile > TileSet.Tiles.Count - 1)
         {
             SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTile));
+            OnPropertyChanged(nameof(SelectedTileText));
         }
         
         //TODO
@@ -522,16 +522,30 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     public void DeleteTile()
-    {   
+    {
         
         TileSet.RemoveTile(SelectedTile);
-        
+        AngleMap.RemoveAngle(SelectedTile);
+       
+        if (SelectedTile > TileSet.Tiles.Count - 1)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
 
         TileGridUpdate(TileSet, SelectedTile, window);
         window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
         window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        window.DrawRedLine();
+        window.RectanglesGrid.Children.Clear();
+
         TileMapGridReset();
-        SelectTile();
+        TileMapGridUpdate(TileSet.Tiles.Count);
+
+        Border newTile = GetTile(SelectedTile);
+        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
+        window.TileMapGrid.Children[SelectedTile] = newTile;
     }
 
     private void ExitApp()
