@@ -159,7 +159,7 @@
                  CornerRadius="3,3,3,3" />
 		
 		<Button  Grid.Column="17" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="AddTileButton" Padding="2,0,3,0"
-				  IsEnabled="False" MinHeight="20" Content="Add" Command="{Binding SelectTileCommand}" BorderThickness="1" BorderBrush="Silver"
+				  IsEnabled="False" MinHeight="20" Content="Add" Command="{Binding AddTileCommand}" BorderThickness="1" BorderBrush="Silver"
 				  CornerRadius="3,3,3,3" HorizontalAlignment="Center"/>
 		<Button  Grid.Column="18" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="DeleteTileButton" Padding="2,0,3,0"
 				  IsEnabled="False" MinHeight="20" Content="Del" Command="{Binding DeleteTileCommand}" BorderThickness="1" BorderBrush="Silver"

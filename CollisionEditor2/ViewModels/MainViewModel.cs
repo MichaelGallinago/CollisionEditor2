@@ -37,6 +37,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> SelectTileCommand { get; }
     public ReactiveCommand<Unit, Unit> AngleIncrementCommand { get; }
     public ReactiveCommand<Unit, Unit> AngleDecrementCommand { get; }
+    public ReactiveCommand<Unit, Unit> AddTileCommand { get; }
     public ReactiveCommand<Unit, Unit> DeleteTileCommand { get; }
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
@@ -164,6 +165,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
         SelectTileCommand     = ReactiveCommand.Create(SelectTile);
 
+        AddTileCommand        = ReactiveCommand.Create(AddTile);
         DeleteTileCommand     = ReactiveCommand.Create(DeleteTile);
 
         ExitAppCommand = ReactiveCommand.Create(ExitApp);
@@ -520,18 +522,31 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         return border;
     }
+    public void AddTile()
+    {
+        TileSet.InsertTile(SelectedTile);
+        AngleMap.InsertAngle(SelectedTile);
+
+    }
 
     public void DeleteTile()
     {
         
         TileSet.RemoveTile(SelectedTile);
         AngleMap.RemoveAngle(SelectedTile);
-       
+
+        window.TileMapGrid.Children.RemoveAt(SelectedTile);
+        if (TileSet.Tiles.Count==0)
+        {
+            MenuUnloadAll();
+        }
+
         if (SelectedTile > TileSet.Tiles.Count - 1)
         {
             SelectedTile = TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(SelectedTileText));
         }
+        
 
         TileGridUpdate(TileSet, SelectedTile, window);
         window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
@@ -540,7 +555,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.DrawRedLine();
         window.RectanglesGrid.Children.Clear();
 
-        TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
 
         Border newTile = GetTile(SelectedTile);
