@@ -22,7 +22,7 @@
             <RowDefinition Height="64*" />
             <RowDefinition Height="149*"/>
             <RowDefinition Height="29*" />
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*"  />
             <RowDefinition Height="8*"  />
             <RowDefinition Height="20*" />
             <RowDefinition Height="4*"  />
@@ -57,8 +57,8 @@
             <ColumnDefinition Width="75*" />
             <ColumnDefinition Width="32*" />
 			<ColumnDefinition Width="32*" />
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="5*"  />
+            <ColumnDefinition Width="5*"  />
         </Grid.ColumnDefinitions>
         
         <Border Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="12" Grid.RowSpan="16" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
