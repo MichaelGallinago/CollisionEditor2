@@ -527,6 +527,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     }
     public void AddTile()
     {
+        if (SelectedTile > TileSet.Tiles.Count - 1)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
+
         SelectedTile += 1;
         OnPropertyChanged(nameof(SelectedTileText));
 
@@ -542,7 +548,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public void DeleteTile()
     {
-        
+        if (SelectedTile > TileSet.Tiles.Count - 1)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
+
         TileSet.RemoveTile(SelectedTile);
         AngleMap.RemoveAngle(SelectedTile);
 
@@ -566,7 +577,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         
         TileMapGridUpdate(TileSet.Tiles.Count);
         SelectTile();
-
 
         //TileGridUpdate(TileSet, SelectedTile, window);
         //window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
