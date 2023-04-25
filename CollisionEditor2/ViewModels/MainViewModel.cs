@@ -521,6 +521,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             SelectedTile = TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(SelectedTileText));
         }
+
         if (SelectedTile < window.LastSelectedTile)
         {
             window.LastSelectedTile += 1;
@@ -562,8 +563,11 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             OnPropertyChanged(nameof(SelectedTileText));
         }
 
-        window.LastSelectedTile= SelectedTile;
-        
+        if (SelectedTile < window.LastSelectedTile)
+        {
+            window.LastSelectedTile -= 1;
+        }
+
         TileMapGridUpdate(TileSet.Tiles.Count);
         SelectTile();
 
