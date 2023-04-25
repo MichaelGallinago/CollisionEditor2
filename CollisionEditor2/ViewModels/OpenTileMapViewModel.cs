@@ -6,6 +6,7 @@ using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
 using System.Reactive;
+using System.Drawing;
 using System;
 using Avalonia.Controls;
 using ReactiveUI;
@@ -29,7 +30,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intTileHeight);
 
-                if (!isNumber || intTileHeight< minTileHeight)
+                if (!isNumber || intTileHeight< minTileHeight || bitmapSize.Height< intTileHeight)
                 {
                     textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
                     CheckErrors();
@@ -68,7 +69,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intVerticalSeparation);
 
-                if (!isNumber || intVerticalSeparation < 0)
+                if (!isNumber || intVerticalSeparation < 0 || bitmapSize.Height < tileHeight + intVerticalSeparation)
                 {
                     textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
                     CheckErrors();
@@ -107,7 +108,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intVerticalOffset);
 
-                if (!isNumber || intVerticalOffset <0)
+                if (!isNumber || intVerticalOffset <0 || bitmapSize.Height < tileHeight + intVerticalOffset + verticalSeparation)
                 {
                     textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
                     CheckErrors();
@@ -157,6 +158,8 @@ namespace CollisionEditor2.ViewModels
         private int verticalOffset;
         private int horizontalOffset;
 
+        private Size bitmapSize;
+
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public OpenTileMap window;
@@ -170,7 +173,7 @@ namespace CollisionEditor2.ViewModels
             tileHeight = 16;
             tileWidth = 16;
             
-            window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath);
+            window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath, out Size bitmapSize);
         }
 
         private void Save()

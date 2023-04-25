@@ -55,8 +55,8 @@ public class TileSet
     private void CreateTiles(Bitmap tileMap, Size separate, Size offset)
     {
         var cellCount = new Vector2<int>(
-            (tileMap.Width  - offset.Width)  / TileSize.Width,
-            (tileMap.Height - offset.Height) / TileSize.Height);
+            (tileMap.Width  - offset.Width)  / (TileSize.Width + separate.Width),
+            (tileMap.Height - offset.Height) / (TileSize.Height + separate.Height));
 
         for (int y = 0; y < cellCount.Y; y++)
         {

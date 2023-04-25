@@ -37,6 +37,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> SelectTileCommand { get; }
     public ReactiveCommand<Unit, Unit> AngleIncrementCommand { get; }
     public ReactiveCommand<Unit, Unit> AngleDecrementCommand { get; }
+    public ReactiveCommand<Unit, Unit> AddTileCommand { get; }
     public ReactiveCommand<Unit, Unit> DeleteTileCommand { get; }
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
@@ -164,6 +165,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
         SelectTileCommand     = ReactiveCommand.Create(SelectTile);
 
+        AddTileCommand        = ReactiveCommand.Create(AddTile);
         DeleteTileCommand     = ReactiveCommand.Create(DeleteTile);
 
         ExitAppCommand = ReactiveCommand.Create(ExitApp);
@@ -193,8 +195,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
-        window.ModSwitchButton.IsEnabled = true;
-        window.DeleteTileButton.IsEnabled = true;
+        window.ModSwitchButton.IsEnabled   = true;
+        window.AddTileButton.IsEnabled     = true;
+        window.DeleteTileButton.IsEnabled  = true;
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
@@ -262,8 +265,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
-        window.ModSwitchButton.IsEnabled = true;
-        window.DeleteTileButton.IsEnabled = true;
+        window.ModSwitchButton.IsEnabled   = true;
+        window.AddTileButton.IsEnabled     = true;
+        window.DeleteTileButton.IsEnabled  = true;
 
         TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
@@ -420,8 +424,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SelectTileTextBox.IsEnabled = false;
         window.SelectTileButton.IsEnabled  = false;
-        window.ModSwitchButton.IsEnabled = false;
-        window.DeleteTileButton.IsEnabled = false;
+        window.ModSwitchButton.IsEnabled   = false;
+        window.AddTileButton.IsEnabled     = false;
+        window.DeleteTileButton.IsEnabled  = false;
 
         window.TextBoxByteAngle.IsEnabled  = false;
         window.TextBoxHexAngle.IsEnabled   = false;
@@ -520,18 +525,39 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         return border;
     }
+    public void AddTile()
+    {
+        SelectedTile += 1;
+        OnPropertyChanged(nameof(SelectedTileText));
+
+        TileSet.InsertTile(SelectedTile);
+        AngleMap.InsertAngle(SelectedTile);
+        
+        Border newTile = GetTile(SelectedTile);
+        window.TileMapGrid.Children.Insert(SelectedTile, newTile);
+        
+        TileMapGridUpdate(TileSet.Tiles.Count);
+        SelectTile();
+    }
 
     public void DeleteTile()
     {
         
         TileSet.RemoveTile(SelectedTile);
         AngleMap.RemoveAngle(SelectedTile);
-       
+
+        window.TileMapGrid.Children.RemoveAt(SelectedTile);
+        if (TileSet.Tiles.Count==0)
+        {
+            MenuUnloadAll();
+        }
+
         if (SelectedTile > TileSet.Tiles.Count - 1)
         {
             SelectedTile = TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(SelectedTileText));
         }
+        
 
         TileGridUpdate(TileSet, SelectedTile, window);
         window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
@@ -540,7 +566,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.DrawRedLine();
         window.RectanglesGrid.Children.Clear();
 
-        TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
 
         Border newTile = GetTile(SelectedTile);

@@ -10,6 +10,7 @@ using System;
 using Avalonia.Controls;
 using ReactiveUI;
 using CollisionEditor2.Models.ForAvalonia;
+using System.Security.Cryptography;
 
 namespace CollisionEditor2.ViewModels
 {
@@ -20,6 +21,7 @@ namespace CollisionEditor2.ViewModels
         private const int minTileWidth = 4;
 
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+        public ReactiveCommand<Unit, Unit> AddGroupCommand { get; }
         public string TileHeightText
         {
             get => tileHeight.ToString();
@@ -185,18 +187,25 @@ namespace CollisionEditor2.ViewModels
         {
             textboxValidator = new TextboxValidator();
             textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
-            SaveCommand = ReactiveCommand.Create(Save);
+
+            AddGroupCommand = ReactiveCommand.Create(AddGroup);
+            SaveCommand     = ReactiveCommand.Create(Save);
 
             this.window = window;
             tileHeight = minTileHeight;
             tileWidth = minTileWidth;
         }
 
+        private void AddGroup()
+        {
+           
+        }
         private void Save()
         {
 
             window.Close();
         }
+
 
         public async void OurMessageBox(string message)
         {

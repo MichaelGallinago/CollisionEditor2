@@ -47,8 +47,10 @@ public class ViewModelAssistant
         return avaloniaBitmap;
     }
 
-    public static Avalonia.Media.Imaging.Bitmap GetBitmap(string path)
+    public static Avalonia.Media.Imaging.Bitmap GetBitmap(string path, out Size size)
     {
+        var Bitmap = new Bitmap(path);
+        size = new Size(Bitmap.Width, Bitmap.Height);
         return BitmapConvert(new Bitmap(path));
     }
 }
