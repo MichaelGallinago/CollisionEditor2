@@ -521,6 +521,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             SelectedTile = TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(SelectedTileText));
         }
+        if (SelectedTile < window.LastSelectedTile)
+        {
+            window.LastSelectedTile += 1;
+        }
 
         SelectedTile += 1;
         OnPropertyChanged(nameof(SelectedTileText));
