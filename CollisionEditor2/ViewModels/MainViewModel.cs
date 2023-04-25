@@ -557,7 +557,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             SelectedTile = TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(SelectedTileText));
         }
-        
+
+        window.LastSelectedTile= SelectedTile;
 
         TileGridUpdate(TileSet, SelectedTile, window);
         window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
