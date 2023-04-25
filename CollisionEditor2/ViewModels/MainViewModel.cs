@@ -195,8 +195,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
-        window.ModSwitchButton.IsEnabled = true;
-        window.DeleteTileButton.IsEnabled = true;
+        window.ModSwitchButton.IsEnabled   = true;
+        window.AddTileButton.IsEnabled     = true;
+        window.DeleteTileButton.IsEnabled  = true;
 
         TileMapGridUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
@@ -264,8 +265,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
-        window.ModSwitchButton.IsEnabled = true;
-        window.DeleteTileButton.IsEnabled = true;
+        window.ModSwitchButton.IsEnabled   = true;
+        window.AddTileButton.IsEnabled     = true;
+        window.DeleteTileButton.IsEnabled  = true;
 
         TileMapGridReset();
         TileMapGridUpdate(TileSet.Tiles.Count);
@@ -422,8 +424,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SelectTileTextBox.IsEnabled = false;
         window.SelectTileButton.IsEnabled  = false;
-        window.ModSwitchButton.IsEnabled = false;
-        window.DeleteTileButton.IsEnabled = false;
+        window.ModSwitchButton.IsEnabled   = false;
+        window.AddTileButton.IsEnabled     = false;
+        window.DeleteTileButton.IsEnabled  = false;
 
         window.TextBoxByteAngle.IsEnabled  = false;
         window.TextBoxHexAngle.IsEnabled   = false;
@@ -526,7 +529,15 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         TileSet.InsertTile(SelectedTile);
         AngleMap.InsertAngle(SelectedTile);
+        
+        SelectedTile += 1;
+        OnPropertyChanged(nameof(SelectedTileText));
 
+        Border newTile = GetTile(SelectedTile);
+        window.TileMapGrid.Children.Insert(SelectedTile, newTile);
+
+        TileMapGridUpdate(TileSet.Tiles.Count);
+        SelectTile();
     }
 
     public void DeleteTile()
