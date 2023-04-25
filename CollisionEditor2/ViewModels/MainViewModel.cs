@@ -527,15 +527,15 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     }
     public void AddTile()
     {
-        TileSet.InsertTile(SelectedTile);
-        AngleMap.InsertAngle(SelectedTile);
-        
         SelectedTile += 1;
         OnPropertyChanged(nameof(SelectedTileText));
 
+        TileSet.InsertTile(SelectedTile);
+        AngleMap.InsertAngle(SelectedTile);
+        
         Border newTile = GetTile(SelectedTile);
         window.TileMapGrid.Children.Insert(SelectedTile, newTile);
-
+        
         TileMapGridUpdate(TileSet.Tiles.Count);
         SelectTile();
     }
