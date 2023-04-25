@@ -38,6 +38,8 @@ namespace CollisionEditor2.ViewModels
                 }
                 
                 tileHeight = intTileHeight;
+
+                VerticalSeparationText = window.verticalSeparation.Text;
             }
         }
 
@@ -58,6 +60,7 @@ namespace CollisionEditor2.ViewModels
                 }
 
                 tileWidth = intTileWidth;
+                
             }
         }
         public string VerticalSeparationText
@@ -65,6 +68,7 @@ namespace CollisionEditor2.ViewModels
             get => verticalSeparation.ToString();
             set
             {
+                OnPropertyChanged(VerticalSeparationText);
                 textboxValidator.ClearErrors(nameof(VerticalSeparationText));
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intVerticalSeparation);
