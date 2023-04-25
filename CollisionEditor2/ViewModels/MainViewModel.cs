@@ -464,19 +464,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             OnPropertyChanged(nameof(SelectedTileText));
         }
         
-        //TODO
-        //Border lastTile = GetTile(window.LastSelectedTile);
-
         ((Border)window.TileMapGrid.Children[window.LastSelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
-
-        //window.TileMapGrid.Children.RemoveAt(window.LastSelectedTile);
-        //window.TileMapGrid.Children.Insert(window.LastSelectedTile, lastTile);
-
-        //Border currentTile = GetTile(SelectedTile);
-        //currentTile.BorderBrush = new SolidColorBrush(Colors.Red);
-
-        //window.TileMapGrid.Children.RemoveAt(SelectedTile);
-        //window.TileMapGrid.Children.Insert(SelectedTile, currentTile);
 
         ((Border)window.TileMapGrid.Children[SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
 
