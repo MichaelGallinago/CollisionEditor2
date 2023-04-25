@@ -30,7 +30,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intTileHeight);
 
-                if (!isNumber || intTileHeight< minTileHeight || bitmapSize.Height< intTileHeight)
+                if (!isNumber || intTileHeight< minTileHeight || bitmapSize.Height< intTileHeight|| intTileHeight>32)
                 {
                     textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
                     CheckErrors();
@@ -50,7 +50,7 @@ namespace CollisionEditor2.ViewModels
                 CheckErrors();
                 bool isNumber = int.TryParse(value, out int intTileWidth);
 
-                if (!isNumber || intTileWidth < minTileWidth || bitmapSize.Width < intTileWidth)
+                if (!isNumber || intTileWidth < minTileWidth || bitmapSize.Width < intTileWidth || intTileWidth > 32)
                 {
                     textboxValidator.AddError(nameof(TileWidthText), "Wrong Tile Width!");
                     CheckErrors();
