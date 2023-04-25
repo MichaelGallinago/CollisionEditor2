@@ -463,12 +463,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             SelectedTile = TileSet.Tiles.Count - 1;
             OnPropertyChanged(nameof(SelectedTileText));
         }
-        
+
         ((Border)window.TileMapGrid.Children[window.LastSelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
 
         ((Border)window.TileMapGrid.Children[SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
 
         window.LastSelectedTile = SelectedTile;
+
         TileGridUpdate(TileSet, SelectedTile, window);
         window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
         window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
@@ -558,20 +559,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         window.LastSelectedTile= SelectedTile;
-
-        //Border newTile = GetTile(SelectedTile);
-        //newTile.BorderBrush = new SolidColorBrush(Colors.Red);
-        //window.TileMapGrid.Children[SelectedTile] = newTile;
         
         TileMapGridUpdate(TileSet.Tiles.Count);
         SelectTile();
 
-        //TileGridUpdate(TileSet, SelectedTile, window);
-        //window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        //window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
-        //ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
-        //window.DrawRedLine();
-        //window.RectanglesGrid.Children.Clear();
     }
 
     private void ExitApp()
