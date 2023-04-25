@@ -560,18 +560,20 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.LastSelectedTile= SelectedTile;
 
-        TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
-        window.DrawRedLine();
-        window.RectanglesGrid.Children.Clear();
-
+        //Border newTile = GetTile(SelectedTile);
+        //newTile.BorderBrush = new SolidColorBrush(Colors.Red);
+        //window.TileMapGrid.Children[SelectedTile] = newTile;
+        
         TileMapGridUpdate(TileSet.Tiles.Count);
+        SelectTile();
 
-        Border newTile = GetTile(SelectedTile);
-        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
-        window.TileMapGrid.Children[SelectedTile] = newTile;
+
+        //TileGridUpdate(TileSet, SelectedTile, window);
+        //window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
+        //window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        //ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        //window.DrawRedLine();
+        //window.RectanglesGrid.Children.Clear();
     }
 
     private void ExitApp()
