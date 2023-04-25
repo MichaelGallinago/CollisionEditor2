@@ -257,10 +257,14 @@ public class TileSet
     public void InsertTile(int tileIndex)
     {
         Tiles.Insert(tileIndex, new Bitmap(TileSize.Width, TileSize.Height));
+        WidthMap.Insert(tileIndex,  new byte[TileSize.Width]);
+        HeightMap.Insert(tileIndex, new byte[TileSize.Height]);
     }
 
     public void RemoveTile(int tileIndex)
     {
         Tiles.RemoveAt(tileIndex);
+        WidthMap.RemoveAt(tileIndex);
+        HeightMap.RemoveAt(tileIndex);
     }
 }
