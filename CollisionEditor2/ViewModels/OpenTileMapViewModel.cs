@@ -11,6 +11,7 @@ using System;
 using Avalonia.Controls;
 using ReactiveUI;
 using CollisionEditor2.Models.ForAvalonia;
+using System.Security.Cryptography;
 
 namespace CollisionEditor2.ViewModels
 {
@@ -23,24 +24,58 @@ namespace CollisionEditor2.ViewModels
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
         public string TileHeightText
         {
-            get => window.tileHeight.Text;
+            get => tileHeightString;
             set
             {
-                textboxValidator.ClearErrors(nameof(TileHeightText));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intTileHeight);
-
-                if (!isNumber || intTileHeight< minTileHeight || bitmapSize.Height< intTileHeight|| intTileHeight>32)
-                {
-                    textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
-                    CheckErrors();
-                    return;
-                }
-                
-                tileHeight = intTileHeight;
-                VerticalSeparationText = window.verticalSeparation.Text;
-                VerticalOffsetText = window.verticalOffset.Text;
+                tileHeightString = value;
+                VerticalSet();
             }
+        }
+
+        private void VerticalSet()
+        {
+            textboxValidator.ClearErrors(nameof(TileHeightText));
+            CheckErrors();
+            bool isNumberTileHeight = int.TryParse(TileHeightText, out int intTileHeight);
+
+            if (!isNumberTileHeight || intTileHeight < minTileHeight || bitmapSize.Height < intTileHeight || intTileHeight > 32)
+            {
+                textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
+                CheckErrors();
+                return;
+            }
+
+            tileHeight = intTileHeight;
+
+
+            textboxValidator.ClearErrors(nameof(VerticalSeparationText));
+            CheckErrors();
+
+            bool isNumberVerticalSeparation = int.TryParse(VerticalSeparationText, out int intVerticalSeparation);
+
+            if (!isNumberVerticalSeparation || intVerticalSeparation < 0 || bitmapSize.Height < tileHeight + intVerticalSeparation)
+            {
+                textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
+                CheckErrors();
+                return;
+            }
+
+            verticalSeparation = intVerticalSeparation;
+
+
+            textboxValidator.ClearErrors(nameof(VerticalOffsetText));
+            CheckErrors();
+
+            bool isNumberVerticalOffset = int.TryParse(VerticalOffsetText, out int intVerticalOffset);
+
+            if (!isNumberVerticalOffset || intVerticalOffset < 0 || bitmapSize.Height < tileHeight + intVerticalOffset + verticalSeparation)
+            {
+                textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
+                CheckErrors();
+                return;
+            }
+
+            verticalOffset = intVerticalOffset;
         }
 
         public string TileWidthText
@@ -65,25 +100,11 @@ namespace CollisionEditor2.ViewModels
         }
         public string VerticalSeparationText
         {
-            get => window.verticalSeparation.Text;
+            get => verticalSeparationString;
             set
             {
-                textboxValidator.ClearErrors(nameof(VerticalSeparationText));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intVerticalSeparation);
-                
-                //OurMessageBox(VerticalSeparationText+" "+intVerticalSeparation);
-                
-                if (!isNumber || intVerticalSeparation < 0 || bitmapSize.Height < tileHeight + intVerticalSeparation)
-                {
-                    textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
-                    CheckErrors();
-                    return;
-                }
-
-                verticalSeparation = intVerticalSeparation;
-                TileHeightText = window.tileHeight.Text;
-                VerticalOffsetText = window.verticalOffset.Text;
+                verticalSeparationString = value;
+                VerticalSet();
             }
         }
         public string HorizontalSeparationText
@@ -108,23 +129,11 @@ namespace CollisionEditor2.ViewModels
 
         public string VerticalOffsetText
         {
-            get => window.verticalOffset.Text;
+            get => verticalOffsetString;
             set
             {
-                textboxValidator.ClearErrors(nameof(VerticalOffsetText));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intVerticalOffset);
-
-                if (!isNumber || intVerticalOffset <0 || bitmapSize.Height < tileHeight + intVerticalOffset + verticalSeparation)
-                {
-                    textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
-                    CheckErrors();
-                    return;
-                }
-
-                verticalOffset = intVerticalOffset;
-                TileHeightText = window.tileHeight.Text;
-                VerticalSeparationText = window.verticalSeparation.Text;
+                verticalOffsetString = value;
+                VerticalSet();
             }
         }
         public string HorizontalOffsetText
@@ -167,6 +176,13 @@ namespace CollisionEditor2.ViewModels
         private int verticalOffset;
         private int horizontalOffset;
 
+        private string tileHeightString="16";
+        private string tileWidthString = "16";
+        private string verticalSeparationString = "0";
+        private string horizontalSeparationString = "0";
+        private string verticalOffsetString = "0";
+        private string horizontalOffsetString= "0";
+
         private Size bitmapSize;
 
         private readonly TextboxValidator textboxValidator;
@@ -179,11 +195,9 @@ namespace CollisionEditor2.ViewModels
             SaveCommand = ReactiveCommand.Create(Save);
 
             this.window = window;
-            window.tileHeight.Text = "16";
-            tileWidth  = 16;
 
-            window.verticalSeparation.Text = "0";
-            window.verticalOffset.Text = "0";
+            tileHeight = 16;
+            tileWidth  = 16;
 
             window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath, out Size bitmapSize);
             this.bitmapSize = bitmapSize;
@@ -219,7 +233,6 @@ namespace CollisionEditor2.ViewModels
         private void TextboxValidator_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
-            OnPropertyChanged(nameof(tileHeight));
         }
 
         public IEnumerable GetErrors(string? propertyName)

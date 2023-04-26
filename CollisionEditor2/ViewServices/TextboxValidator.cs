@@ -41,9 +41,9 @@ public class TextboxValidator : INotifyDataErrorInfo
     }
 
     public void ClearErrors(string propertyName)
-    {
+    {   
         if (propertyErrors.Remove(propertyName))
-        {
+        {   
             OnErrorsChanged(propertyName);
         }
     }
