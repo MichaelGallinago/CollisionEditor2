@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollisionEditor2.Views"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="650" Width="500" MinWidth="500" Height="650" MinHeight="650"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600" Width="500" MinWidth="500" Height="600" MinHeight="600"
         x:Class="CollisionEditor2.Views.SaveTileMap"
         Title="SaveTileMap"
         FontFamily="Consolas"
@@ -21,20 +21,20 @@
 
 			<RowDefinition Height="10"/>
 
+			<RowDefinition Height="15"/>
 			<RowDefinition Height="17"/>
-			<RowDefinition Height="17"/>
-			<RowDefinition Height="30"/>
+			<RowDefinition Height="25"/>
 
-			<RowDefinition Height="20"/>
+			<RowDefinition Height="10"/>
+
+			<RowDefinition Height="15"/>
+			<RowDefinition Height="17"/>
+			<RowDefinition Height="25"/>
+
+			<RowDefinition Height="10"/>
 
 			<RowDefinition Height="17"/>
-			<RowDefinition Height="17"/>
-			<RowDefinition Height="30"/>
-
-			<RowDefinition Height="20"/>
-
-			<RowDefinition Height="17"/>
-			<RowDefinition Height="30"/>
+			<RowDefinition Height="25"/>
 
 			<RowDefinition Height="5"/>
 
@@ -59,7 +59,7 @@
 
 			<RowDefinition Height="5"/>
 
-			<RowDefinition Height="10"/>
+			<RowDefinition Height="5"/>
 			<RowDefinition Height="30"/>
 
 			<RowDefinition/>
@@ -93,20 +93,20 @@
 
 		<TextBlock Grid.Column="3" Grid.Row="3" Text="Horizontal" FontSize="12"/>
 		<TextBlock Grid.Column="3" Grid.Row="4" Text="Separation:" FontSize="12"/>
-		<TextBox   Grid.Column="3" Grid.Row="5" x:Name="horizontalSeparation" Text="{Binding Path=HorizontalSeparationText,Mode=TwoWay}" MinHeight="1"/>
+		<TextBox   Grid.Column="3" Grid.Row="5" x:Name="horizontalSeparation" Text="{Binding Path=HorizontalSeparationText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 		<TextBlock Grid.Column="5" Grid.Row="3" Text="Vertical" FontSize="12"/>
 		<TextBlock Grid.Column="5" Grid.Row="4" Text="Separation:" FontSize="12"/>
-		<TextBox   Grid.Column="5" Grid.Row="5" x:Name="verticalSeparation" Text="{Binding Path=VerticalSeparationText,Mode=TwoWay}" MinHeight="1"/>
+		<TextBox   Grid.Column="5" Grid.Row="5" x:Name="verticalSeparation" Text="{Binding Path=VerticalSeparationText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 
 		<TextBlock Grid.Column="3" Grid.Row="7" Text="Horizontal" FontSize="12"/>
 		<TextBlock Grid.Column="3" Grid.Row="8" Text="Offset:" FontSize="12"/>
-		<TextBox   Grid.Column="3" Grid.Row="9" x:Name="horizontalOffset" Text="{Binding Path=HorizontalOffsetText,Mode=TwoWay}" MinHeight="1"/>
+		<TextBox   Grid.Column="3" Grid.Row="9" x:Name="horizontalOffset" Text="{Binding Path=HorizontalOffsetText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 		<TextBlock Grid.Column="5" Grid.Row="7" Text="Vertical" FontSize="12"/>
 		<TextBlock Grid.Column="5" Grid.Row="8" Text="Offset:" FontSize="12"/>
-		<TextBox   Grid.Column="5" Grid.Row="9" x:Name="verticalOffset" Text="{Binding Path=VerticalOffsetText,Mode=TwoWay}" MinHeight="1"/>
+		<TextBox   Grid.Column="5" Grid.Row="9" x:Name="verticalOffset" Text="{Binding Path=VerticalOffsetText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 
 		<TextBlock Grid.Column="3" Grid.Row="11" Grid.ColumnSpan="3" Text="Amount of columns:" FontSize="12"/>
-		<TextBox   Grid.Column="3" Grid.Row="12" Grid.ColumnSpan="3" x:Name="amountOfColumns" Text="{Binding Path=AmountOfColumnsText,Mode=TwoWay}" MinHeight="1"/>
+		<TextBox   Grid.Column="3" Grid.Row="12" Grid.ColumnSpan="3" x:Name="amountOfColumns" Text="{Binding Path=AmountOfColumnsText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 
 
 
@@ -114,15 +114,15 @@
 			<StackPanel>
 				<TextBlock Text="Color in RGBA" Margin="4,2,0,0"/>
 				<StackPanel Orientation="Horizontal" Margin="4,2,0,5">
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
+					<TextBox Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
+					<TextBox Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
+					<TextBox Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
+					<TextBox Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
 				</StackPanel>
 
 				<TextBlock Text="Offset in tiles" Margin="4,0,0,0" />
 
-				<TextBox Text="2" MinWidth="80" MaxWidth="80" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Margin="4,2,0,4" Padding="4,3,0,3"/>
+				<TextBox Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="80" MaxWidth="80" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Margin="4,2,0,4" Padding="4,3,0,3"/>
 			</StackPanel>
 		</Border>
 
@@ -159,7 +159,7 @@
 		</Border>
 
 
-		<Button x:Name="SaveButton" Grid.Column="5" Grid.Row="29" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
+		<Button x:Name="SaveButton"  Grid.Column="5" Grid.Row="29" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
 
 		<ScrollViewer Grid.Column="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="18" HorizontalScrollBarVisibility="Visible">
 			<Image x:Name="ImageFromFile"/>
