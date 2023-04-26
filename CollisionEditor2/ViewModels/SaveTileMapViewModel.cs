@@ -11,6 +11,9 @@ using Avalonia.Controls;
 using ReactiveUI;
 using CollisionEditor2.Models.ForAvalonia;
 using System.Security.Cryptography;
+using Avalonia.Media;
+using Avalonia.Layout;
+using System.Drawing.Printing;
 
 namespace CollisionEditor2.ViewModels
 {
@@ -188,7 +191,6 @@ namespace CollisionEditor2.ViewModels
             textboxValidator = new TextboxValidator();
             textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
 
-            AddGroupCommand = ReactiveCommand.Create(AddGroup);
             SaveCommand     = ReactiveCommand.Create(Save);
 
             this.window = window;
@@ -196,10 +198,7 @@ namespace CollisionEditor2.ViewModels
             tileWidth = minTileWidth;
         }
 
-        private void AddGroup()
-        {
-           
-        }
+        
         private void Save()
         {
 
