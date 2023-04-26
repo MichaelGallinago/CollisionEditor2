@@ -82,7 +82,7 @@
             <Image x:Name="ImageFromFile" RenderOptions.BitmapInterpolationMode="Default"/>
         </ScrollViewer>
 
-        <Button x:Name="SaveButton" Grid.Column="5" Grid.Row="15" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
+        <Button x:Name="OpenButton" Grid.Column="5" Grid.Row="15" Content="Open" Command="{Binding OpenCommand}" HorizontalAlignment="Right"/>
                     
     </Grid>
 </Window>

@@ -21,7 +21,7 @@ namespace CollisionEditor2.ViewModels
         private const int minTileHeight = 4;
         private const int minTileWidth  = 4;
 
-        public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenCommand { get; }
         public string TileHeightText
         {
             get => tileHeightString;
@@ -172,11 +172,11 @@ namespace CollisionEditor2.ViewModels
         {
             if (textboxValidator.HasErrors)
             {
-                window.SaveButton.IsEnabled = false;
+                window.OpenButton.IsEnabled = false;
             }
             else
             {
-                window.SaveButton.IsEnabled = true;
+                window.OpenButton.IsEnabled = true;
             }
         }
 
@@ -204,7 +204,7 @@ namespace CollisionEditor2.ViewModels
         {
             textboxValidator = new TextboxValidator();
             textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
-            SaveCommand = ReactiveCommand.Create(Save);
+            OpenCommand = ReactiveCommand.Create(Open);
 
             this.window = window;
 
@@ -212,9 +212,9 @@ namespace CollisionEditor2.ViewModels
             this.bitmapSize = bitmapSize;
         }
 
-        private void Save()
+        private void Open()
         {
-            window.IsSaved=true;
+            window.IsOpened=true;
 
             window.TileHeight = tileHeight;
             window.TileWidth = tileWidth;

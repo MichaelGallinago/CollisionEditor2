@@ -237,7 +237,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         OpenTileMap openTileMap = new();
         openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
         await openTileMap.ShowDialog(window);
-        if (!openTileMap.IsSaved)
+        if (!openTileMap.IsOpened)
         {
             return;
         }

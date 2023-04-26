@@ -4,7 +4,7 @@ namespace CollisionEditor2.Views
 {
     public partial class OpenTileMap : Window
     {
-        public bool IsSaved=false;
+        public bool IsOpened=false;
         public int TileHeight = 0;
         public int TileWidth = 0;
         public int VerticalSeparation = 0;
