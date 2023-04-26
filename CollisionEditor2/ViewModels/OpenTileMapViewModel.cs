@@ -181,8 +181,8 @@ namespace CollisionEditor2.ViewModels
         }
 
 
-        private int tileHeight;
-        private int tileWidth;
+        private int tileHeight=16;
+        private int tileWidth =16;
         private int verticalSeparation;
         private int horizontalSeparation;
         private int verticalOffset;
