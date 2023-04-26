@@ -226,19 +226,6 @@ namespace CollisionEditor2.ViewModels
             window.Close();
         }
 
-        public async void OurMessageBox(string message)
-        {
-            _ = await BoxedMessage.Create(new MessageBoxParams
-            {
-                Buttons = ButtonEnum.Ok,
-                ContentTitle = "Error",
-                ContentMessage = message,
-                Icon = new Avalonia.Media.Imaging.Bitmap("../../../../CollisionEditor2/Assets/avalonia-logo.ico"),
-                Location = WindowStartupLocation.CenterScreen,
-                CanResize = false,
-            }).ShowDialogAsync(window);
-        }
-
         private void TextboxValidator_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
