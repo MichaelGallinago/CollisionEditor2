@@ -79,7 +79,7 @@
         
 
 		<ScrollViewer Grid.Column="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="15" HorizontalScrollBarVisibility="Visible">
-            <Image x:Name="ImageFromFile"/>
+            <Image x:Name="ImageFromFile" RenderOptions.BitmapInterpolationMode="Default"/>
         </ScrollViewer>
 
         <Button x:Name="SaveButton" Grid.Column="5" Grid.Row="15" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
