@@ -129,18 +129,7 @@ namespace CollisionEditor2.ViewModels
             get => redChannel1.ToString();
             set
             {
-                textboxValidator.ClearErrors(nameof(RedChannel1Text));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intRedChannel1);
-
-                if (!isNumber || intRedChannel1 < 0|| intRedChannel1>255)
-                {
-                    textboxValidator.AddError(nameof(RedChannel1Text), "Not a Byte!");
-                    CheckErrors();
-                    return;
-                }
-
-                redChannel1 = intRedChannel1;
+                ByteValidation(value, nameof(RedChannel1Text),ref redChannel1);   
             }
         }
         public string GreenChannel1Text
@@ -148,18 +137,7 @@ namespace CollisionEditor2.ViewModels
             get => greenChannel1.ToString();
             set
             {
-                textboxValidator.ClearErrors(nameof(GreenChannel1Text));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intGreenChannel1);
-
-                if (!isNumber || intGreenChannel1 < 0 || intGreenChannel1 > 255)
-                {
-                    textboxValidator.AddError(nameof(GreenChannel1Text), "Not a Byte!");
-                    CheckErrors();
-                    return;
-                }
-
-                greenChannel1 = intGreenChannel1;
+                ByteValidation(value, nameof(GreenChannel1Text), ref greenChannel1);
             }
         }
         public string BlueChannel1Text
@@ -167,59 +145,138 @@ namespace CollisionEditor2.ViewModels
             get => blueChannel1.ToString();
             set
             {
-                textboxValidator.ClearErrors(nameof(BlueChannel1Text));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intBlueChannel1);
-
-                if (!isNumber || intBlueChannel1 < 0 || intBlueChannel1 > 255)
-                {
-                    textboxValidator.AddError(nameof(BlueChannel1Text), "Not a Byte!");
-                    CheckErrors();
-                    return;
-                }
-
-                blueChannel1 = intBlueChannel1;
+                ByteValidation(value, nameof(BlueChannel1Text), ref blueChannel1);
             }
         }
-
         public string AlphaChannel1Text
         {
             get => alphaChannel1.ToString();
             set
             {
-                textboxValidator.ClearErrors(nameof(AlphaChannel1Text));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intAlphaChannel1);
-
-                if (!isNumber || intAlphaChannel1 < 0 || intAlphaChannel1 > 255)
-                {
-                    textboxValidator.AddError(nameof(AlphaChannel1Text), "Not a Byte!");
-                    CheckErrors();
-                    return;
-                }
-
-                alphaChannel1 = intAlphaChannel1;
+                ByteValidation(value, nameof(AlphaChannel1Text), ref alphaChannel1);
             }
         }
-
         public string OffsetInTiles1Text
         {
             get => offsetInTiles1.ToString();
             set
             {
-                textboxValidator.ClearErrors(nameof(OffsetInTiles1Text));
-                CheckErrors();
-                bool isNumber = int.TryParse(value, out int intOffsetInTiles1);
-
-                if (!isNumber || intOffsetInTiles1 < 0 || intOffsetInTiles1 > 255)
-                {
-                    textboxValidator.AddError(nameof(OffsetInTiles1Text), "Wrong Offset!");
-                    CheckErrors();
-                    return;
-                }
-
-                offsetInTiles1 = intOffsetInTiles1;
+                OffsetValidation(value, nameof(OffsetInTiles1Text), ref offsetInTiles1);
             }
+        }
+
+        public string RedChannel2Text
+        {
+            get => redChannel2.ToString();
+            set
+            {
+                ByteValidation(value, nameof(RedChannel2Text), ref redChannel2);
+            }
+        }
+        public string GreenChannel2Text
+        {
+            get => greenChannel2.ToString();
+            set
+            {
+                ByteValidation(value, nameof(GreenChannel2Text), ref greenChannel2);
+            }
+        }
+        public string BlueChannel2Text
+        {
+            get => blueChannel2.ToString();
+            set
+            {
+                ByteValidation(value, nameof(BlueChannel2Text), ref blueChannel2);
+            }
+        }
+        public string AlphaChannel2Text
+        {
+            get => alphaChannel2.ToString();
+            set
+            {
+                ByteValidation(value, nameof(AlphaChannel2Text), ref alphaChannel2);
+            }
+        }
+        public string OffsetInTiles2Text
+        {
+            get => offsetInTiles2.ToString();
+            set
+            {
+                OffsetValidation(value, nameof(OffsetInTiles2Text), ref offsetInTiles2);
+            }
+        }
+
+        public string RedChannel3Text
+        {
+            get => redChannel3.ToString();
+            set
+            {
+                ByteValidation(value, nameof(RedChannel3Text), ref redChannel3);
+            }
+        }
+        public string GreenChannel3Text
+        {
+            get => greenChannel3.ToString();
+            set
+            {
+                ByteValidation(value, nameof(GreenChannel3Text), ref greenChannel3);
+            }
+        }
+        public string BlueChannel3Text
+        {
+            get => blueChannel3.ToString();
+            set
+            {
+                ByteValidation(value, nameof(BlueChannel3Text), ref blueChannel3);
+            }
+        }
+        public string AlphaChannel3Text
+        {
+            get => alphaChannel3.ToString();
+            set
+            {
+                ByteValidation(value, nameof(AlphaChannel3Text), ref alphaChannel3);
+            }
+        }
+
+        public string OffsetInTiles3Text
+        {
+            get => offsetInTiles3.ToString();
+            set
+            {
+                OffsetValidation(value, nameof(OffsetInTiles3Text), ref offsetInTiles3);
+            }
+        }
+
+        private void ByteValidation(string value, string nameColorChannel, ref int resultColorChannel)
+        {
+            textboxValidator.ClearErrors(nameColorChannel);
+            CheckErrors();
+            bool isNumber = int.TryParse(value, out int intColorChannel);
+
+            if (!isNumber || intColorChannel < 0 || intColorChannel > 255)
+            {
+                textboxValidator.AddError(nameColorChannel, "Not a Byte!");
+                CheckErrors();
+                return;
+            }
+
+            resultColorChannel = intColorChannel;
+        }
+        private void OffsetValidation(string value, string nameOffsetInTiles, ref int resultoffsetInTiles)
+        {
+            textboxValidator.ClearErrors(nameOffsetInTiles);
+            CheckErrors();
+            bool isNumber = int.TryParse(value, out int intOffsetInTiles);
+
+            if (!isNumber || intOffsetInTiles < 0 || intOffsetInTiles > 255)
+            {
+                textboxValidator.AddError(nameOffsetInTiles, "Not a Byte!");
+                CheckErrors();
+                return;
+            }
+
+            resultoffsetInTiles = intOffsetInTiles;
         }
 
         private void CheckErrors()
@@ -246,6 +303,18 @@ namespace CollisionEditor2.ViewModels
         private int blueChannel1;
         private int alphaChannel1;
         private int offsetInTiles1;
+
+        private int redChannel2;
+        private int greenChannel2;
+        private int blueChannel2;
+        private int alphaChannel2;
+        private int offsetInTiles2;
+
+        private int redChannel3;
+        private int greenChannel3;
+        private int blueChannel3;
+        private int alphaChannel3;
+        private int offsetInTiles3;
 
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
