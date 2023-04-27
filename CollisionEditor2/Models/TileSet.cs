@@ -125,7 +125,7 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, Size separation = new(), Size offset = new())
+    public void Save(string path, int columnCount, Color[] groupColor, int[] groupOffset, Size separation, Size offset)
     {
         if (File.Exists(path))
         {
@@ -139,12 +139,12 @@ public class TileSet
             offset.Width  + columnCount * cell.Width  - separation.Width, 
             offset.Height + rowCount    * cell.Height - separation.Height);
 
-        Bitmap tileMap = DrawTileMap(columnCount, tileMapSize, separation, offset);
+        Bitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, tileMapSize, separation, offset);
 
         tileMap.Save(path, ImageFormat.Png);
     }
 
-    public static void SaveCollisionMap(string path, List<byte[]> collisionMap)
+    public void SaveCollisionMap(string path, List<byte[]> collisionMap)
     {
         if (File.Exists(path))
         {
@@ -163,32 +163,70 @@ public class TileSet
         }
     }
 
-    public Bitmap DrawTileMap(int columnCount, Size tileMapSize, Size separation, Size offset)
+    public Bitmap DrawTileMap(int columnCount, Color[] groupColor, 
+        int[] groupOffset, Size tileMapSize, Size separation, Size offset)
     {
+        int groupCount = groupColor.Length;
         var tileMap = new Bitmap(tileMapSize.Width, tileMapSize.Height);
 
         using (var graphics = Graphics.FromImage(tileMap))
         {
             Vector2<int> position = new();
-            foreach (Bitmap tile in Tiles)
-            {
-                graphics.DrawImage(
-                tile,
-                new Rectangle(
-                    offset.Width  + position.X * (TileSize.Width  + separation.Width),
-                    offset.Height + position.Y * (TileSize.Height + separation.Height),
-                    TileSize.Width, TileSize.Height),
-                new Rectangle(0, 0, TileSize.Width, TileSize.Height),
-                GraphicsUnit.Pixel);
+            var tileBorder = new Rectangle(0, 0, TileSize.Width, TileSize.Height);
+            Bitmap groupSeparator = GetGroupSeparator();
 
-                if (++position.X >= columnCount)
+            for (int group = 0; group < groupCount; group++)
+            {
+                foreach (Bitmap tile in Tiles)
                 {
-                    position.X = 0;
-                    position.Y++;
+                    DrawTile(graphics, tile, separation, offset, tileBorder, columnCount, ref position);
+                }
+
+                while (groupOffset[group]-- > 0)
+                {
+                    DrawTile(graphics, groupSeparator, separation, offset, tileBorder, columnCount, ref position);
                 }
             }
         }
         return tileMap;
+    }
+
+    private void DrawTile(Graphics graphics, Bitmap tile, Size separation, Size offset,
+        Rectangle TileBorder, int columnCount, ref Vector2<int> position)
+    {
+        graphics.DrawImage(
+            tile,
+            new Rectangle(
+                offset.Width + position.X * (TileSize.Width + separation.Width),
+                offset.Height + position.Y * (TileSize.Height + separation.Height),
+                TileSize.Width, TileSize.Height),
+            TileBorder,
+            GraphicsUnit.Pixel);
+
+        if (++position.X >= columnCount)
+        {
+            position.X = 0;
+            position.Y++;
+        }
+    }
+
+    private Bitmap GetGroupSeparator()
+    {
+        var groupSeparator = new Bitmap(TileSize.Width, TileSize.Height);
+        byte[] colorValues = BeginBitmapEdit(groupSeparator, TileSize, out nint ptr, out BitmapData bitmapData);
+
+        for (int i = TileSize.Width * TileSize.Height; i > 0; i--)
+        {
+            byte whiteOrBlack = (byte)(i % 2 == 0 ? 255 : 0);
+            for (int j = 1; j < 4; j++)
+            {
+                colorValues[i * 4 + j] = whiteOrBlack;
+            }
+            colorValues[i * 4] = 255;
+        }
+
+        EndBitmapEdit(groupSeparator, colorValues, ptr, bitmapData);
+        return groupSeparator;
     }
 
     public void TileChangeLine(int tileIndex, Vector2<int> tilePosition, bool isLeftButtonPressed)

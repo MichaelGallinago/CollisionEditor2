@@ -325,7 +325,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            TileSet.Save(Path.GetFullPath(filePath), 16);
+            //TileSet.Save(Path.GetFullPath(filePath), 16);
         }
     }
 
@@ -677,5 +677,4 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     public bool HasErrors => textboxValidator.HasErrors;
-
 }

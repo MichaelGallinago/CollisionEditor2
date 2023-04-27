@@ -292,8 +292,6 @@ namespace CollisionEditor2.Views
             DeleteTileButton.FontSize     = actualFontSize;
 
             DrawRedLine();
-        }
-
-        
+        } 
     }
 }
