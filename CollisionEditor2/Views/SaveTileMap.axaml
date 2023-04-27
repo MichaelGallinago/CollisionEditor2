@@ -19,7 +19,7 @@
 			<RowDefinition Height="10"/>
 			<RowDefinition Height="5"/>
 
-			<RowDefinition Height="10"/>
+			<RowDefinition Height="5"/>
 
 			<RowDefinition Height="15"/>
 			<RowDefinition Height="17"/>
@@ -41,21 +41,31 @@
 			<RowDefinition Height="10"/>
 
 			<RowDefinition Height="5"/>
-			<RowDefinition Height="5"/>
-			<RowDefinition Height="50"/>
-			<RowDefinition Height="45"/>
 
 			<RowDefinition Height="5"/>
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="5"/>
+
+			<RowDefinition Height="8"/>
 
 			<RowDefinition Height="5"/>
-			<RowDefinition Height="50"/>
-			<RowDefinition Height="45"/>
-
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="25"/>
 			<RowDefinition Height="5"/>
 
+			<RowDefinition Height="8"/>
+
 			<RowDefinition Height="5"/>
-			<RowDefinition Height="50"/>
-			<RowDefinition Height="45"/>
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="5"/>
 
 			<RowDefinition Height="5"/>
 
@@ -70,9 +80,21 @@
 			<ColumnDefinition Width="4"/>
 			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="5"/>
-			<ColumnDefinition Width="107"/>
-			<ColumnDefinition Width="9"/>
-			<ColumnDefinition Width="107"/>
+			<ColumnDefinition Width="5"/>
+
+			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="17"/>
+			<ColumnDefinition Width="40"/>
+
+
+			<ColumnDefinition Width="17"/>
+
+
+			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="17"/>
+			<ColumnDefinition Width="40"/>
+
+			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="10"/>
@@ -84,84 +106,71 @@
 			<ColumnDefinition Width="10"/>
 		</Grid.ColumnDefinitions>
 
-		<Border Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5" Grid.RowSpan="12" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
-		<Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="7" Grid.RowSpan="31" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
-		<Border Grid.Column="2" Grid.Row="15" Grid.ColumnSpan="5" Grid.RowSpan="13" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+		<Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="13" Grid.RowSpan="40" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+		<Border Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="11" Grid.RowSpan="12" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+		<Border Grid.Column="2" Grid.Row="15" Grid.ColumnSpan="11" Grid.RowSpan="22" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
 
-		<Border Grid.Column="9" Grid.Row="1" Grid.ColumnSpan="5" Grid.RowSpan="31" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5"/>
-
-
-		<TextBlock Grid.Column="3" Grid.Row="3" Text="Horizontal" FontSize="12"/>
-		<TextBlock Grid.Column="3" Grid.Row="4" Text="Separation:" FontSize="12"/>
-		<TextBox   Grid.Column="3" Grid.Row="5" x:Name="horizontalSeparation" Text="{Binding Path=HorizontalSeparationText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
-		<TextBlock Grid.Column="5" Grid.Row="3" Text="Vertical" FontSize="12"/>
-		<TextBlock Grid.Column="5" Grid.Row="4" Text="Separation:" FontSize="12"/>
-		<TextBox   Grid.Column="5" Grid.Row="5" x:Name="verticalSeparation" Text="{Binding Path=VerticalSeparationText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
-
-		<TextBlock Grid.Column="3" Grid.Row="7" Text="Horizontal" FontSize="12"/>
-		<TextBlock Grid.Column="3" Grid.Row="8" Text="Offset:" FontSize="12"/>
-		<TextBox   Grid.Column="3" Grid.Row="9" x:Name="horizontalOffset" Text="{Binding Path=HorizontalOffsetText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
-		<TextBlock Grid.Column="5" Grid.Row="7" Text="Vertical" FontSize="12"/>
-		<TextBlock Grid.Column="5" Grid.Row="8" Text="Offset:" FontSize="12"/>
-		<TextBox   Grid.Column="5" Grid.Row="9" x:Name="verticalOffset" Text="{Binding Path=VerticalOffsetText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
-
-		<TextBlock Grid.Column="3" Grid.Row="11" Grid.ColumnSpan="3" Text="Amount of columns:" FontSize="12"/>
-		<TextBox   Grid.Column="3" Grid.Row="12" Grid.ColumnSpan="3" x:Name="amountOfColumns" Text="{Binding Path=AmountOfColumnsText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
+		<Border Grid.Column="15" Grid.Row="1" Grid.ColumnSpan="5" Grid.RowSpan="40" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5"/>
 
 
+		<TextBlock Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="4" Text="Horizontal" FontSize="12"/>
+		<TextBlock Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="4" Text="Separation:" FontSize="12"/>
+		<TextBox   Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="4" x:Name="horizontalSeparation" Text="{Binding Path=HorizontalSeparationText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
+		<TextBlock Grid.Column="8" Grid.Row="3" Grid.ColumnSpan="4" Text="Vertical" FontSize="12"/>
+		<TextBlock Grid.Column="8" Grid.Row="4" Grid.ColumnSpan="4" Text="Separation:" FontSize="12"/>
+		<TextBox   Grid.Column="8" Grid.Row="5" Grid.ColumnSpan="4" x:Name="verticalSeparation" Text="{Binding Path=VerticalSeparationText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 
-		<Border Grid.Column="3" Grid.Row="16" Grid.ColumnSpan="3" Grid.RowSpan="4" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#FFE6E6E6" >
-			<StackPanel>
-				<TextBlock Text="Color in RGBA" Margin="4,2,0,0"/>
-				<StackPanel Orientation="Horizontal" Margin="4,2,0,5">
-					<TextBox Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-				</StackPanel>
+		<TextBlock Grid.Column="3" Grid.Row="7" Grid.ColumnSpan="4" Text="Horizontal" FontSize="12"/>
+		<TextBlock Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="4" Text="Offset:" FontSize="12"/>
+		<TextBox   Grid.Column="3" Grid.Row="9" Grid.ColumnSpan="4" x:Name="horizontalOffset" Text="{Binding Path=HorizontalOffsetText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
+		<TextBlock Grid.Column="8" Grid.Row="7" Grid.ColumnSpan="4" Text="Vertical" FontSize="12"/>
+		<TextBlock Grid.Column="8" Grid.Row="8" Grid.ColumnSpan="4" Text="Offset:" FontSize="12"/>
+		<TextBox   Grid.Column="8" Grid.Row="9" Grid.ColumnSpan="4" x:Name="verticalOffset" Text="{Binding Path=VerticalOffsetText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 
-				<TextBlock Text="Offset in tiles" Margin="4,0,0,0" />
-
-				<TextBox Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="80" MaxWidth="80" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Margin="4,2,0,4" Padding="4,3,0,3"/>
-			</StackPanel>
-		</Border>
-
-		<Border Grid.Column="3" Grid.Row="20" Grid.ColumnSpan="3" Grid.RowSpan="3" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#FFE6E6E6" >
-			<StackPanel>
-				<TextBlock Text="Color in RGBA" Margin="4,2,0,0"/>
-				<StackPanel Orientation="Horizontal" Margin="4,2,0,5">
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-				</StackPanel>
-
-				<TextBlock Text="Offset in tiles" Margin="4,0,0,0" />
-
-				<TextBox Text="2" MinWidth="80" MaxWidth="80" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Margin="4,2,0,4" Padding="4,3,0,3"/>
-			</StackPanel>
-		</Border>
-
-		<Border Grid.Column="3" Grid.Row="24" Grid.ColumnSpan="3" Grid.RowSpan="5" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#FFE6E6E6" >
-			<StackPanel>
-				<TextBlock Text="Color in RGBA" Margin="4,2,0,0"/>
-				<StackPanel Orientation="Horizontal" Margin="4,2,0,5">
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-					<TextBox Text="202" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25" Margin="0,0,17,0" Padding="4,3,0,3"/>
-				</StackPanel>
-
-				<TextBlock Text="Offset in tiles" Margin="4,0,0,0" />
-
-				<TextBox Text="2" MinWidth="80" MaxWidth="80" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Margin="4,2,0,4" Padding="4,3,0,3"/>
-			</StackPanel>
-		</Border>
+		<TextBlock Grid.Column="3" Grid.Row="11" Grid.ColumnSpan="5" Text="Amount of columns:" FontSize="12"/>
+		<TextBox   Grid.Column="3" Grid.Row="12" Grid.ColumnSpan="9" x:Name="amountOfColumns" Text="{Binding Path=AmountOfColumnsText,Mode=TwoWay}" Padding="4,3,0,3" MinHeight="1"/>
 
 
-		<Button x:Name="SaveButton"  Grid.Column="5" Grid.Row="29" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
+		<Border Grid.Column="3" Grid.Row="16" Grid.ColumnSpan="9" Grid.RowSpan="6" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Background="#FFE6E6E6" />
+		<TextBlock Grid.Column="4" Grid.Row="17" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Color in RGBA"/>
 
-		<ScrollViewer Grid.Column="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="18" HorizontalScrollBarVisibility="Visible">
+		<TextBox Grid.Column="4" Grid.Row="18"  Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="6" Grid.Row="18"  Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="8" Grid.Row="18"  Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="10" Grid.Row="18"  Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+
+		<TextBlock Grid.Column="4" Grid.Row="19" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Offset in tiles"  />
+		<TextBox Grid.Column="4" Grid.Row="20" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="97" MaxWidth="97" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Padding="4,3,0,3"/>
+
+
+		<Border Grid.Column="3" Grid.Row="23" Grid.ColumnSpan="9" Grid.RowSpan="6" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Background="#FFE6E6E6" />
+		<TextBlock Grid.Column="4" Grid.Row="24" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Color in RGBA" />
+
+		<TextBox Grid.Column="4" Grid.Row="25"  Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="6" Grid.Row="25"  Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="8" Grid.Row="25"  Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="10" Grid.Row="25"  Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+
+		<TextBlock Grid.Column="4" Grid.Row="26" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Offset in tiles"  />
+		<TextBox Grid.Column="4" Grid.Row="27" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="97" MaxWidth="97" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Padding="4,3,0,3"/>
+
+
+		<Border Grid.Column="3" Grid.Row="30" Grid.ColumnSpan="9" Grid.RowSpan="6" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Background="#FFE6E6E6" />
+		<TextBlock Grid.Column="4" Grid.Row="31" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Color in RGBA" />
+
+		<TextBox Grid.Column="4" Grid.Row="32"  Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="6" Grid.Row="32"  Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="8" Grid.Row="32"  Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+		<TextBox Grid.Column="10" Grid.Row="32"  Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  Padding="4,3,0,3"/>
+
+		<TextBlock Grid.Column="4" Grid.Row="33" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Offset in tiles"  />
+		<TextBox Grid.Column="4" Grid.Row="34" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="97" MaxWidth="97" MinHeight="25" MaxHeight="25" HorizontalAlignment="Left" Padding="4,3,0,3"/>
+
+
+
+		<Button x:Name="SaveButton"  Grid.Column="10" Grid.Row="38" Grid.ColumnSpan="3" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
+
+		<ScrollViewer Grid.Column="16" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="38" HorizontalScrollBarVisibility="Visible">
 			<Image x:Name="ImageFromFile"/>
 		</ScrollViewer>
 
