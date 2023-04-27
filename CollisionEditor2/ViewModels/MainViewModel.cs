@@ -56,7 +56,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             }
 
             byteAngle = newAngle;
+
             ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
+            AngleMap.SetAngle(SelectedTile, byteAngle);
 
             window.DrawRedLine();
         }
@@ -69,31 +71,22 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             textboxValidator.ClearErrors(nameof(HexAngleText));
 
-            if (value.Length<2)
+            if (value.Length <= AngleService.HexAnglePrefixLength)
             {
                 textboxValidator.AddError(nameof(HexAngleText),
-                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
-                return;
-            }
-
-            OurMessageBox("22");
-            string prefix = value[..AngleService.HexAnglePrefixLength];
-
-            if (prefix != "0x" || prefix != "0X")
-            {
-                textboxValidator.AddError(nameof(HexAngleText), 
-                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
-                return;
-
-            }
-            else if (value.Length <= AngleService.HexAnglePrefixLength)
-
-            {
-                textboxValidator.AddError(nameof(HexAngleText), 
-                    $"Wrong hexadecimal number length!\nMust be between {AngleService.HexAnglePrefixLength} and "
+                    $"Wrong hexadecimal number length!\nMust be between {AngleService.HexAnglePrefixLength + 1} and "
                     + $"{AngleService.HexAnglePrefixLength + AngleService.HexAngleMaxLength}");
                 return;
+            }
+            
 
+            string prefix = value.Substring(0,AngleService.HexAnglePrefixLength);
+
+            if (prefix != "0x" && prefix != "0X")
+            {
+                textboxValidator.AddError(nameof(HexAngleText), 
+                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
+                return;
             }
             else if (!int.TryParse(value[AngleService.HexAnglePrefixLength..], 
                 System.Globalization.NumberStyles.HexNumber, null, out _))
@@ -104,11 +97,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             }
 
             hexAngle = value;
-
+            
             Angles angles = ViewModelAngleService.GetAngles(hexAngle);
 
-            ByteAngleText = angles.ByteAngle.ToString();
-            AngleMap.SetAngle(int.Parse(SelectedTileText), angles.ByteAngle);
+            ShowAngles(ViewModelAngleService.GetAngles(angles.ByteAngle));
+            AngleMap.SetAngle(SelectedTile, angles.ByteAngle);
+            
             window.DrawRedLine();
         }
     }
@@ -221,11 +215,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngleText));
+        textboxValidator.ClearErrors(nameof(ByteAngleText));
         window.ByteAngleIncrimentButton.IsEnabled = true;
         window.ByteAngleDecrementButton.IsEnabled = true;
 
         hexAngle = angles.HexAngle;
         OnPropertyChanged(nameof(HexAngleText));
+        textboxValidator.ClearErrors(nameof(HexAngleText));
         window.HexAngleIncrimentButton.IsEnabled = true;
         window.HexAngleDecrementButton.IsEnabled = true;
 
