@@ -69,8 +69,14 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             textboxValidator.ClearErrors(nameof(HexAngleText));
 
+            if (value.Length<2)
+            {
+                textboxValidator.AddError(nameof(HexAngleText),
+                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
+                return;
+            }
 
-
+            OurMessageBox("22");
             string prefix = value[..AngleService.HexAnglePrefixLength];
 
             if (prefix != "0x" || prefix != "0X")
