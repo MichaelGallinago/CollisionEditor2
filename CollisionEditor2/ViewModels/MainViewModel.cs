@@ -618,7 +618,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TileGrid.Columns = size.X;
         window.TileGrid.Background = new SolidColorBrush(Colors.Transparent);
 
-        Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(new Vector2<int>(size.Y, size.X));
+        Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(size);
 
         for (int y = 0; y < size.Y; y++)
         {
@@ -645,11 +645,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         TileSet.TileChangeLine(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, window);
+
         window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
         window.Widths.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+
         Border newTile = GetTile(SelectedTile);
         newTile.BorderBrush = new SolidColorBrush(Colors.Red);
-        window.TileMapGrid.Children[SelectedTile]=newTile;
+        window.TileMapGrid.Children[SelectedTile] = newTile;
     }
 
     private void Help()

@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Drawing;
 using System.IO;
 using System;
+using Avalonia.Controls.Shapes;
+using Avalonia.Media.Imaging;
 
 namespace CollisionEditor2.Models;
 
@@ -14,7 +14,7 @@ public class TileSet
     public List<Tile> Tiles { get; private set; }
 
     public TileSet(string path, int tileWidth = 16, int tileHeight = 16,
-        Size separate = new(), Size offset = new())
+        Vector2<int> separate = new(), Vector2<int> offset = new())
     {
         TileSize = new Vector2<int>(tileWidth, tileHeight);
 
@@ -47,19 +47,19 @@ public class TileSet
         return tileMap;
     }
 
-    private void CreateTiles(Bitmap tileMap, Size separate, Size offset)
+    private void CreateTiles(Bitmap tileMap, Vector2<int> separate, Vector2<int> offset)
     {
         var cellCount = new Vector2<int>(
-            (tileMap.Width  - offset.Width)  / (TileSize.X + separate.Width),
-            (tileMap.Height - offset.Height) / (TileSize.Y + separate.Height));
+            ((int)tileMap.Size.Width  - offset.X)  / (TileSize.X + separate.X),
+            ((int)tileMap.Size.Height - offset.Y) / (TileSize.Y + separate.Y));
 
         for (int y = 0; y < cellCount.Y; y++)
         {
             for (int x = 0; x < cellCount.X; x++)
             {
                 var tileBounds = new Rectangle(
-                    x * (TileSize.X  + separate.Width)  + offset.Width,
-                    y * (TileSize.Y + separate.Height) + offset.Height,
+                    x * (TileSize.X  + separate.X)  + offset.X,
+                    y * (TileSize.Y + separate.Y) + offset.Y,
                     TileSize.X, TileSize.Y);
 
                 Bitmap bitmap = tileMap.Clone(tileBounds, tileMap.PixelFormat);
@@ -103,19 +103,19 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, Color[] groupColor, int[] groupOffset, Size separation, Size offset)
+    public void Save(string path, int columnCount, Color[] groupColor, int[] groupOffset, Vector2<int> separation, Vector2<int> offset)
     {
         if (File.Exists(path))
         {
             File.Delete(path);
         }
 
-        var cell = new Size(TileSize.X + separation.Width, TileSize.Y + separation.Height);
+        var cell = new Vector2<int>(TileSize.X + separation.X, TileSize.Y + separation.Y);
         int rowCount = (Tiles.Count & -columnCount) / columnCount;
 
-        var tileMapSize = new Size(
-            offset.Width  + columnCount * cell.Width  - separation.Width, 
-            offset.Height + rowCount    * cell.Height - separation.Height);
+        var tileMapSize = new Vector2<int>(
+            offset.X  + columnCount * cell.X - separation.X, 
+            offset.Y + rowCount     * cell.Y - separation.Y);
 
         Bitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, tileMapSize, separation, offset);
 
@@ -142,10 +142,10 @@ public class TileSet
     }
 
     public Bitmap DrawTileMap(int columnCount, Color[] groupColor, 
-        int[] groupOffset, Size tileMapSize, Size separation, Size offset)
+        int[] groupOffset, Vector2<int> tileMapSize, Vector2<int> separation, Vector2<int> offset)
     {
         int groupCount = groupColor.Length;
-        var tileMap = new Bitmap(tileMapSize.Width, tileMapSize.Height);
+        var tileMap = new Bitmap(tileMapSize.X, tileMapSize.Y);
 
         using (var graphics = Graphics.FromImage(tileMap))
         {
@@ -169,14 +169,14 @@ public class TileSet
         return tileMap;
     }
 
-    private void DrawTile(Graphics graphics, Bitmap tile, Size separation, Size offset,
+    private void DrawTile(Graphics graphics, Bitmap tile, Vector2<int> separation, Vector2<int> offset,
         Rectangle TileBorder, int columnCount, ref Vector2<int> position)
     {
         graphics.DrawImage(
             tile,
             new Rectangle(
-                offset.Width + position.X * (TileSize.X + separation.Width),
-                offset.Height + position.Y * (TileSize.Y + separation.Height),
+                offset.X + position.X * (TileSize.X + separation.X),
+                offset.Y + position.Y * (TileSize.Y + separation.Y),
                 TileSize.X, TileSize.Y),
             TileBorder,
             GraphicsUnit.Pixel);
@@ -238,9 +238,15 @@ public class TileSet
         Tiles[tileIndex].Pixels = pixels;
     }
 
-    private byte[] BeginBitmapEdit(Bitmap bitmap, Vector2<int> areaSize, out nint ptr, out BitmapData bitmapData)
+    private byte[] BeginBitmapEdit(WriteableBitmap bitmap, Vector2<int> areaSize, out nint ptr, out BitmapData bitmapData)
     {
-        bitmapData = bitmap.LockBits(
+        using (var frameBuffer = bitmap.Lock())
+        {
+            int length = TileSize.X * TileSize.Y * 4;
+            var data = new byte[length];
+            Marshal.Copy(frameBuffer.Address, data, 0, length);
+        }
+        bitmapData = bitmap.Lock(
             new Rectangle(0, 0, areaSize.X, areaSize.Y),
             ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
