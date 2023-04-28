@@ -4,7 +4,6 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
 using System;
-using DynamicData;
 
 namespace CollisionEditor2.Models;
 
@@ -63,13 +62,33 @@ public class TileSet
                     y * (TileSize.Y + separate.Height) + offset.Height,
                     TileSize.X, TileSize.Y);
 
-                Tiles.Add(tileMap.Clone(tileBounds, tileMap.PixelFormat));
+                Bitmap bitmap = tileMap.Clone(tileBounds, tileMap.PixelFormat);
+                Tiles.Add(CreateTileFromBitmap(bitmap));
                 if (Tiles.Count == int.MaxValue)
                 {
                     return;
                 }
             }
         }
+    }
+
+    private Tile CreateTileFromBitmap(Bitmap bitmap)
+    {
+        var tile = new Tile(TileSize);
+        bool[] pixels = tile.Pixels;
+        byte[] colorValues = BeginBitmapEdit(bitmap, TileSize, out _, out BitmapData bitmapData);
+
+        for (int x = 0; x < TileSize.X; x++)
+        {
+            for (int y = 0; y < TileSize.Y; y++)
+            {
+                int pixelIndex = y * TileSize.X + x;
+                pixels[pixelIndex] = colorValues[pixelIndex * 4 + 3] != 0;
+            }
+        }
+
+        bitmap.UnlockBits(bitmapData);
+        return tile;
     }
 
     public TileSet(int angleCount = 0, int tileWidth = 16, int tileHeight = 16)
@@ -103,7 +122,7 @@ public class TileSet
         tileMap.Save(path, ImageFormat.Png);
     }
 
-    public void SaveCollisionMap(string path, List<byte[]> collisionMap)
+    public void SaveCollisionMap(string path, List<Tile> tiles, bool isWidths)
     {
         if (File.Exists(path))
         {
@@ -112,9 +131,9 @@ public class TileSet
 
         using var writer = new BinaryWriter(File.Open(path, FileMode.CreateNew));
         {
-            foreach (byte[] values in collisionMap)
+            foreach (Tile tile in Tiles)
             {
-                foreach (byte value in values)
+                foreach (byte value in isWidths ? tile.Widths : tile.Heights)
                 {
                     writer.Write(value);
                 }

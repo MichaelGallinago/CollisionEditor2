@@ -1,5 +1,4 @@
-﻿using System.Drawing.Imaging;
-using System.Drawing;
+﻿using Avalonia.Media.Imaging;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
@@ -11,12 +10,10 @@ public class ViewModelAssistant
     {
         if (tileSet.Tiles.Count < angleMap.Values.Count)
         {
-            Size size = tileSet.TileSize;
+            Vector2<int> size = tileSet.TileSize;
             for (int i = tileSet.Tiles.Count; i < angleMap.Values.Count; i++)
             {
-                tileSet.Tiles.Add(new Bitmap(size.Width, size.Height));
-                tileSet.WidthMap.Add(new byte[size.Width]);
-                tileSet.HeightMap.Add(new byte[size.Height]);
+                tileSet.Tiles.Add(new Tile(size));
             }
         }
         else
@@ -28,29 +25,31 @@ public class ViewModelAssistant
         }
     }
 
-    public static Avalonia.Media.Imaging.Bitmap BitmapConvert(Bitmap bitmap)
+    public static Bitmap BitmapConvert(Tile tile)
     {
         var bitmapData = bitmap.LockBits(
             new Rectangle(0, 0, bitmap.Width, bitmap.Height),
             ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
-        var avaloniaBitmap = new Avalonia.Media.Imaging.Bitmap(
+        var avaloniaBitmap = new Bitmap(
             Avalonia.Platform.PixelFormat.Bgra8888,
             Avalonia.Platform.AlphaFormat.Premul,
             bitmapData.Scan0,
-            new Avalonia.PixelSize(bitmapData.Width, bitmapData.Height),
+            new Avalonia.PixelSize(tile.Heights.Length, tile.Widths.Length),
             new Avalonia.Vector(dpi, dpi),
             bitmapData.Stride);
+
+        var avaloniaBitmap = new Bitmap();
 
         bitmap.UnlockBits(bitmapData);
 
         return avaloniaBitmap;
     }
 
-    public static Avalonia.Media.Imaging.Bitmap GetBitmap(string path, out Size size)
+    public static Bitmap GetBitmap(string path, out Vector2<int> size)
     {
         var Bitmap = new Bitmap(path);
-        size = new Size(Bitmap.Width, Bitmap.Height);
-        return BitmapConvert(new Bitmap(path));
+        size = new Vector2<int>((int)Bitmap.Size.Width, (int)Bitmap.Size.Height);
+        return Bitmap;
     }
 }
