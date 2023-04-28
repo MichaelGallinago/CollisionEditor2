@@ -253,7 +253,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-        ViewModelAssistant.BitmapConvert(TileSet.Tiles[SelectedTile]);
+        ViewModelAssistant.GetBitmapFromTile(TileSet.Tiles[SelectedTile],new byte[] { 0, 0, 0, 255 });
 
         TileGridUpdate(TileSet, SelectedTile, window);
         RectanglesGridUpdate();
@@ -502,7 +502,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             Width  = TileSet.TileSize.X  * MainWindow.TileMapTileScale,
             Height = TileSet.TileSize.Y * MainWindow.TileMapTileScale,
-            Source = ViewModelAssistant.BitmapConvert(tile)
+            Source = ViewModelAssistant.GetBitmapFromTile(tile, new byte[] { 0, 0, 0, 255 })
         };
 
         var border = new Border()
