@@ -258,8 +258,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileGridUpdate(TileSet, SelectedTile, window);
         RectanglesGridUpdate();
             
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
             
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
         
@@ -290,7 +290,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public void TileMapGridUpdate(int tileCount)
     {
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) 
-            * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
+            * (TileSet.TileSize.Y * MainWindow.TileMapTileScale + tileMapSeparation);
     }
 
     public async void OurMessageBox(string message)
@@ -355,7 +355,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.HeightMap);
+            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles);
         }
     }
 
@@ -388,8 +388,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
     }
@@ -472,8 +472,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.LastSelectedTile = SelectedTile;
 
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
         
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
 
@@ -485,8 +485,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         OnPropertyChanged(nameof(SelectedTileText));
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
 
@@ -496,12 +496,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public Border GetTile(int index)
     {
-        Bitmap tile = TileSet.Tiles[index];
+        Tile tile = TileSet.Tiles[index];
 
         var image = new Avalonia.Controls.Image
         {
-            Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
-            Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
+            Width  = TileSet.TileSize.X  * MainWindow.TileMapTileScale,
+            Height = TileSet.TileSize.Y * MainWindow.TileMapTileScale,
             Source = ViewModelAssistant.BitmapConvert(tile)
         };
 
@@ -598,12 +598,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var size = TileSet.TileSize;
 
-        for (int x = 0; x < size.Width; x++)
+        for (int x = 0; x < size.X; x++)
         {
             window.RectanglesGrid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
-        for (int y = 0; y < size.Height; y++)
+        for (int y = 0; y < size.Y; y++)
         {
             window.RectanglesGrid.RowDefinitions.Add(new RowDefinition());
         }
@@ -615,15 +615,15 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var size = tileSet.TileSize;
 
-        window.TileGrid.Rows    = size.Height;
-        window.TileGrid.Columns = size.Width;
+        window.TileGrid.Rows    = size.Y;
+        window.TileGrid.Columns = size.X;
         window.TileGrid.Background = new SolidColorBrush(Colors.Transparent);
 
-        Bitmap tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Bitmap(size.Height, size.Width);
+        Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(new Vector2<int>(size.Y, size.X));
 
-        for (int y = 0; y < size.Height; y++)
+        for (int y = 0; y < size.Y; y++)
         {
-            for (int x = 0; x < size.Width; x++)
+            for (int x = 0; x < size.X; x++)
             {
                 var Border = new Border()
                 {
@@ -646,8 +646,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         TileSet.TileChangeLine(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
         Border newTile = GetTile(SelectedTile);
         newTile.BorderBrush = new SolidColorBrush(Colors.Red);
         window.TileMapGrid.Children[SelectedTile]=newTile;
