@@ -12,6 +12,7 @@ using Avalonia.Controls;
 using ReactiveUI;
 using CollisionEditor2.Models.ForAvalonia;
 using System.Security.Cryptography;
+using CollisionEditor2.Models;
 
 namespace CollisionEditor2.ViewModels
 {
@@ -84,7 +85,7 @@ namespace CollisionEditor2.ViewModels
             CheckErrors();
             bool isNumberTileHeight = int.TryParse(TileHeightText, out int intTileHeight);
 
-            if (!isNumberTileHeight || intTileHeight < minTileHeight || bitmapSize.Height < intTileHeight || intTileHeight > 32)
+            if (!isNumberTileHeight || intTileHeight < minTileHeight || bitmapSize.Y < intTileHeight || intTileHeight > 32)
             {
                 textboxValidator.AddError(nameof(TileHeightText), "Wrong Tile Height!");
                 CheckErrors();
@@ -99,7 +100,7 @@ namespace CollisionEditor2.ViewModels
 
             bool isNumberVerticalSeparation = int.TryParse(VerticalSeparationText, out int intVerticalSeparation);
 
-            if (!isNumberVerticalSeparation || intVerticalSeparation < 0 || bitmapSize.Height < tileHeight + intVerticalSeparation)
+            if (!isNumberVerticalSeparation || intVerticalSeparation < 0 || bitmapSize.Y < tileHeight + intVerticalSeparation)
             {
                 textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
                 CheckErrors();
@@ -114,7 +115,7 @@ namespace CollisionEditor2.ViewModels
 
             bool isNumberVerticalOffset = int.TryParse(VerticalOffsetText, out int intVerticalOffset);
 
-            if (!isNumberVerticalOffset || intVerticalOffset < 0 || bitmapSize.Height < tileHeight + intVerticalOffset + verticalSeparation)
+            if (!isNumberVerticalOffset || intVerticalOffset < 0 || bitmapSize.Y < tileHeight + intVerticalOffset + verticalSeparation)
             {
                 textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
                 CheckErrors();
@@ -130,7 +131,7 @@ namespace CollisionEditor2.ViewModels
             CheckErrors();
             bool isNumberTileWidth = int.TryParse(TileWidthText, out int intTileWidth);
 
-            if (!isNumberTileWidth || intTileWidth < minTileWidth || bitmapSize.Width < intTileWidth || intTileWidth > 32)
+            if (!isNumberTileWidth || intTileWidth < minTileWidth || bitmapSize.X < intTileWidth || intTileWidth > 32)
             {
                 textboxValidator.AddError(nameof(TileWidthText), "Wrong Tile Width!");
                 CheckErrors();
@@ -144,7 +145,7 @@ namespace CollisionEditor2.ViewModels
             CheckErrors();
             bool isNumberHorizontalSeparation = int.TryParse(HorizontalSeparationText, out int intHorizontalSeparation);
 
-            if (!isNumberHorizontalSeparation || intHorizontalSeparation < 0 || bitmapSize.Width < tileWidth + intHorizontalSeparation)
+            if (!isNumberHorizontalSeparation || intHorizontalSeparation < 0 || bitmapSize.X < tileWidth + intHorizontalSeparation)
             {
                 textboxValidator.AddError(nameof(HorizontalSeparationText), "Wrong Horizontal Separation!");
                 CheckErrors();
@@ -158,7 +159,7 @@ namespace CollisionEditor2.ViewModels
             CheckErrors();
             bool isNumberHorizontalOffset = int.TryParse(HorizontalOffsetText, out int intHorizontalOffset);
 
-            if (!isNumberHorizontalOffset || intHorizontalOffset < 0 || bitmapSize.Width < tileWidth + intHorizontalOffset + horizontalSeparation)
+            if (!isNumberHorizontalOffset || intHorizontalOffset < 0 || bitmapSize.X < tileWidth + intHorizontalOffset + horizontalSeparation)
             {
                 textboxValidator.AddError(nameof(HorizontalOffsetText), "Wrong Horizontal Offset!");
                 CheckErrors();
@@ -195,7 +196,7 @@ namespace CollisionEditor2.ViewModels
         private string verticalOffsetString       = "0";
         private string horizontalOffsetString     = "0";
 
-        private Size bitmapSize;
+        private Vector2<int> bitmapSize;
 
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
@@ -208,7 +209,7 @@ namespace CollisionEditor2.ViewModels
 
             this.window = window;
 
-            window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath, out Size bitmapSize);
+            window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filepath, out Vector2<int> bitmapSize);
             this.bitmapSize = bitmapSize;
         }
 
