@@ -53,8 +53,8 @@ namespace CollisionEditor2.Views
 
             Vector2<int> position = new()
             {
-                X = (int)mousePosition.X / ((int)TileGrid.Width  / tileSize.Width),
-                Y = (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height)
+                X = (int)mousePosition.X / ((int)TileGrid.Width  / tileSize.X),
+                Y = (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Y)
             };
 
             return position;
@@ -161,11 +161,10 @@ namespace CollisionEditor2.Views
 
         private int GetUniformGridIndex(Point mousePosition)
         {
-            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize * TileMapTileScale
-                + new System.Drawing.Size(tileMapSeparation, tileMapSeparation);
+            Vector2<int> tileSize = new Vector2<int>( WindowMain.TileSet.TileSize.X * TileMapTileScale + tileMapSeparation, WindowMain.TileSet.TileSize.Y * TileMapTileScale + tileMapSeparation);
             
-            return (int)mousePosition.X / tileSize.Width 
-                + (int)mousePosition.Y / tileSize.Height * TileMapGrid.Columns;
+            return (int)mousePosition.X / tileSize.X 
+                + (int)mousePosition.Y / tileSize.Y * TileMapGrid.Columns;
         }
 
         public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -214,7 +213,7 @@ namespace CollisionEditor2.Views
         public void WindowSizeChanged(Size size)
         {
             int countOfTiles = WindowMain.TileSet.Tiles.Count;
-            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize;
+            Vector2<int> tileSize = WindowMain.TileSet.TileSize;
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
@@ -223,8 +222,8 @@ namespace CollisionEditor2.Views
             double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
 
             var TileGridSize = new Size(
-                (int)actualHeightGrid / tileSize.Width  * tileSize.Width, 
-                (int)actualHeightGrid / tileSize.Height * tileSize.Height);
+                (int)actualHeightGrid / tileSize.X  * tileSize.X, 
+                (int)actualHeightGrid / tileSize.Y * tileSize.Y);
 
             TileGrid.Width  = TileGridSize.Width;
             TileGrid.Height = TileGridSize.Height;
@@ -273,8 +272,8 @@ namespace CollisionEditor2.Views
             TriangleDownHexAngle.Height = actualHeightTextAndButtons  / 2 - 5;
             TriangleDownHexAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
 
-            int tileWidth  = tileSize.Width  * TileMapTileScale;
-            int tileHeight = tileSize.Height * TileMapTileScale;
+            int tileWidth  = tileSize.X  * TileMapTileScale;
+            int tileHeight = tileSize.Y * TileMapTileScale;
 
 
             TileMapGrid.Width   = tileMapBorderWidthWithoutScrollBar * (int)size.Width / (int)MinWidth / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
