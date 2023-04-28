@@ -9,11 +9,6 @@ using System.Reactive;
 using System;
 using Avalonia.Controls;
 using ReactiveUI;
-using CollisionEditor2.Models.ForAvalonia;
-using System.Security.Cryptography;
-using Avalonia.Media;
-using Avalonia.Layout;
-using System.Drawing.Printing;
 
 namespace CollisionEditor2.ViewModels
 {

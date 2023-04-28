@@ -7,7 +7,6 @@ using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
-using System.Drawing;
 using System.IO;
 using System;
 using System.Diagnostics;

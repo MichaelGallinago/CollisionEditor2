@@ -8,7 +8,6 @@ using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
-using System.Net.Mime;
 using Avalonia.Interactivity;
 
 namespace CollisionEditor2.Views

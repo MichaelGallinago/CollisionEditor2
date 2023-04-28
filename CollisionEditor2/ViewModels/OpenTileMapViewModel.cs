@@ -1,17 +1,11 @@
 ﻿using CollisionEditor2.ViewServices;
 using CollisionEditor2.Views;
-using MessageBoxSlim.Avalonia.Enums;
-using MessageBoxSlim.Avalonia.DTO;
-using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
 using System.Reactive;
-using System.Drawing;
 using System;
-using Avalonia.Controls;
 using ReactiveUI;
 using CollisionEditor2.Models.ForAvalonia;
-using System.Security.Cryptography;
 using CollisionEditor2.Models;
 
 namespace CollisionEditor2.ViewModels
