@@ -1,4 +1,7 @@
-﻿using Avalonia.Media.Imaging;
+﻿using Avalonia;
+using Avalonia.Media.Imaging;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
@@ -25,25 +28,38 @@ public class ViewModelAssistant
         }
     }
 
-    public static Bitmap BitmapConvert(Tile tile)
+    public static Bitmap GetBitmapFromTile(Tile tile, byte[] color)
     {
-        var bitmapData = bitmap.LockBits(
-            new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+        var bitmap = new WriteableBitmap(new PixelSize(tile.Heights.Length, tile.Widths.Length), 
+            new Vector(dpi, dpi), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
 
-        var avaloniaBitmap = new Bitmap(
-            Avalonia.Platform.PixelFormat.Bgra8888,
-            Avalonia.Platform.AlphaFormat.Premul,
-            bitmapData.Scan0,
-            new Avalonia.PixelSize(tile.Heights.Length, tile.Widths.Length),
-            new Avalonia.Vector(dpi, dpi),
-            bitmapData.Stride);
+        var tileColors = new List<byte>(tile.Pixels.Length * 4);
 
-        var avaloniaBitmap = new Bitmap();
+        foreach (bool pixel in tile.Pixels)
+        {
+            tileColors.Add(color[2]);
+            tileColors.Add(color[1]);
+            tileColors.Add(color[0]);
+            tileColors.Add((byte)(pixel ? color[3] : 0));
+        }
 
-        bitmap.UnlockBits(bitmapData);
+        using (var frameBuffer = bitmap.Lock())
+        {
+            Marshal.Copy(tileColors.ToArray(), 0, frameBuffer.Address, tileColors.Count);
+        }
 
-        return avaloniaBitmap;
+        return bitmap;
+    }
+
+    public static WriteableBitmap CreateBitmapFromPixelData(byte[] rgbPixelData, int width, int height)
+    {
+        var bitmap = new WriteableBitmap(new PixelSize(width, height), new Vector(dpi, dpi), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
+        using (var frameBuffer = bitmap.Lock())
+        {
+            Marshal.Copy(rgbPixelData, 0, frameBuffer.Address, rgbPixelData.Length);
+        }
+
+        return bitmap;
     }
 
     public static Bitmap GetBitmap(string path, out Vector2<int> size)
