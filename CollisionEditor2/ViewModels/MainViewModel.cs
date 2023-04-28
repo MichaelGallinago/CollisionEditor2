@@ -42,7 +42,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
     
-
     public string ByteAngleText
     {
         get => byteAngle.ToString();
