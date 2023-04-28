@@ -10,8 +10,8 @@
         Title="CollisionEditor2">
 	<Window.Styles>
 		<Style Selector="DataValidationErrors">
-			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}" />
-			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}" />
+			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}"   />
+			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}"/>
 		</Style>
 	</Window.Styles>
     <Grid Background="WhiteSmoke">
@@ -60,7 +60,7 @@
             <ColumnDefinition Width="5*"  />
             <ColumnDefinition Width="5*"  />
         </Grid.ColumnDefinitions>
-        
+		
         <Border Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="12" Grid.RowSpan="16" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
         <Border Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="10" Grid.RowSpan="5" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
         <Border Grid.Column="2" Grid.Row="13" Grid.ColumnSpan="10" Grid.RowSpan="4" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
