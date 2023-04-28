@@ -1,10 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
-using Avalonia.Media.Imaging;
 using SkiaSharp;
 using System;
-using System.Drawing;
 
 namespace CollisionEditor2.Models;
 
@@ -13,8 +11,6 @@ public class TileSet
     public readonly Vector2<int> TileSize;
 
     public List<Tile> Tiles { get; private set; }
-
-    public const int dpi = 96;
 
     public TileSet(string path, int tileWidth = 16, int tileHeight = 16,
         Vector2<int> separate = new(), Vector2<int> offset = new())
@@ -160,7 +156,7 @@ public class TileSet
         }
     }
 
-    public Bitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
+    public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
         int[] groupOffset, Vector2<int> tileMapSize, Vector2<int> separation, Vector2<int> offset)
     {
         int groupCount = groupColor.Length;
@@ -170,26 +166,42 @@ public class TileSet
         byte[,,] pixelArray = SKBitmapToArray(tileMap);
 
         Vector2<int> position = new();
-        SKBitmap groupSeparator = GetGroupSeparator();
+
+        var white = new OurColor(255, 255, 255, 255);
 
         for (int group = 0; group < groupCount; group++)
         {
             foreach (Tile tile in Tiles)
             {
-                DrawTile(pixelArray, tile.Pixels, groupColor[group], separation, offset, columnCount, ref position);
+                DrawTile(ref pixelArray, tile.Pixels, groupColor[group], separation, offset, columnCount, ref position);
             }
 
             while (groupOffset[group]-- > 0)
             {
-                DrawTile(pixelArray, groupSeparator, groupColor[group], separation, offset, columnCount, ref position);
+                DrawTile(ref pixelArray, null, white, separation, offset, columnCount, ref position);
             }
         }
-        return tileMap;
+        return ArrayToSKBitmap(pixelArray);
     }
 
-    private void DrawTile(byte[,,] pixelArray, bool[] pixels, OurColor color, Vector2<int> separation,
-        Vector2<int> offset, int columnCount, ref Vector2<int> position)
+    private void DrawTile(ref byte[,,] pixelArray, bool[]? tilePixels, OurColor tileColor,
+        Vector2<int> separation, Vector2<int> offset, int columnCount, ref Vector2<int> position)
     {
+        OurColor secondColor;
+        if (tilePixels is null)
+        {
+            tilePixels = new bool[TileSize.Y * TileSize.X];
+            for (int i = 0; i < tilePixels.Length; i += 2)
+            {
+                tilePixels[i] = true;
+            }
+            secondColor = new OurColor(0, 0, 0, 255);
+        }
+        else
+        {
+            secondColor = new OurColor(0, 0, 0, 0);
+        }
+
         var tilePosition = new Vector2<int>(
             offset.X + position.X * (TileSize.X + separation.X),
             offset.Y + position.Y * (TileSize.Y + separation.Y));
@@ -198,7 +210,11 @@ public class TileSet
         {
             for (int x = 0; x < TileSize.X; x++)
             {
-                
+                OurColor pixelColor = tilePixels[y * TileSize.X + x] ? tileColor : secondColor;
+                for (int i = 0; i < 4; i++)
+                {
+                    pixelArray[tilePosition.X + x, tilePosition.Y + y, i] = pixelColor.Channels[i];
+                }
             }
         }
 
@@ -207,29 +223,6 @@ public class TileSet
             position.X = 0;
             position.Y++;
         }
-    }
-
-    private SKBitmap GetGroupSeparator()
-    {
-        var groupSeparator = new SKBitmap(TileSize.X, TileSize.Y);
-
-        byte[,,] pixelArray = SKBitmapToArray(groupSeparator);
-
-        for (int y = 0; y < TileSize.Y; y++)
-        {
-            for (int x = 0; x < TileSize.X; x++)
-            {
-                byte whiteOrBlack = (byte)((y * TileSize.X + x) % 2 == 0 ? 255 : 0);
-                for (int j = 0; j < 3; j++)
-                {
-                    pixelArray[x, y, j] = whiteOrBlack;
-                }
-                pixelArray[x, y, 3] = 255;
-            }
-        }
-
-        ArrayToSKBitmap(pixelArray);
-        return groupSeparator;
     }
 
     public void TileChangeLine(int tileIndex, Vector2<int> tilePosition, bool isLeftButtonPressed)
@@ -285,7 +278,7 @@ public class TileSet
     
     public static SKBitmap ArrayToSKBitmap(byte[,,] pixelArray)
     {
-        int width = pixelArray.GetLength(1);
+        int width  = pixelArray.GetLength(1);
         int height = pixelArray.GetLength(0);
 
         uint[] pixelValues = new uint[width * height];

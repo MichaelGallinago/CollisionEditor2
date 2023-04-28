@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Avalonia.Media.Imaging;
 using Avalonia;
-using System.Runtime.Intrinsics.Arm;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
 public class ViewModelAssistant
 {
+    private const int dpi = 96;
+
     public static void SupplementElements(AngleMap angleMap, TileSet tileSet)
     {
         if (tileSet.Tiles.Count < angleMap.Values.Count)
@@ -31,7 +32,7 @@ public class ViewModelAssistant
     {
         var bitmap = new WriteableBitmap(
             new PixelSize(tile.Heights.Length, tile.Widths.Length), 
-            new Vector(TileSet.dpi, TileSet.dpi), 
+            new Vector(dpi, dpi), 
             Avalonia.Platform.PixelFormat.Bgra8888, 
             Avalonia.Platform.AlphaFormat.Premul);
 
