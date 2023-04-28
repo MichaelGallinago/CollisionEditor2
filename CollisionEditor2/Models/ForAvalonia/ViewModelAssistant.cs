@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using Avalonia.Media.Imaging;
 using Avalonia;
+using System.Runtime.Intrinsics.Arm;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
 public class ViewModelAssistant
 {
-    private const int dpi = 96;
-
     public static void SupplementElements(AngleMap angleMap, TileSet tileSet)
     {
         if (tileSet.Tiles.Count < angleMap.Values.Count)
@@ -28,35 +27,27 @@ public class ViewModelAssistant
         }
     }
 
-    public static Bitmap GetBitmapFromTile(Tile tile, byte[] color)
+    public static Bitmap GetBitmapFromTile(Tile tile, OurColor color)
     {
-        var bitmap = new WriteableBitmap(new PixelSize(tile.Heights.Length, tile.Widths.Length), 
-            new Vector(dpi, dpi), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
+        var bitmap = new WriteableBitmap(
+            new PixelSize(tile.Heights.Length, tile.Widths.Length), 
+            new Vector(TileSet.dpi, TileSet.dpi), 
+            Avalonia.Platform.PixelFormat.Bgra8888, 
+            Avalonia.Platform.AlphaFormat.Premul);
 
         var tileColors = new List<byte>(tile.Pixels.Length * 4);
 
         foreach (bool pixel in tile.Pixels)
         {
-            tileColors.Add(color[2]);
-            tileColors.Add(color[1]);
-            tileColors.Add(color[0]);
-            tileColors.Add((byte)(pixel ? color[3] : 0));
+            tileColors.Add(color.Channels[2]);
+            tileColors.Add(color.Channels[1]);
+            tileColors.Add(color.Channels[0]);
+            tileColors.Add((byte)(pixel ? color.Channels[3] : 0));
         }
 
         using (var frameBuffer = bitmap.Lock())
         {
             Marshal.Copy(tileColors.ToArray(), 0, frameBuffer.Address, tileColors.Count);
-        }
-
-        return bitmap;
-    }
-
-    public static WriteableBitmap CreateBitmapFromPixelData(byte[] rgbPixelData, int width, int height)
-    {
-        var bitmap = new WriteableBitmap(new PixelSize(width, height), new Vector(dpi, dpi), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
-        using (var frameBuffer = bitmap.Lock())
-        {
-            Marshal.Copy(rgbPixelData, 0, frameBuffer.Address, rgbPixelData.Length);
         }
 
         return bitmap;

@@ -1,9 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿using CollisionEditor2.Models.ForAvalonia;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia;
+using Avalonia.Media;
+using Microsoft.CodeAnalysis.Text;
 
 namespace CollisionEditor2.Models;
 
@@ -12,6 +16,8 @@ public class TileSet
     public readonly Vector2<int> TileSize;
 
     public List<Tile> Tiles { get; private set; }
+
+    public const int dpi = 96;
 
     public TileSet(string path, int tileWidth = 16, int tileHeight = 16,
         Vector2<int> separate = new(), Vector2<int> offset = new())
@@ -27,7 +33,7 @@ public class TileSet
 
     private Bitmap RecolorTileMap(Bitmap tileMap)
     {
-        byte[] colorValues = BeginBitmapEdit(tileMap, TileSize, out nint ptr, out BitmapData bitmapData);
+        byte[] colorValues = BeginBitmapEdit((WriteableBitmap)tileMap);
 
         for (int i = 0; i < colorValues.Length; i++)
         {
@@ -42,7 +48,7 @@ public class TileSet
             colorValues[i] = 0;
         }
 
-        EndBitmapEdit(tileMap, colorValues, ptr, bitmapData);
+        EndBitmapEdit((WriteableBitmap)tileMap, colorValues);
 
         return tileMap;
     }
@@ -57,17 +63,12 @@ public class TileSet
         {
             for (int x = 0; x < cellCount.X; x++)
             {
-                var tileBounds = new Rectangle(
+                var tileBounds = new PixelRect(
                     x * (TileSize.X  + separate.X)  + offset.X,
                     y * (TileSize.Y + separate.Y) + offset.Y,
                     TileSize.X, TileSize.Y);
-
-                Bitmap bitmap = tileMap.Clone(tileBounds, tileMap.PixelFormat);
+                Bitmap bitmap = (Bitmap)(IImage)new CroppedBitmap(tileMap, tileBounds);
                 Tiles.Add(CreateTileFromBitmap(bitmap));
-                if (Tiles.Count == int.MaxValue)
-                {
-                    return;
-                }
             }
         }
     }
@@ -76,7 +77,7 @@ public class TileSet
     {
         var tile = new Tile(TileSize);
         bool[] pixels = tile.Pixels;
-        byte[] colorValues = BeginBitmapEdit(bitmap, TileSize, out _, out BitmapData bitmapData);
+        byte[] colorValues = BeginBitmapEdit((WriteableBitmap)bitmap);
 
         for (int x = 0; x < TileSize.X; x++)
         {
@@ -87,7 +88,6 @@ public class TileSet
             }
         }
 
-        bitmap.UnlockBits(bitmapData);
         return tile;
     }
 
@@ -103,7 +103,7 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, Color[] groupColor, int[] groupOffset, Vector2<int> separation, Vector2<int> offset)
+    public void Save(string path, int columnCount, OurColor[] groupColor, int[] groupOffset, Vector2<int> separation, Vector2<int> offset)
     {
         if (File.Exists(path))
         {
@@ -119,7 +119,7 @@ public class TileSet
 
         Bitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, tileMapSize, separation, offset);
 
-        tileMap.Save(path, ImageFormat.Png);
+        tileMap.Save(path);
     }
 
     public void SaveCollisionMap(string path, List<Tile> tiles, bool isWidths)
@@ -141,23 +141,28 @@ public class TileSet
         }
     }
 
-    public Bitmap DrawTileMap(int columnCount, Color[] groupColor, 
+    public Bitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
         int[] groupOffset, Vector2<int> tileMapSize, Vector2<int> separation, Vector2<int> offset)
     {
         int groupCount = groupColor.Length;
-        var tileMap = new Bitmap(tileMapSize.X, tileMapSize.Y);
+        var tileMap = new WriteableBitmap(
+            new PixelSize(tileMapSize.X, tileMapSize.Y),
+            new Vector(dpi, dpi),
+            PixelFormat.Bgra8888,
+            AlphaFormat.Premul);
 
         using (var graphics = Graphics.FromImage(tileMap))
         {
             Vector2<int> position = new();
-            var tileBorder = new Rectangle(0, 0, TileSize.X, TileSize.Y);
+            var tileBorder = new PixelRect(0, 0, TileSize.X, TileSize.Y);
             Bitmap groupSeparator = GetGroupSeparator();
 
             for (int group = 0; group < groupCount; group++)
             {
                 foreach (Tile tile in Tiles)
                 {
-                    DrawTile(graphics, tile, separation, offset, tileBorder, columnCount, ref position);
+                    Bitmap bitmap = ViewModelAssistant.GetBitmapFromTile(tile, groupColor[group]);
+                    DrawTile(graphics, bitmap, separation, offset, tileBorder, columnCount, ref position);
                 }
 
                 while (groupOffset[group]-- > 0)
@@ -174,7 +179,7 @@ public class TileSet
     {
         graphics.DrawImage(
             tile,
-            new Rectangle(
+            new PixelRect(
                 offset.X + position.X * (TileSize.X + separation.X),
                 offset.Y + position.Y * (TileSize.Y + separation.Y),
                 TileSize.X, TileSize.Y),
@@ -190,8 +195,13 @@ public class TileSet
 
     private Bitmap GetGroupSeparator()
     {
-        var groupSeparator = new Bitmap(TileSize.X, TileSize.Y);
-        byte[] colorValues = BeginBitmapEdit(groupSeparator, TileSize, out nint ptr, out BitmapData bitmapData);
+        var groupSeparator = new WriteableBitmap(
+            new PixelSize(TileSize.X, TileSize.Y),
+            new Vector(dpi, dpi),
+            PixelFormat.Bgra8888,
+            AlphaFormat.Premul);
+
+        byte[] colorValues = BeginBitmapEdit(groupSeparator);
 
         for (int i = TileSize.X * TileSize.Y; i > 0; i--)
         {
@@ -203,7 +213,7 @@ public class TileSet
             colorValues[i * 4] = 255;
         }
 
-        EndBitmapEdit(groupSeparator, colorValues, ptr, bitmapData);
+        EndBitmapEdit(groupSeparator, colorValues);
         return groupSeparator;
     }
 
@@ -238,31 +248,25 @@ public class TileSet
         Tiles[tileIndex].Pixels = pixels;
     }
 
-    private byte[] BeginBitmapEdit(WriteableBitmap bitmap, Vector2<int> areaSize, out nint ptr, out BitmapData bitmapData)
+    private byte[] BeginBitmapEdit(WriteableBitmap bitmap)
     {
+        int length = TileSize.X * TileSize.Y * 4;
+        var colorValues = new byte[length];
+
         using (var frameBuffer = bitmap.Lock())
         {
-            int length = TileSize.X * TileSize.Y * 4;
-            var data = new byte[length];
-            Marshal.Copy(frameBuffer.Address, data, 0, length);
+            Marshal.Copy(frameBuffer.Address, colorValues, 0, length);
         }
-        bitmapData = bitmap.Lock(
-            new Rectangle(0, 0, areaSize.X, areaSize.Y),
-            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-        ptr = bitmapData.Scan0;
-        int bytes = Math.Abs(bitmapData.Stride) * areaSize.Y;
-        var colorValues = new byte[bytes];
-
-        Marshal.Copy(ptr, colorValues, 0, bytes);
 
         return colorValues;
     }
 
-    private void EndBitmapEdit(Bitmap bitmap, byte[] colorValues, nint ptr, BitmapData bitmapData)
+    private void EndBitmapEdit(WriteableBitmap bitmap, byte[] colorValues)
     {
-        Marshal.Copy(colorValues, 0, ptr, colorValues.Length);
-        bitmap.UnlockBits(bitmapData);
+        using (var frameBuffer = bitmap.Lock())
+        {
+            Marshal.Copy(colorValues, 0, frameBuffer.Address, colorValues.Length);
+        }
     }
 
     private int GetPixelIndex(int positionX, int positionY)

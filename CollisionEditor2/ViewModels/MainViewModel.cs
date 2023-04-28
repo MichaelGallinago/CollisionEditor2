@@ -243,8 +243,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
-            new System.Drawing.Size(openTileMap.HorizontalSeparation,openTileMap.VerticalSeparation), 
-            new System.Drawing.Size(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
+            new Vector2<int>(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation), 
+            new Vector2<int>(openTileMap.HorizontalOffset,     openTileMap.VerticalOffset));
 
         if (AngleMap.Values.Count <= 0)
         {
@@ -252,7 +252,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-        ViewModelAssistant.GetBitmapFromTile(TileSet.Tiles[SelectedTile],new byte[] { 0, 0, 0, 255 });
+        ViewModelAssistant.GetBitmapFromTile(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255));
 
         TileGridUpdate(TileSet, SelectedTile, window);
         RectanglesGridUpdate();
@@ -497,17 +497,17 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         Tile tile = TileSet.Tiles[index];
 
-        var image = new Avalonia.Controls.Image
+        var image = new Image
         {
             Width  = TileSet.TileSize.X  * MainWindow.TileMapTileScale,
             Height = TileSet.TileSize.Y * MainWindow.TileMapTileScale,
-            Source = ViewModelAssistant.GetBitmapFromTile(tile, new byte[] { 0, 0, 0, 255 })
+            Source = ViewModelAssistant.GetBitmapFromTile(tile, new OurColor(0, 0, 0, 255))
         };
 
         var border = new Border()
         {
-            Background  = new SolidColorBrush(Avalonia.Media.Color.FromRgb(230, 230, 230)),
-            BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211)),
+            Background  = new SolidColorBrush(Color.FromRgb(230, 230, 230)),
+            BorderBrush = new SolidColorBrush(Color.FromRgb(211, 211, 211)),
             BorderThickness = new Thickness(tileMapSeparation / thicknessToSeparationRatio),
             Child = image
         };
