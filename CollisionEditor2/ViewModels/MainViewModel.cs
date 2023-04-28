@@ -633,7 +633,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                         tileGridBorderThickness, 
                         tileGridBorderThickness),
 
-                    Background = new SolidColorBrush(tile.GetPixel(x, y).A > 0 ? Colors.Black : Colors.Transparent),
+                    Background = new SolidColorBrush(tile.Pixels[y * size.X + x] ? Colors.Black : Colors.Transparent),
                     BorderBrush = new SolidColorBrush(Colors.Gray),
                 };
 
