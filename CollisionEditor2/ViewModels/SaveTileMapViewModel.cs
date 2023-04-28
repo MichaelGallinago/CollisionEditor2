@@ -19,7 +19,8 @@ namespace CollisionEditor2.ViewModels
         private const int minTileWidth = 4;
 
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
-        public ReactiveCommand<Unit, Unit> AddGroupCommand { get; }
+        public ReactiveCommand<Unit, Unit> UpdateColorsCommand { get; }
+
         
         public string VerticalSeparationText
         {
@@ -27,13 +28,13 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(VerticalSeparationText));
-                CheckErrors();
+                CheckErrorsForSaveButton();
                 bool isNumber = int.TryParse(value, out int intVerticalSeparation);
 
                 if (!isNumber || intVerticalSeparation < 0)
                 {
                     textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
-                    CheckErrors();
+                    CheckErrorsForSaveButton();
                     return;
                 }
 
@@ -46,13 +47,13 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(HorizontalSeparationText));
-                CheckErrors();
+                CheckErrorsForSaveButton();
                 bool isNumber = int.TryParse(value, out int intHorizontalSeparation);
 
                 if (!isNumber || intHorizontalSeparation < 0)
                 {
                     textboxValidator.AddError(nameof(HorizontalSeparationText), "Wrong Horizontal Separation!");
-                    CheckErrors();
+                    CheckErrorsForSaveButton();
                     return;
                 }
 
@@ -66,13 +67,13 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(VerticalOffsetText));
-                CheckErrors();
+                CheckErrorsForSaveButton();
                 bool isNumber = int.TryParse(value, out int intVerticalOffset);
 
                 if (!isNumber || intVerticalOffset < 0)
                 {
                     textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
-                    CheckErrors();
+                    CheckErrorsForSaveButton();
                     return;
                 }
 
@@ -85,13 +86,13 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(HorizontalOffsetText));
-                CheckErrors();
+                CheckErrorsForSaveButton();
                 bool isNumber = int.TryParse(value, out int intHorizontalOffset);
 
                 if (!isNumber || intHorizontalOffset < 0)
                 {
                     textboxValidator.AddError(nameof(HorizontalOffsetText), "Wrong Horizontal Offset!");
-                    CheckErrors();
+                    CheckErrorsForSaveButton();
                     return;
                 }
 
@@ -105,13 +106,13 @@ namespace CollisionEditor2.ViewModels
             set
             {
                 textboxValidator.ClearErrors(nameof(AmountOfColumnsText));
-                CheckErrors();
+                CheckErrorsForSaveButton();
                 bool isNumber = int.TryParse(value, out int intAmountOfColumns);
 
                 if (!isNumber || intAmountOfColumns < 0)
                 {
                     textboxValidator.AddError(nameof(AmountOfColumnsText), "Wrong Amount of Columns!");
-                    CheckErrors();
+                    CheckErrorsForSaveButton();
                     return;
                 }
 
@@ -246,13 +247,13 @@ namespace CollisionEditor2.ViewModels
         private void ByteValidation(string value, string nameColorChannel, ref int resultColorChannel)
         {
             textboxValidator.ClearErrors(nameColorChannel);
-            CheckErrors();
+            CheckErrorsForSaveAndUpdateButton();
             bool isNumber = int.TryParse(value, out int intColorChannel);
 
             if (!isNumber || intColorChannel < 0 || intColorChannel > 255)
             {
                 textboxValidator.AddError(nameColorChannel, "Not a Byte!");
-                CheckErrors();
+                CheckErrorsForSaveAndUpdateButton();
                 return;
             }
 
@@ -261,20 +262,33 @@ namespace CollisionEditor2.ViewModels
         private void OffsetValidation(string value, string nameOffsetInTiles, ref int resultoffsetInTiles)
         {
             textboxValidator.ClearErrors(nameOffsetInTiles);
-            CheckErrors();
+            CheckErrorsForSaveAndUpdateButton();
             bool isNumber = int.TryParse(value, out int intOffsetInTiles);
 
             if (!isNumber || intOffsetInTiles < 0 || intOffsetInTiles > 255)
             {
                 textboxValidator.AddError(nameOffsetInTiles, "Not a Byte!");
-                CheckErrors();
+                CheckErrorsForSaveAndUpdateButton();
                 return;
             }
 
             resultoffsetInTiles = intOffsetInTiles;
         }
 
-        private void CheckErrors()
+        private void CheckErrorsForSaveAndUpdateButton()
+        {
+            if (textboxValidator.HasErrors)
+            {
+                window.SaveButton.IsEnabled = false;
+                window.UpdateColorsButton.IsEnabled = false;
+            }
+            else
+            {
+                window.SaveButton.IsEnabled = true;
+                window.UpdateColorsButton.IsEnabled = true;
+            }
+        }
+        private void CheckErrorsForSaveButton()
         {
             if (textboxValidator.HasErrors)
             {
@@ -293,23 +307,27 @@ namespace CollisionEditor2.ViewModels
         private int horizontalOffset;
         private int amountOfColumns;
 
-        private int redChannel1;
-        private int greenChannel1;
-        private int blueChannel1;
-        private int alphaChannel1;
-        private int offsetInTiles1;
+        //0 0 0 255
+        //255 255 255 255
+        //255 255 0 255
 
-        private int redChannel2;
-        private int greenChannel2;
-        private int blueChannel2;
-        private int alphaChannel2;
-        private int offsetInTiles2;
+        private int redChannel1    = 0;
+        private int greenChannel1  = 0;
+        private int blueChannel1   = 0;
+        private int alphaChannel1  = 255;
+        private int offsetInTiles1 = 0;
 
-        private int redChannel3;
-        private int greenChannel3;
-        private int blueChannel3;
-        private int alphaChannel3;
-        private int offsetInTiles3;
+        private int redChannel2    = 255;
+        private int greenChannel2  = 255;
+        private int blueChannel2   = 255;
+        private int alphaChannel2  = 255;
+        private int offsetInTiles2 = 0;
+
+        private int redChannel3    = 255;
+        private int greenChannel3  = 255;
+        private int blueChannel3   = 0;
+        private int alphaChannel3  = 255;
+        private int offsetInTiles3 = 0;
 
         private readonly TextboxValidator textboxValidator;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
@@ -319,12 +337,18 @@ namespace CollisionEditor2.ViewModels
             textboxValidator = new TextboxValidator();
             textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
 
-            SaveCommand     = ReactiveCommand.Create(Save);
-
+            UpdateColorsCommand = ReactiveCommand.Create(UpdateColors);
+            SaveCommand         = ReactiveCommand.Create(Save);
+            
             this.window = window;
         }
 
-        
+        private void UpdateColors()
+        {
+
+            window.Close();
+        }
+
         private void Save()
         {
 
