@@ -339,7 +339,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.WidthMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.WidthMap);
+            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,true);
         }
     }
 
@@ -355,7 +355,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles);
+            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,false);
         }
     }
 
