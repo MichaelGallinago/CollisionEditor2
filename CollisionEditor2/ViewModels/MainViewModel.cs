@@ -78,7 +78,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             }
             
 
-            string prefix = value.Substring(0,AngleService.HexAnglePrefixLength);
+            string prefix = value[..AngleService.HexAnglePrefixLength];
 
             if (prefix != "0x" && prefix != "0X")
             {

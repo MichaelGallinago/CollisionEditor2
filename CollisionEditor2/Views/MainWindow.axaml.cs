@@ -160,7 +160,9 @@ namespace CollisionEditor2.Views
 
         private int GetUniformGridIndex(Point mousePosition)
         {
-            Vector2<int> tileSize = new Vector2<int>( WindowMain.TileSet.TileSize.X * TileMapTileScale + tileMapSeparation, WindowMain.TileSet.TileSize.Y * TileMapTileScale + tileMapSeparation);
+            var tileSize = new Vector2<int>(
+                WindowMain.TileSet.TileSize.X * TileMapTileScale + tileMapSeparation, 
+                WindowMain.TileSet.TileSize.Y * TileMapTileScale + tileMapSeparation);
             
             return (int)mousePosition.X / tileSize.X 
                 + (int)mousePosition.Y / tileSize.Y * TileMapGrid.Columns;

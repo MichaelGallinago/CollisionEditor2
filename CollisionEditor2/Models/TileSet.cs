@@ -5,9 +5,8 @@ using System.IO;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia;
 using Avalonia.Media;
-using Microsoft.CodeAnalysis.Text;
+using Avalonia;
 
 namespace CollisionEditor2.Models;
 
@@ -111,11 +110,11 @@ public class TileSet
         }
 
         var cell = new Vector2<int>(TileSize.X + separation.X, TileSize.Y + separation.Y);
-        int rowCount = (Tiles.Count & -columnCount) / columnCount;
+        int rowCount = (Tiles.Count  & -columnCount) / columnCount;
 
         var tileMapSize = new Vector2<int>(
-            offset.X  + columnCount * cell.X - separation.X, 
-            offset.Y + rowCount     * cell.Y - separation.Y);
+            offset.X + columnCount * cell.X - separation.X, 
+            offset.Y + rowCount    * cell.Y - separation.Y);
 
         Bitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, tileMapSize, separation, offset);
 
@@ -131,7 +130,7 @@ public class TileSet
 
         using var writer = new BinaryWriter(File.Open(path, FileMode.CreateNew));
         {
-            foreach (Tile tile in Tiles)
+            foreach (Tile tile in tiles)
             {
                 foreach (byte value in isWidths ? tile.Widths : tile.Heights)
                 {
@@ -151,40 +150,40 @@ public class TileSet
             PixelFormat.Bgra8888,
             AlphaFormat.Premul);
 
-        using (var graphics = Graphics.FromImage(tileMap))
+        byte[] colorValues = BeginBitmapEdit(tileMap);
+
+        Vector2<int> position = new();
+        Bitmap groupSeparator = GetGroupSeparator();
+
+        for (int group = 0; group < groupCount; group++)
         {
-            Vector2<int> position = new();
-            var tileBorder = new PixelRect(0, 0, TileSize.X, TileSize.Y);
-            Bitmap groupSeparator = GetGroupSeparator();
-
-            for (int group = 0; group < groupCount; group++)
+            foreach (Tile tile in Tiles)
             {
-                foreach (Tile tile in Tiles)
-                {
-                    Bitmap bitmap = ViewModelAssistant.GetBitmapFromTile(tile, groupColor[group]);
-                    DrawTile(graphics, bitmap, separation, offset, tileBorder, columnCount, ref position);
-                }
+                DrawTile(colorValues, tile.Pixels, groupColor[group], separation, offset, columnCount, ref position);
+            }
 
-                while (groupOffset[group]-- > 0)
-                {
-                    DrawTile(graphics, groupSeparator, separation, offset, tileBorder, columnCount, ref position);
-                }
+            while (groupOffset[group]-- > 0)
+            {
+                //DrawTile(colorValues, groupSeparator, groupColor[group], separation, offset, columnCount, ref position);
             }
         }
         return tileMap;
     }
 
-    private void DrawTile(Graphics graphics, Bitmap tile, Vector2<int> separation, Vector2<int> offset,
-        Rectangle TileBorder, int columnCount, ref Vector2<int> position)
+    private void DrawTile(byte[] colorValues, bool[] pixels, OurColor color, Vector2<int> separation,
+        Vector2<int> offset, int columnCount, ref Vector2<int> position)
     {
-        graphics.DrawImage(
-            tile,
-            new PixelRect(
-                offset.X + position.X * (TileSize.X + separation.X),
-                offset.Y + position.Y * (TileSize.Y + separation.Y),
-                TileSize.X, TileSize.Y),
-            TileBorder,
-            GraphicsUnit.Pixel);
+        var tilePosition = new Vector2<int>(
+            offset.X + position.X * (TileSize.X + separation.X),
+            offset.Y + position.Y * (TileSize.Y + separation.Y));
+
+        for (int y = 0; y < TileSize.Y; y++)
+        {
+            for (int x = 0; x < TileSize.X; x++)
+            {
+                
+            }
+        }
 
         if (++position.X >= columnCount)
         {
@@ -263,10 +262,8 @@ public class TileSet
 
     private void EndBitmapEdit(WriteableBitmap bitmap, byte[] colorValues)
     {
-        using (var frameBuffer = bitmap.Lock())
-        {
-            Marshal.Copy(colorValues, 0, frameBuffer.Address, colorValues.Length);
-        }
+        using var frameBuffer = bitmap.Lock();
+        Marshal.Copy(colorValues, 0, frameBuffer.Address, colorValues.Length);
     }
 
     private int GetPixelIndex(int positionX, int positionY)
