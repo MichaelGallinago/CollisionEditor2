@@ -325,6 +325,8 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     private SaveTileMap window;
     private TileSet tileSet;
+    private Avalonia.Media.IImage saveImage;
+
     public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
     {
         textboxValidator = new TextboxValidator();
@@ -339,10 +341,8 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void UpdateColors()
     {
-        //(int columnCount, OurColor[] groupColor,
-        //int[] groupOffset, PixelSize tileMapSize, PixelSize separation, PixelSize offset)
 
-        window.SaveImage.Source = (Avalonia.Media.IImage) tileSet.DrawTileMap(amountOfColumns,
+        saveImage = (Avalonia.Media.IImage) tileSet.DrawTileMap(amountOfColumns,
             new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
                              new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
                              new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
@@ -350,13 +350,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
                  new PixelSize(horizontalSeparation, verticalSeparation),
                  new PixelSize(horizontalOffset, verticalOffset));
 
-
-        window.Close();
+        window.SaveImage.Source = saveImage;
     }
 
     private void Save()
-    {
-
+    {   
+        window.IsSaved = true;
+        window.ResultSaveImage = saveImage;
         window.Close();
     }
 
