@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Media.Imaging;
 using SkiaSharp;
 
 namespace CollisionEditor2.Views
