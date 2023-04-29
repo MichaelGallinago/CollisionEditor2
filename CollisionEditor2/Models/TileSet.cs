@@ -225,7 +225,7 @@ public class TileSet
                 int offset = (y * bitmap.Width + x) * bitmap.BytesPerPixel;
                 for (int i = 0; i < 4; i++)
                 {
-                    pixelValues[x, y, i] = span[offset + 3 - i];
+                    pixelValues[x, y, i] = span[(offset + 6 - i) % 4];
                 }
             }
         }
