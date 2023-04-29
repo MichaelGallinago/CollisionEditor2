@@ -71,7 +71,8 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, OurColor[] groupColor, int[] groupOffset, PixelSize separation, PixelSize offset)
+    public void Save(string path, int columnCount, OurColor[] groupColor,
+        int[] groupOffset, PixelSize separation, PixelSize offset)
     {
         if (File.Exists(path))
         {
@@ -115,12 +116,12 @@ public class TileSet
     public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
         int[] groupOffset, PixelSize tileMapSize, PixelSize separation, PixelSize offset)
     {
-        int groupCount = groupColor.Length;
-        var tileMap = new SKBitmap(tileMapSize.Width, tileMapSize.Height, 
+        var tileMap = new SKBitmap(
+            tileMapSize.Width, tileMapSize.Height, 
             SKColorType.Rgba8888, SKAlphaType.Premul);
-
         byte[,,] pixelArray = SKBitmapToArray(tileMap);
 
+        int groupCount = groupColor.Length;
         PixelPoint position = new();
 
         var white = new OurColor(255, 255, 255, 255);
@@ -129,12 +130,14 @@ public class TileSet
         {
             foreach (Tile tile in Tiles)
             {
-                DrawTile(ref pixelArray, tile.Pixels, groupColor[group], separation, offset, columnCount, ref position);
+                DrawTile(ref pixelArray, tile.Pixels, groupColor[group], 
+                    separation, offset, columnCount, ref position);
             }
 
             while (groupOffset[group]-- > 0)
             {
-                DrawTile(ref pixelArray, null, white, separation, offset, columnCount, ref position);
+                DrawTile(ref pixelArray, null, white,
+                    separation, offset, columnCount, ref position);
             }
         }
         return ArrayToSKBitmap(pixelArray);
@@ -179,31 +182,31 @@ public class TileSet
             new PixelPoint(position.X + 1, position.Y);
     }
 
-    public void ChangeTile(int tileIndex, PixelPoint tilePosition, bool isLeftButtonPressed)
+    public void ChangeTile(int tileIndex, PixelPoint pixelPosition, bool isLeftButtonPressed)
     {
         bool[] pixels = Tiles[tileIndex].Pixels;
 
         if (isLeftButtonPressed)
         {
-            if (tilePosition.Y == 0 || !pixels[GetPixelIndex(tilePosition.X, tilePosition.Y)]||
-                pixels[GetPixelIndex(tilePosition.X, tilePosition.Y - 1)])
+            if (!pixels[GetPixelIndex(pixelPosition.X, pixelPosition.Y)] ||
+                pixelPosition.Y != 0 && pixels[GetPixelIndex(pixelPosition.X, pixelPosition.Y - 1)])
             {
                 for (int y = 0; y < TileSize.Height; y++)
                 {
-                    pixels[GetPixelIndex(tilePosition.X, y)] = y >= tilePosition.Y;
+                    pixels[GetPixelIndex(pixelPosition.X, y)] = y >= pixelPosition.Y;
                 }
             }
             else
             {
                 for (int y = 0; y < TileSize.Height; y++)
                 {
-                    pixels[GetPixelIndex(tilePosition.X, y)] = false;
+                    pixels[GetPixelIndex(pixelPosition.X, y)] = false;
                 }
             }
         }
         else
         {
-            int pixelOnPositionIndex = GetPixelIndex(tilePosition.X, tilePosition.Y);
+            int pixelOnPositionIndex = GetPixelIndex(pixelPosition.X, pixelPosition.Y);
             pixels[pixelOnPositionIndex] = !pixels[pixelOnPositionIndex];
         }
 
@@ -232,26 +235,25 @@ public class TileSet
     
     public static SKBitmap ArrayToSKBitmap(byte[,,] pixelArray)
     {
-        int width  = pixelArray.GetLength(0);
-        int height = pixelArray.GetLength(1);
+        var bitmapSize = new PixelSize(pixelArray.GetLength(0), pixelArray.GetLength(1));
 
-        uint[] pixelValues = new uint[width * height];
-        for (int y = 0; y < height; y++)
+        uint[] pixelValues = new uint[bitmapSize.Width * bitmapSize.Height];
+        for (int y = 0; y < bitmapSize.Height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < bitmapSize.Width; x++)
             {
                 uint pixelValue = 0;
                 for (int i = 0; i < 4; i++)
                 {
                     pixelValue += (uint)(pixelArray[x, y, i] << (8 * i));
                 }
-                pixelValues[y * width + x] = pixelValue;
+                pixelValues[y * bitmapSize.Width + x] = pixelValue;
             }
         }
 
         SKBitmap bitmap = new();
         GCHandle gcHandle = GCHandle.Alloc(pixelValues, GCHandleType.Pinned);
-        var info = new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+        var info = new SKImageInfo(bitmapSize.Width, bitmapSize.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
 
         IntPtr ptr = gcHandle.AddrOfPinnedObject();
         int rowBytes = info.RowBytes;
