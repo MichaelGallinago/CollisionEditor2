@@ -29,7 +29,7 @@ public class ViewModelAssistant
         }
     }
 
-    public static Bitmap GetBitmapFromArray(byte[] pixelColors, PixelSize bitmapSize)
+    public static Bitmap GetBitmapFromPixelArray(byte[] pixelColors, PixelSize bitmapSize)
     {
         var bitmap = new WriteableBitmap(
             bitmapSize,
