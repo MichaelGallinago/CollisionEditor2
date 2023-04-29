@@ -252,9 +252,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             AngleMap = new AngleMap(TileSet.Tiles.Count);
         }
 
-        ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-        ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.TileToPixelArray(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
-                                                   new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length));
+        ViewModelAssistant.SupplementElements(AngleMap, TileSet);
+        ViewModelAssistant.GetBitmapFromPixelArray(
+            ViewModelAssistant.TileToPixelArray(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
+            new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length));
 
         TileGridUpdate(TileSet, SelectedTile, window);
         RectanglesGridUpdate();
@@ -275,7 +276,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
-        window.WindowSizeChanged(new Avalonia.Size(window.Width, window.Height));
+        window.WindowSizeChanged(new Size(window.Width, window.Height));
     }
 
     private void TileMapGridReset()

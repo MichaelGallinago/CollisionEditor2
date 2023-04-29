@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia;
 using SkiaSharp;
 
@@ -32,10 +33,8 @@ public class ViewModelAssistant
     public static Bitmap GetBitmapFromPixelArray(byte[] pixelColors, PixelSize bitmapSize)
     {
         var bitmap = new WriteableBitmap(
-            bitmapSize,
-            new Vector(dpi, dpi),
-            Avalonia.Platform.PixelFormat.Bgra8888,
-            Avalonia.Platform.AlphaFormat.Premul);
+            bitmapSize, new Vector(dpi, dpi),
+            PixelFormat.Bgra8888, AlphaFormat.Premul);
 
         using (var frameBuffer = bitmap.Lock())
         {
@@ -56,11 +55,11 @@ public class ViewModelAssistant
 
         foreach (bool pixel in tile.Pixels)
         {
-            for (int i = 3; i > 0; i--)
+            for (var i = 2; i >= 0; i--)
             {
                 tileColors.Add(color.Channels[i]);
             }
-            tileColors.Add((byte)(pixel ? color.Channels[0] : 0));
+            tileColors.Add((byte)(pixel ? color.Channels[3] : 0));
         }
 
         return tileColors.ToArray();
