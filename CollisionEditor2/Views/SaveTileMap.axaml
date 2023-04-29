@@ -194,6 +194,5 @@
 		<ScrollViewer Grid.Column="16" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="38" HorizontalScrollBarVisibility="Visible">
 			<Image x:Name="SaveImage"/>
 		</ScrollViewer>
-
 	</Grid>
 </Window>

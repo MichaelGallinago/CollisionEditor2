@@ -13,6 +13,8 @@ using Avalonia;
 using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.Models;
 using SkiaSharp;
+using Avalonia.Media.Imaging;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -32,13 +34,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         set
         {
             textboxValidator.ClearErrors(nameof(VerticalSeparationText));
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             bool isNumber = int.TryParse(value, out int intVerticalSeparation);
 
             if (!isNumber || intVerticalSeparation < 0)
             {
                 textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
-                CheckErrorsForSaveAndUpdateButton();
+                CheckErrors();
                 return;
             }
 
@@ -51,13 +53,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         set
         {
             textboxValidator.ClearErrors(nameof(HorizontalSeparationText));
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             bool isNumber = int.TryParse(value, out int intHorizontalSeparation);
 
             if (!isNumber || intHorizontalSeparation < 0)
             {
                 textboxValidator.AddError(nameof(HorizontalSeparationText), "Wrong Horizontal Separation!");
-                CheckErrorsForSaveAndUpdateButton();
+                CheckErrors();
                 return;
             }
 
@@ -71,13 +73,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         set
         {
             textboxValidator.ClearErrors(nameof(VerticalOffsetText));
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             bool isNumber = int.TryParse(value, out int intVerticalOffset);
 
             if (!isNumber || intVerticalOffset < 0)
             {
                 textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
-                CheckErrorsForSaveAndUpdateButton();
+                CheckErrors();
                 return;
             }
 
@@ -90,13 +92,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         set
         {
             textboxValidator.ClearErrors(nameof(HorizontalOffsetText));
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             bool isNumber = int.TryParse(value, out int intHorizontalOffset);
 
             if (!isNumber || intHorizontalOffset < 0)
             {
                 textboxValidator.AddError(nameof(HorizontalOffsetText), "Wrong Horizontal Offset!");
-                CheckErrorsForSaveAndUpdateButton();
+                CheckErrors();
                 return;
             }
 
@@ -110,13 +112,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         set
         {
             textboxValidator.ClearErrors(nameof(AmountOfColumnsText));
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             bool isNumber = int.TryParse(value, out int intAmountOfColumns);
 
             if (!isNumber || intAmountOfColumns < 0 || intAmountOfColumns > 0)
             {
                 textboxValidator.AddError(nameof(AmountOfColumnsText), "Wrong Amount of Columns!");
-                CheckErrorsForSaveAndUpdateButton();
+                CheckErrors();
                 return;
             }
 
@@ -251,13 +253,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private void ByteValidation(string value, string nameColorChannel, ref byte resultColorChannel)
     {
         textboxValidator.ClearErrors(nameColorChannel);
-        CheckErrorsForSaveAndUpdateButton();
+        CheckErrors();
         bool isByte = byte.TryParse(value, out byte intColorChannel);
 
         if (!isByte)
         {
             textboxValidator.AddError(nameColorChannel, "Not a Byte!");
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             return;
         }
 
@@ -266,20 +268,20 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private void OffsetValidation(string value, string nameOffsetInTiles, ref int resultoffsetInTiles)
     {
         textboxValidator.ClearErrors(nameOffsetInTiles);
-        CheckErrorsForSaveAndUpdateButton();
+        CheckErrors();
         bool isNumber = int.TryParse(value, out int intOffsetInTiles);
 
         if (!isNumber || intOffsetInTiles < 0 || intOffsetInTiles > 255)
         {
             textboxValidator.AddError(nameOffsetInTiles, "Not a Byte!");
-            CheckErrorsForSaveAndUpdateButton();
+            CheckErrors();
             return;
         }
 
         resultoffsetInTiles = intOffsetInTiles;
     }
 
-    private void CheckErrorsForSaveAndUpdateButton()
+    private void CheckErrors()
     {
         if (textboxValidator.HasErrors)
         {   
@@ -326,7 +328,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     private SaveTileMap window;
     private TileSet tileSet;
-    private SKBitmap saveImage;
+    private Bitmap saveImage;
 
     public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
     {
@@ -336,13 +338,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         UpdateColorsCommand = ReactiveCommand.Create(UpdateColors);
         SaveCommand         = ReactiveCommand.Create(Save);
         
-        saveImage = tileSet.DrawTileMap(amountOfColumns,
-            new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-                             new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-                             new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
-                 new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
-                 new PixelSize(horizontalSeparation, verticalSeparation),
-                 new PixelSize(horizontalOffset, verticalOffset));
+        //saveImage = tileSet.DrawTileMap(amountOfColumns,
+        //    new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
+        //                     new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
+        //                     new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
+        //         new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
+        //         new PixelSize(horizontalSeparation, verticalSeparation),
+        //         new PixelSize(horizontalOffset, verticalOffset));
 
         this.tileSet = tileSet;
         this.window = window;
@@ -351,15 +353,15 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private void UpdateColors()
     {
 
-        saveImage = tileSet.DrawTileMap(amountOfColumns,
-            new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-                             new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-                             new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
-                 new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
-                 new PixelSize(horizontalSeparation, verticalSeparation),
-                 new PixelSize(horizontalOffset, verticalOffset));
-
-        window.SaveImage.Source = (Avalonia.Media.IImage)saveImage;
+        //saveImage = tileSet.DrawTileMap(amountOfColumns,
+        //    new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
+        //                     new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
+        //                     new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
+        //         new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
+        //         new PixelSize(horizontalSeparation, verticalSeparation),
+        //         new PixelSize(horizontalOffset, verticalOffset));
+        
+        window.SaveImage.Source = saveImage;
     }
 
     private void Save()

@@ -323,7 +323,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveTileMap(Path.GetFullPath(filePath),saveTileMap.ResultSaveImage);
+            //TileSet.SaveTileMap(Path.GetFullPath(filePath),saveTileMap.ResultSaveImage);
         }
     }
 
@@ -414,8 +414,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ShowAngles(new Angles(0, "0x00", 0));
 
         SelectedTile = 0;
-        window.SelectTileTextBox.Text = "0";
+        OnPropertyChanged(nameof(SelectedTileText));
         window.LastSelectedTile = 0;
+
+        window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(176, 176, 176));
+        window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 177, 177, 177));
+        window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
+        window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
 
         window.ByteAngleIncrimentButton.IsEnabled = false;
         window.ByteAngleDecrementButton.IsEnabled = false;
