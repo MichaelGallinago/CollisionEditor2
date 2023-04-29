@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollisionEditor2.Views"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600" Width="500" MinWidth="500" Height="600" MinHeight="600"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600" Width="600" MinWidth="600" Height="600" MinHeight="600"
         x:Class="CollisionEditor2.Views.SaveTileMap"
         Title="SaveTileMap"
         FontFamily="Consolas"
@@ -82,17 +82,17 @@
 			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="5"/>
 
-			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="60"/>
 			<ColumnDefinition Width="17"/>
-			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="60"/>
 
 
 			<ColumnDefinition Width="17"/>
 
 
-			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="60"/>
 			<ColumnDefinition Width="17"/>
-			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="60"/>
 
 			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="5"/>
@@ -139,17 +139,17 @@
 		<Border Grid.Column="3" Grid.Row="16" Grid.ColumnSpan="9" Grid.RowSpan="6" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Background="#FFE6E6E6" />
 		<TextBlock Grid.Column="4" Grid.Row="17" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Color in RGBA"/>
 
-		<TextBox Grid.Column="4" Grid.Row="18"  Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="1" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="4" Grid.Row="18"  Text="{Binding Path=RedChannel1Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25"   
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="6" Grid.Row="18"  Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="1" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="6" Grid.Row="18"  Text="{Binding Path=GreenChannel1Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25"   
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="8" Grid.Row="18"  Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="1" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="8" Grid.Row="18"  Text="{Binding Path=BlueChannel1Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25"   
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="10" Grid.Row="18"  Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="1" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="10" Grid.Row="18"  Text="{Binding Path=AlphaChannel1Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25"  
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 
 		<TextBlock Grid.Column="4" Grid.Row="19" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Offset in tiles"  />
-		<TextBox Grid.Column="4" Grid.Row="20" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="97" MaxWidth="97" MinHeight="25" 
+		<TextBox Grid.Column="4" Grid.Row="20" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles1Text,Mode=TwoWay}" MinWidth="87" Width="117"  MaxWidth="117" MinHeight="25" 
 				 MaxHeight="25" HorizontalAlignment="Left" Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 
 		
@@ -157,17 +157,17 @@
 		<Border Grid.Column="3" Grid.Row="23" Grid.ColumnSpan="9" Grid.RowSpan="6" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Background="#FFE6E6E6" />
 		<TextBlock Grid.Column="4" Grid.Row="24" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Color in RGBA"/>
 
-		<TextBox Grid.Column="4" Grid.Row="25"  Text="{Binding Path=RedChannel2Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"
+		<TextBox Grid.Column="4" Grid.Row="25"  Text="{Binding Path=RedChannel2Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="6" Grid.Row="25"  Text="{Binding Path=GreenChannel2Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"
+		<TextBox Grid.Column="6" Grid.Row="25"  Text="{Binding Path=GreenChannel2Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="8" Grid.Row="25"  Text="{Binding Path=BlueChannel2Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"
+		<TextBox Grid.Column="8" Grid.Row="25"  Text="{Binding Path=BlueChannel2Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="10" Grid.Row="25"  Text="{Binding Path=AlphaChannel2Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"
+		<TextBox Grid.Column="10" Grid.Row="25"  Text="{Binding Path=AlphaChannel2Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25"
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 
 		<TextBlock Grid.Column="4" Grid.Row="26" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Offset in tiles"  />
-		<TextBox Grid.Column="4" Grid.Row="27" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles2Text,Mode=TwoWay}" MinWidth="97" MaxWidth="97" MinHeight="25"
+		<TextBox Grid.Column="4" Grid.Row="27" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles2Text,Mode=TwoWay}" MinWidth="87" Width="117"  MaxWidth="117" MinHeight="25"
 				 MaxHeight="25" HorizontalAlignment="Left" Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 
 		
@@ -175,17 +175,17 @@
 		<Border Grid.Column="3" Grid.Row="30" Grid.ColumnSpan="9" Grid.RowSpan="6" BorderBrush="Silver" BorderThickness="1" CornerRadius="5" Background="#FFE6E6E6" />
 		<TextBlock Grid.Column="4" Grid.Row="31" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Color in RGBA"/>
 
-		<TextBox Grid.Column="4" Grid.Row="32"  Text="{Binding Path=RedChannel3Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="4" Grid.Row="32"  Text="{Binding Path=RedChannel3Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="6" Grid.Row="32"  Text="{Binding Path=GreenChannel3Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="6" Grid.Row="32"  Text="{Binding Path=GreenChannel3Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="8" Grid.Row="32"  Text="{Binding Path=BlueChannel3Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="8" Grid.Row="32"  Text="{Binding Path=BlueChannel3Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-		<TextBox Grid.Column="10" Grid.Row="32"  Text="{Binding Path=AlphaChannel3Text,Mode=TwoWay}" MinWidth="40" MaxWidth="40" MinHeight="25" MaxHeight="25" Height="25"  
+		<TextBox Grid.Column="10" Grid.Row="32"  Text="{Binding Path=AlphaChannel3Text,Mode=TwoWay}" MinWidth="30" MaxWidth="60" MinHeight="25" MaxHeight="25" 
 				 Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 
 		<TextBlock Grid.Column="4" Grid.Row="33" Grid.ColumnSpan="4" VerticalAlignment="Bottom" Text="Offset in tiles"  />
-		<TextBox Grid.Column="4" Grid.Row="34" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles3Text,Mode=TwoWay}" MinWidth="97" MaxWidth="97" MinHeight="25" 
+		<TextBox Grid.Column="4" Grid.Row="34" Grid.ColumnSpan="4" Text="{Binding Path=OffsetInTiles3Text,Mode=TwoWay}" MinWidth="87" Width="117"  MaxWidth="117" MinHeight="25" 
 				 MaxHeight="25" HorizontalAlignment="Left" Padding="4,3,0,3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 
 		<Button x:Name="UpdateColorsButton" Grid.Column="2" Grid.Row="38" Grid.ColumnSpan="6" Content="Update Colors" Command="{Binding UpdateColorsCommand}" HorizontalAlignment="Left"/>
