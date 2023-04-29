@@ -71,15 +71,12 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, OurColor[] groupColor,
-        int[] groupOffset, PixelSize separation, PixelSize offset)
+    public void Save(string path, SKBitmap tileMap)
     {
         if (File.Exists(path))
         {
             File.Delete(path);
         }
-
-        SKBitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, separation, offset);
 
         using var image = SKImage.FromBitmap(tileMap);
         using var data = image.Encode(SKEncodedImageFormat.Png, 100);
