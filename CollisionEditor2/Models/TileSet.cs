@@ -77,6 +77,7 @@ public class TileSet
                             tilePosition.X + z, tilePosition.Y + w, 3] != 0;
                     }
                 }
+
                 tile.Pixels = tilePixels;
                 Tiles.Add(tile);
             }
