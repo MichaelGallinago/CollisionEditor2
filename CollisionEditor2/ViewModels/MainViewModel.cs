@@ -197,7 +197,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.AddTileButton.IsEnabled     = true;
         window.DeleteTileButton.IsEnabled  = true;
 
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridReset();
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
     }
@@ -271,7 +272,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.DeleteTileButton.IsEnabled  = true;
 
         TileMapGridReset();
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
         window.WindowSizeChanged(new Avalonia.Size(window.Width, window.Height));
@@ -287,7 +288,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void TileMapGridUpdate(int tileCount)
+    public void TileMapGridHeightUpdate(int tileCount)
     {
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) 
             * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
@@ -440,7 +441,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.canvasForLine.Children.Clear();
         window.RectanglesGrid.Children.Clear();
 
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         TileGridUpdate(TileSet, 0, window);
     }
 
@@ -543,7 +544,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Border newTile = GetTile(SelectedTile);
         window.TileMapGrid.Children.Insert(SelectedTile, newTile);
         
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         SelectTile();
     }
 
@@ -575,7 +576,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             window.LastSelectedTile -= 1;
         }
 
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         SelectTile();
 
     }
