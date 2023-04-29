@@ -71,7 +71,7 @@ public class TileSet
         }
     }
 
-    public void Save(string path, SKBitmap tileMap)
+    public void SaveTileMap(string path, SKBitmap tileMap)
     {
         if (File.Exists(path))
         {
