@@ -111,8 +111,8 @@ public class TileSet
             TileSize.Width + separation.Width, 
             TileSize.Height + separation.Height);
 
-        int rowCount = ((Tiles.Count * groupOffset.Length 
-            + groupOffset.Sum()) & -columnCount) / columnCount;
+        int rowCount = (int)Math.Ceiling((Tiles.Count * groupOffset.Length 
+            + groupOffset.Sum()) / (double)columnCount);
 
         var tileMapSize = new PixelSize(
             offset.Width + columnCount * cell.Width - separation.Width,
@@ -152,9 +152,12 @@ public class TileSet
         if (tilePixels is null)
         {
             tilePixels = new bool[TileSize.Width * TileSize.Height];
-            for (int i = 0; i < tilePixels.Length; i += 2)
+            for (int y = 0; y < TileSize.Height; y++)
             {
-                tilePixels[i] = true;
+                for (int x = 0; x < TileSize.Width; x++)
+                {
+                    tilePixels[y * TileSize.Width + x] = (x + y) % 4 < 2;
+                }
             }
             secondColor = new OurColor(0, 0, 0, 255);
         }

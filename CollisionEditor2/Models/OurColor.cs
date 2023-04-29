@@ -1,5 +1,6 @@
 ﻿namespace CollisionEditor2.Models;
 
+// Color in RGBA format
 public struct OurColor
 {
     public byte[] Channels { get; set; }
