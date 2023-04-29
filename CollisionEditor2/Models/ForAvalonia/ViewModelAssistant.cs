@@ -29,7 +29,7 @@ public class ViewModelAssistant
         }
     }
 
-    public static Bitmap GetBitmapFromArray(byte[] pixelColors, PixelSize bitmapSize, OurColor color)
+    public static Bitmap GetBitmapFromArray(byte[] pixelColors, PixelSize bitmapSize)
     {
         var bitmap = new WriteableBitmap(
             bitmapSize,
@@ -45,12 +45,12 @@ public class ViewModelAssistant
         return bitmap;
     }
 
-    public static byte[] SKBitmapToArray(SKBitmap tileMap)
+    public static byte[] SKBitmapToPixelArray(SKBitmap tileMap)
     {
         return tileMap.GetPixelSpan().ToArray();
     }
 
-    public static byte[] TileToArray(Tile tile, OurColor color)
+    public static byte[] TileToPixelArray(Tile tile, OurColor color)
     {
         var tileColors = new List<byte>(tile.Pixels.Length * 4);
 
