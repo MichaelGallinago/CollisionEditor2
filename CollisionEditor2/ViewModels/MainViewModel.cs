@@ -313,7 +313,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
         SaveTileMap saveTileMap = new();
-        saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap);
+        saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap,TileSet);
         await saveTileMap.ShowDialog(window);
         if (!saveTileMap.IsSaved)
         {

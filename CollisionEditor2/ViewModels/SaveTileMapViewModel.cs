@@ -281,7 +281,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private void CheckErrorsForSaveAndUpdateButton()
     {
         if (textboxValidator.HasErrors)
-        {
+        {   
             window.SaveButton.IsEnabled = false;
             window.UpdateColorsButton.IsEnabled = false;
         }
@@ -323,8 +323,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private readonly TextboxValidator textboxValidator;
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-    public SaveTileMap window;
-    public SaveTileMapViewModel(SaveTileMap window)
+    private SaveTileMap window;
+    private TileSet tileSet;
+    public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
     {
         textboxValidator = new TextboxValidator();
         textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
@@ -332,6 +333,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         UpdateColorsCommand = ReactiveCommand.Create(UpdateColors);
         SaveCommand         = ReactiveCommand.Create(Save);
         
+        this.tileSet = tileSet;
         this.window = window;
     }
 
@@ -340,7 +342,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         //(int columnCount, OurColor[] groupColor,
         //int[] groupOffset, PixelSize tileMapSize, PixelSize separation, PixelSize offset)
 
-        window.ImageFromFile.Source = TileSet.DrawTileMap(amountOfColumns,
+        window.SaveImage.Source = (Avalonia.Media.IImage) tileSet.DrawTileMap(amountOfColumns,
             new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
                              new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
                              new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
