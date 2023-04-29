@@ -79,14 +79,7 @@ public class TileSet
             File.Delete(path);
         }
 
-        var cell = new PixelSize(TileSize.Width + separation.Width, TileSize.Height + separation.Height);
-        int rowCount = (Tiles.Count  & -columnCount) / columnCount;
-
-        var tileMapSize = new PixelSize(
-            offset.Width + columnCount * cell.Width - separation.Width, 
-            offset.Height + rowCount   * cell.Height - separation.Height);
-
-        SKBitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, tileMapSize, separation, offset);
+        SKBitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, separation, offset);
 
         using var image = SKImage.FromBitmap(tileMap);
         using var data = image.Encode(SKEncodedImageFormat.Png, 100);
@@ -114,8 +107,15 @@ public class TileSet
     }
 
     public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
-        int[] groupOffset, PixelSize tileMapSize, PixelSize separation, PixelSize offset)
+        int[] groupOffset, PixelSize separation, PixelSize offset)
     {
+        var cell = new PixelSize(TileSize.Width + separation.Width, TileSize.Height + separation.Height);
+        int rowCount = (Tiles.Count & -columnCount) / columnCount;
+
+        var tileMapSize = new PixelSize(
+            offset.Width + columnCount * cell.Width - separation.Width,
+            offset.Height + rowCount * cell.Height - separation.Height);
+
         var tileMap = new SKBitmap(
             tileMapSize.Width, tileMapSize.Height, 
             SKColorType.Rgba8888, SKAlphaType.Premul);
