@@ -84,25 +84,6 @@ public class TileSet
         }
     }
 
-    private Tile CreateTileFromBitmap(SKBitmap bitmap)
-    {
-        var tile = new Tile(TileSize);
-        bool[] tilePixels = tile.Pixels;
-
-        byte[,,] pixelArray = SKBitmapToArray(bitmap);
-
-        for (int x = 0; x < TileSize.X; x++)
-        {
-            for (int y = 0; y < TileSize.Y; y++)
-            {
-                tilePixels[y * TileSize.X + x] = pixelArray[x, y, 3] != 0;
-            }
-        }
-
-        tile.Pixels = tilePixels;
-        return tile;
-    }
-
     public TileSet(int angleCount = 0, int tileWidth = 16, int tileHeight = 16)
     {
         TileSize = new Vector2<int>(tileWidth, tileHeight);
