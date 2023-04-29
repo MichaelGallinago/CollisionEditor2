@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia;
+using System;
 
 namespace CollisionEditor2.Models
 {
@@ -34,11 +35,11 @@ namespace CollisionEditor2.Models
 
         private bool[] pixels;
 
-        public Tile(Vector2<int> tileSize) 
+        public Tile(PixelSize tileSize) 
         {
-            Heights = new byte[tileSize.X];
-            Widths  = new byte[tileSize.Y];
-            pixels  = new bool[tileSize.Y * tileSize.X];
+            Heights = new byte[tileSize.Width];
+            Widths  = new byte[tileSize.Height];
+            pixels  = new bool[tileSize.Height * tileSize.Width];
             Pixels  = pixels;
         }
     }

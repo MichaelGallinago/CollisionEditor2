@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System;
+using Avalonia;
 
 namespace CollisionEditor2.Models;
 
@@ -38,9 +39,12 @@ public class AngleMap
         }
     }
 
-    public byte SetAngleWithLine(int tileIndex, Vector2<int> positionGreen, Vector2<int> positionBlue)
+    public byte SetAngleWithLine(int tileIndex, PixelPoint positionGreen, PixelPoint positionBlue)
     {
-        return Values[tileIndex] = (byte)(Math.Atan2(positionBlue.Y - positionGreen.Y, positionBlue.X - positionGreen.X) * convertRadiansToByte);
+        return Values[tileIndex] = (byte)(Math.Atan2(
+            positionBlue.Y - positionGreen.Y, 
+            positionBlue.X - positionGreen.X) 
+            * convertRadiansToByte);
     }
 
     public byte SetAngle(int tileIndex, byte value)

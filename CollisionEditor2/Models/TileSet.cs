@@ -1,60 +1,35 @@
 ﻿using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
-using SkiaSharp;
 using System;
+using SkiaSharp;
+using Avalonia;
 
 namespace CollisionEditor2.Models;
 
 public class TileSet
 {
-    public readonly Vector2<int> TileSize;
+    public readonly PixelSize TileSize;
 
     public List<Tile> Tiles { get; private set; }
 
     public TileSet(string path, int tileWidth = 16, int tileHeight = 16,
-        Vector2<int> separate = new(), Vector2<int> offset = new())
+        PixelSize separation = new(), PixelSize offset = new())
     {
-        TileSize = new Vector2<int>(tileWidth, tileHeight);
+        TileSize = new PixelSize(tileWidth, tileHeight);
 
         Tiles = new List<Tile>();
 
         SKImage image = SKImage.FromEncodedData(path);
 
-        CreateTiles(SKBitmap.FromImage(image), separate, offset);
+        CreateTiles(SKBitmap.FromImage(image), separation, offset);
     }
 
-    private SKBitmap RecolorTileMap(SKBitmap tileMap)
+    private void CreateTiles(SKBitmap tileMap, PixelSize separation, PixelSize offset)
     {
-        byte[,,] pixelArray = SKBitmapToArray(tileMap);
-
-        for (int x = pixelArray.GetLength(1) - 1; x >= 0; x--)
-        {
-            for (int y = pixelArray.GetLength(0) - 1; y >= 0; y--)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    if (i % 4 == 3)
-                    {
-                        if (pixelArray[x, y, 3] > 0)
-                        {
-                            pixelArray[x, y, 3] = 255;
-                        }
-                        continue;
-                    }
-                    pixelArray[x, y, i] = 0;
-                }
-            }
-        }
-
-        return ArrayToSKBitmap(pixelArray);
-    }
-
-    private void CreateTiles(SKBitmap tileMap, Vector2<int> separate, Vector2<int> offset)
-    {
-        var cellCount = new Vector2<int>(
-            (tileMap.Width  - offset.X) / (TileSize.X + separate.X),
-            (tileMap.Height - offset.Y) / (TileSize.Y + separate.Y));
+        var cellCount = new PixelPoint(
+            (tileMap.Width  - offset.Width) / (TileSize.Width + separation.Width),
+            (tileMap.Height - offset.Height) / (TileSize.Height + separation.Height));
 
         byte[,,] pixelArray = SKBitmapToArray(tileMap);
 
@@ -62,18 +37,18 @@ public class TileSet
         {
             for (int x = 0; x < cellCount.X; x++)
             {
-                var tilePosition = new Vector2<int>(
-                    x * (TileSize.X + separate.X) + offset.X,
-                    y * (TileSize.Y + separate.Y) + offset.Y);
+                var tilePosition = new PixelPoint(
+                    x * (TileSize.Width + separation.Width) + offset.Width,
+                    y * (TileSize.Height + separation.Height) + offset.Height);
 
                 var tile = new Tile(TileSize);
                 bool[] tilePixels = tile.Pixels;
 
-                for (int w = 0; w < TileSize.Y; w++)
+                for (int w = 0; w < TileSize.Height; w++)
                 {
-                    for (int z = 0; z < TileSize.X; z++)
+                    for (int z = 0; z < TileSize.Width; z++)
                     {
-                        tilePixels[w * TileSize.X + z] = pixelArray[
+                        tilePixels[w * TileSize.Width + z] = pixelArray[
                             tilePosition.X + z, tilePosition.Y + w, 3] != 0;
                     }
                 }
@@ -86,7 +61,7 @@ public class TileSet
 
     public TileSet(int angleCount = 0, int tileWidth = 16, int tileHeight = 16)
     {
-        TileSize = new Vector2<int>(tileWidth, tileHeight);
+        TileSize = new PixelSize(tileWidth, tileHeight);
 
         Tiles = new List<Tile>(angleCount);
 
@@ -96,19 +71,19 @@ public class TileSet
         }
     }
 
-    public void Save(string path, int columnCount, OurColor[] groupColor, int[] groupOffset, Vector2<int> separation, Vector2<int> offset)
+    public void Save(string path, int columnCount, OurColor[] groupColor, int[] groupOffset, PixelSize separation, PixelSize offset)
     {
         if (File.Exists(path))
         {
             File.Delete(path);
         }
 
-        var cell = new Vector2<int>(TileSize.X + separation.X, TileSize.Y + separation.Y);
+        var cell = new PixelSize(TileSize.Width + separation.Width, TileSize.Height + separation.Height);
         int rowCount = (Tiles.Count  & -columnCount) / columnCount;
 
-        var tileMapSize = new Vector2<int>(
-            offset.X + columnCount * cell.X - separation.X, 
-            offset.Y + rowCount    * cell.Y - separation.Y);
+        var tileMapSize = new PixelSize(
+            offset.Width + columnCount * cell.Width - separation.Width, 
+            offset.Height + rowCount   * cell.Height - separation.Height);
 
         SKBitmap tileMap = DrawTileMap(columnCount, groupColor, groupOffset, tileMapSize, separation, offset);
 
@@ -138,15 +113,15 @@ public class TileSet
     }
 
     public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
-        int[] groupOffset, Vector2<int> tileMapSize, Vector2<int> separation, Vector2<int> offset)
+        int[] groupOffset, PixelSize tileMapSize, PixelSize separation, PixelSize offset)
     {
         int groupCount = groupColor.Length;
-        var tileMap = new SKBitmap(tileMapSize.X, tileMapSize.Y, 
+        var tileMap = new SKBitmap(tileMapSize.Width, tileMapSize.Height, 
             SKColorType.Rgba8888, SKAlphaType.Premul);
 
         byte[,,] pixelArray = SKBitmapToArray(tileMap);
 
-        Vector2<int> position = new();
+        PixelPoint position = new();
 
         var white = new OurColor(255, 255, 255, 255);
 
@@ -166,12 +141,12 @@ public class TileSet
     }
 
     private void DrawTile(ref byte[,,] pixelArray, bool[]? tilePixels, OurColor tileColor,
-        Vector2<int> separation, Vector2<int> offset, int columnCount, ref Vector2<int> position)
+        PixelSize separation, PixelSize offset, int columnCount, ref PixelPoint position)
     {
         OurColor secondColor;
         if (tilePixels is null)
         {
-            tilePixels = new bool[TileSize.Y * TileSize.X];
+            tilePixels = new bool[TileSize.Width * TileSize.Height];
             for (int i = 0; i < tilePixels.Length; i += 2)
             {
                 tilePixels[i] = true;
@@ -183,15 +158,15 @@ public class TileSet
             secondColor = new OurColor(0, 0, 0, 0);
         }
 
-        var tilePosition = new Vector2<int>(
-            offset.X + position.X * (TileSize.X + separation.X),
-            offset.Y + position.Y * (TileSize.Y + separation.Y));
+        var tilePosition = new PixelPoint(
+            offset.Width  + position.X * (TileSize.Width + separation.Width),
+            offset.Height + position.Y * (TileSize.Height + separation.Height));
 
-        for (int y = 0; y < TileSize.Y; y++)
+        for (int y = 0; y < TileSize.Height; y++)
         {
-            for (int x = 0; x < TileSize.X; x++)
+            for (int x = 0; x < TileSize.Width; x++)
             {
-                OurColor pixelColor = tilePixels[y * TileSize.X + x] ? tileColor : secondColor;
+                OurColor pixelColor = tilePixels[y * TileSize.Width + x] ? tileColor : secondColor;
                 for (int i = 0; i < 4; i++)
                 {
                     pixelArray[tilePosition.X + x, tilePosition.Y + y, i] = pixelColor.Channels[i];
@@ -199,14 +174,12 @@ public class TileSet
             }
         }
 
-        if (++position.X >= columnCount)
-        {
-            position.X = 0;
-            position.Y++;
-        }
+        position = position.X + 1 >= columnCount ? 
+            new PixelPoint(0, position.Y + 1) :
+            new PixelPoint(position.X + 1, position.Y);
     }
 
-    public void TileChangeLine(int tileIndex, Vector2<int> tilePosition, bool isLeftButtonPressed)
+    public void ChangeTile(int tileIndex, PixelPoint tilePosition, bool isLeftButtonPressed)
     {
         bool[] pixels = Tiles[tileIndex].Pixels;
 
@@ -215,14 +188,14 @@ public class TileSet
             if (tilePosition.Y == 0 || !pixels[GetPixelIndex(tilePosition.X, tilePosition.Y)]||
                 pixels[GetPixelIndex(tilePosition.X, tilePosition.Y - 1)])
             {
-                for (int y = 0; y < TileSize.Y; y++)
+                for (int y = 0; y < TileSize.Height; y++)
                 {
                     pixels[GetPixelIndex(tilePosition.X, y)] = y >= tilePosition.Y;
                 }
             }
             else
             {
-                for (int y = 0; y < TileSize.Y; y++)
+                for (int y = 0; y < TileSize.Height; y++)
                 {
                     pixels[GetPixelIndex(tilePosition.X, y)] = false;
                 }
@@ -267,12 +240,11 @@ public class TileSet
         {
             for (int x = 0; x < width; x++)
             {
-                byte red   = pixelArray[x, y, 0];
-                byte green = pixelArray[x, y, 1];
-                byte blue  = pixelArray[x, y, 2];
-                byte alpha = pixelArray[x, y, 3];
-                uint pixelValue = red + (uint)(green << 8) 
-                    + (uint)(blue << 16) + (uint)(alpha << 24);
+                uint pixelValue = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    pixelValue += (uint)(pixelArray[x, y, i] << (8 * i));
+                }
                 pixelValues[y * width + x] = pixelValue;
             }
         }
@@ -290,7 +262,7 @@ public class TileSet
 
     private int GetPixelIndex(int positionX, int positionY)
     {
-        return positionY * TileSize.X + positionX;
+        return positionY * TileSize.Width + positionX;
     }
 
     public void InsertTile(int tileIndex)

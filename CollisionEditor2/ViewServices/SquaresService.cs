@@ -1,12 +1,12 @@
-﻿using CollisionEditor2.Models;
-using CollisionEditor2.Views;
+﻿using CollisionEditor2.Views;
 using Avalonia.Controls;
+using Avalonia;
 
 namespace CollisionEditor2.ViewServices;
 
 public static class SquaresService
 {
-    public static void MoveSquare(MainWindow mainWindow, Vector2<int> position, 
+    public static void MoveSquare(MainWindow mainWindow, PixelPoint position, 
         SquareAndPosition firstSquare, SquareAndPosition secondSquare)
     {
         firstSquare.Square.SetValue(Grid.ColumnProperty, position.X);

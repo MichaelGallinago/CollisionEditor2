@@ -13,7 +13,7 @@ public class ViewModelAssistant
     {
         if (tileSet.Tiles.Count < angleMap.Values.Count)
         {
-            Vector2<int> size = tileSet.TileSize;
+            PixelSize size = tileSet.TileSize;
             for (int i = tileSet.Tiles.Count; i < angleMap.Values.Count; i++)
             {
                 tileSet.Tiles.Add(new Tile(size));
@@ -54,10 +54,10 @@ public class ViewModelAssistant
         return bitmap;
     }
 
-    public static Bitmap GetBitmap(string path, out Vector2<int> size)
+    public static Bitmap GetBitmap(string path, out PixelSize size)
     {
         var Bitmap = new Bitmap(path);
-        size = new Vector2<int>((int)Bitmap.Size.Width, (int)Bitmap.Size.Height);
+        size = new PixelSize((int)Bitmap.Size.Width, (int)Bitmap.Size.Height);
         return Bitmap;
     }
 }

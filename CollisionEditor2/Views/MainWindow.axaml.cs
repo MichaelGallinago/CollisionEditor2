@@ -1,14 +1,13 @@
 using CollisionEditor2.ViewServices;
 using CollisionEditor2.ViewModels;
-using CollisionEditor2.Models;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
-using Avalonia.Interactivity;
 
 namespace CollisionEditor2.Views
 {
@@ -46,15 +45,13 @@ namespace CollisionEditor2.Views
 #endif
         }
 
-        private Vector2<int> GetGridPosition(Point mousePosition)
+        private PixelPoint GetGridPosition(Point mousePosition)
         {
             var tileSize = WindowMain.TileSet.TileSize;
 
-            Vector2<int> position = new()
-            {
-                X = (int)mousePosition.X / ((int)TileGrid.Width  / tileSize.X),
-                Y = (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Y)
-            };
+            var position = new PixelPoint(
+                (int)mousePosition.X / ((int)TileGrid.Width / tileSize.Width),
+                (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height));
 
             return position;
         }
@@ -63,7 +60,7 @@ namespace CollisionEditor2.Views
         {
             PointerPoint pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
 
-            Vector2<int> gridPosition = GetGridPosition(pointControlPosition.Position);
+            PixelPoint gridPosition = GetGridPosition(pointControlPosition.Position);
 
             if (pointControlPosition.Properties.IsLeftButtonPressed)
             {
@@ -75,7 +72,7 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGrid_LeftButton(Vector2<int> gridPosition)
+        private void RectanglesGrid_LeftButton(PixelPoint gridPosition)
         {
             if (isTileEditorMode)
             {
@@ -87,7 +84,7 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGrid_RightButton(Vector2<int> gridPosition)
+        private void RectanglesGrid_RightButton(PixelPoint gridPosition)
         {
             if (isTileEditorMode)
             {
@@ -99,7 +96,7 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGridUpdate(Vector2<int> gridPosition, 
+        private void RectanglesGridUpdate(PixelPoint gridPosition, 
             SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (WindowMain.AngleMap.Values.Count <= 0)
@@ -160,12 +157,12 @@ namespace CollisionEditor2.Views
 
         private int GetUniformGridIndex(Point mousePosition)
         {
-            var tileSize = new Vector2<int>(
-                WindowMain.TileSet.TileSize.X * TileMapTileScale + tileMapSeparation, 
-                WindowMain.TileSet.TileSize.Y * TileMapTileScale + tileMapSeparation);
+            var tileSize = new PixelSize(
+                WindowMain.TileSet.TileSize.Width * TileMapTileScale + tileMapSeparation, 
+                WindowMain.TileSet.TileSize.Height * TileMapTileScale + tileMapSeparation);
             
-            return (int)mousePosition.X / tileSize.X 
-                + (int)mousePosition.Y / tileSize.Y * TileMapGrid.Columns;
+            return (int)mousePosition.X / tileSize.Width 
+                + (int)mousePosition.Y / tileSize.Height * TileMapGrid.Columns;
         }
 
         public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -214,7 +211,7 @@ namespace CollisionEditor2.Views
         public void WindowSizeChanged(Size size)
         {
             int countOfTiles = WindowMain.TileSet.Tiles.Count;
-            Vector2<int> tileSize = WindowMain.TileSet.TileSize;
+            PixelSize tileSize = WindowMain.TileSet.TileSize;
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
@@ -223,8 +220,8 @@ namespace CollisionEditor2.Views
             double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
 
             var TileGridSize = new Size(
-                (int)actualHeightGrid / tileSize.X  * tileSize.X, 
-                (int)actualHeightGrid / tileSize.Y * tileSize.Y);
+                (int)actualHeightGrid / tileSize.Width  * tileSize.Width, 
+                (int)actualHeightGrid / tileSize.Height * tileSize.Height);
 
             TileGrid.Width  = TileGridSize.Width;
             TileGrid.Height = TileGridSize.Height;
@@ -235,7 +232,7 @@ namespace CollisionEditor2.Views
             canvasForLine.Width  = TileGridSize.Width;
             canvasForLine.Height = TileGridSize.Height;
 
-            ModSwitchButton.Height = actualHeightTextAndButtons+5;
+            ModSwitchButton.Height = actualHeightTextAndButtons + 5;
             ModSwitchButton.FontSize = actualFontSize;
 
             Heights.Height   = actualHeightTextAndButtons;
@@ -273,8 +270,8 @@ namespace CollisionEditor2.Views
             TriangleDownHexAngle.Height = actualHeightTextAndButtons  / 2 - 5;
             TriangleDownHexAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
 
-            int tileWidth  = tileSize.X  * TileMapTileScale;
-            int tileHeight = tileSize.Y * TileMapTileScale;
+            int tileWidth  = tileSize.Width  * TileMapTileScale;
+            int tileHeight = tileSize.Height * TileMapTileScale;
 
 
             TileMapGrid.Width   = tileMapBorderWidthWithoutScrollBar * (int)size.Width / (int)MinWidth / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);

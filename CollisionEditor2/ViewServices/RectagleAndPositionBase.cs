@@ -1,12 +1,12 @@
-﻿using CollisionEditor2.Models;
-using Avalonia.Controls.Shapes;
+﻿using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using Avalonia;
 
 namespace CollisionEditor2.ViewServices;
 
 public class SquareAndPosition
 {
-    public Vector2<int> Position { get; set; } = new();
+    public PixelPoint Position { get; set; } = new();
     public Rectangle Square { get; set; } = new();
     public Color Color { get; set; }
 

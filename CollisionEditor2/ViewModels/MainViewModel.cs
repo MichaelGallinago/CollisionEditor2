@@ -1,6 +1,6 @@
 ﻿using CollisionEditor2.Models.ForAvalonia;
-using CollisionEditor2.Models;
 using CollisionEditor2.ViewServices;
+using CollisionEditor2.Models;
 using CollisionEditor2.Views;
 using MessageBoxSlim.Avalonia.Enums;
 using MessageBoxSlim.Avalonia.DTO;
@@ -243,8 +243,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
-            new Vector2<int>(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation), 
-            new Vector2<int>(openTileMap.HorizontalOffset,     openTileMap.VerticalOffset));
+            new PixelSize(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation), 
+            new PixelSize(openTileMap.HorizontalOffset,     openTileMap.VerticalOffset));
 
         if (AngleMap.Values.Count <= 0)
         {
@@ -289,7 +289,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public void TileMapGridUpdate(int tileCount)
     {
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) 
-            * (TileSet.TileSize.Y * MainWindow.TileMapTileScale + tileMapSeparation);
+            * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
     }
 
     public async void OurMessageBox(string message)
@@ -499,8 +499,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var image = new Image
         {
-            Width  = TileSet.TileSize.X  * MainWindow.TileMapTileScale,
-            Height = TileSet.TileSize.Y * MainWindow.TileMapTileScale,
+            Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
+            Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
             Source = ViewModelAssistant.GetBitmapFromTile(tile, new OurColor(0, 0, 0, 255))
         };
 
@@ -578,7 +578,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Close();
     }
 
-    public void UpdateAngles(Vector2<int> positionGreen, Vector2<int> positionBlue)
+    public void UpdateAngles(PixelPoint positionGreen, PixelPoint positionBlue)
     {
         if (AngleMap.Values.Count <= 0)
         {
@@ -597,12 +597,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var size = TileSet.TileSize;
 
-        for (int x = 0; x < size.X; x++)
+        for (int x = 0; x < size.Width; x++)
         {
             window.RectanglesGrid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
-        for (int y = 0; y < size.Y; y++)
+        for (int y = 0; y < size.Height; y++)
         {
             window.RectanglesGrid.RowDefinitions.Add(new RowDefinition());
         }
@@ -614,15 +614,15 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         var size = tileSet.TileSize;
 
-        window.TileGrid.Rows    = size.Y;
-        window.TileGrid.Columns = size.X;
+        window.TileGrid.Rows    = size.Height;
+        window.TileGrid.Columns = size.Width;
         window.TileGrid.Background = new SolidColorBrush(Colors.Transparent);
 
         Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(size);
 
-        for (int y = 0; y < size.Y; y++)
+        for (int y = 0; y < size.Height; y++)
         {
-            for (int x = 0; x < size.X; x++)
+            for (int x = 0; x < size.Width; x++)
             {
                 var Border = new Border()
                 {
@@ -632,7 +632,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                         tileGridBorderThickness, 
                         tileGridBorderThickness),
 
-                    Background = new SolidColorBrush(tile.Pixels[y * size.X + x] ? Colors.Black : Colors.Transparent),
+                    Background = new SolidColorBrush(tile.Pixels[y * size.Width + x] ? Colors.Black : Colors.Transparent),
                     BorderBrush = new SolidColorBrush(Colors.Gray),
                 };
 
@@ -641,9 +641,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void EditTile(Vector2<int> tilePosition, bool isLeftButtonPressed)
+    public void EditTile(PixelPoint tilePosition, bool isLeftButtonPressed)
     {
-        TileSet.TileChangeLine(SelectedTile, tilePosition, isLeftButtonPressed);
+        TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, window);
 
         window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
