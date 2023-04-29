@@ -10,8 +10,8 @@
         Title="CollisionEditor2">
 	<Window.Styles>
 		<Style Selector="DataValidationErrors">
-			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}" />
-			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}" />
+			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}"   />
+			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}"/>
 		</Style>
 	</Window.Styles>
     <Grid Background="WhiteSmoke">
@@ -60,7 +60,7 @@
             <ColumnDefinition Width="5*"  />
             <ColumnDefinition Width="5*"  />
         </Grid.ColumnDefinitions>
-        
+		
         <Border Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="12" Grid.RowSpan="16" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
         <Border Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="10" Grid.RowSpan="5" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
         <Border Grid.Column="2" Grid.Row="13" Grid.ColumnSpan="10" Grid.RowSpan="4" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
@@ -119,9 +119,11 @@
 		</Border>
 		
 		<TextBox Grid.Column="4" Grid.Row="14" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngleText,Mode=TwoWay}" 
-                 Name="TextBoxByteAngle"  Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="Byte" MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>
+                 Name="TextBoxByteAngle"  Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="Byte" MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0" 
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 		<TextBox Grid.Column="7" Grid.Row="14" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngleText,Mode=TwoWay}"
-                 Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="Hex"  MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"/>
+                 Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="Hex"  MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"  
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
 		<Border x:Name="BorderFullAngle" Grid.Column="9" Grid.Row="14" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="#B0B0B0" Background="#FFB1B1B1" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
             <TextBlock TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#C4C4C4" Foreground="Gray" Padding="2,0,0,0"/>
 		</Border>
@@ -152,7 +154,8 @@
 		</Border>
 		
 		<TextBox Grid.Column="15" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
-                 Text="{Binding Path=SelectedTileText,Mode=TwoWay}" Watermark="Tile index" Padding="2,0,0,0" KeyDown="SelectTileTextBox_KeyDown" MinHeight="20"/>
+                 Text="{Binding Path=SelectedTileText,Mode=TwoWay}" Watermark="Tile index" Padding="2,0,0,0" KeyDown="SelectTileTextBox_KeyDown" MinHeight="20" 
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
         
         <Button  Grid.Column="16" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton" Padding="2,0,5,0" 
                  IsEnabled="False" MinHeight="20" Content="Select Tile" Command="{Binding SelectTileCommand}" BorderThickness="1" BorderBrush="Silver"

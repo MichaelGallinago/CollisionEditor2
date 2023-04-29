@@ -3,6 +3,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia;
+
 using static System.Math;
 
 namespace CollisionEditor2.ViewServices;

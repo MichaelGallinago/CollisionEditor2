@@ -1,5 +1,9 @@
-﻿using System.Drawing.Imaging;
-using System.Drawing;
+﻿using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia;
+using SkiaSharp;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
@@ -11,12 +15,10 @@ public class ViewModelAssistant
     {
         if (tileSet.Tiles.Count < angleMap.Values.Count)
         {
-            Size size = tileSet.TileSize;
+            PixelSize size = tileSet.TileSize;
             for (int i = tileSet.Tiles.Count; i < angleMap.Values.Count; i++)
             {
-                tileSet.Tiles.Add(new Bitmap(size.Width, size.Height));
-                tileSet.WidthMap.Add(new byte[size.Width]);
-                tileSet.HeightMap.Add(new byte[size.Height]);
+                tileSet.Tiles.Add(new Tile(size));
             }
         }
         else
@@ -28,29 +30,48 @@ public class ViewModelAssistant
         }
     }
 
-    public static Avalonia.Media.Imaging.Bitmap BitmapConvert(Bitmap bitmap)
+    public static Bitmap GetBitmapFromPixelArray(byte[] pixelColors, PixelSize bitmapSize)
     {
-        var bitmapData = bitmap.LockBits(
-            new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+        var bitmap = new WriteableBitmap(
+            bitmapSize, new Vector(dpi, dpi),
+            PixelFormat.Rgba8888, AlphaFormat.Premul);
 
-        var avaloniaBitmap = new Avalonia.Media.Imaging.Bitmap(
-            Avalonia.Platform.PixelFormat.Bgra8888,
-            Avalonia.Platform.AlphaFormat.Premul,
-            bitmapData.Scan0,
-            new Avalonia.PixelSize(bitmapData.Width, bitmapData.Height),
-            new Avalonia.Vector(dpi, dpi),
-            bitmapData.Stride);
+        using (var frameBuffer = bitmap.Lock())
+        {
+            Marshal.Copy(pixelColors, 0, frameBuffer.Address, pixelColors.Length);
+        }
 
-        bitmap.UnlockBits(bitmapData);
-
-        return avaloniaBitmap;
+        return bitmap;
     }
 
-    public static Avalonia.Media.Imaging.Bitmap GetBitmap(string path, out Size size)
+    public static byte[] SKBitmapToPixelArray(SKBitmap tileMap)
+    {
+        return tileMap.GetPixelSpan().ToArray();
+    }
+
+    public static byte[] TileToPixelArray(Tile tile, OurColor color)
+    {
+        int channelsAmount = color.Channels.Length;
+        var tileColors = new List<byte>(tile.Pixels.Length * channelsAmount);
+
+        int alphaIndex = channelsAmount - 1;
+
+        foreach (bool pixel in tile.Pixels)
+        {
+            for (var i = 0; i < alphaIndex; i++)
+            {
+                tileColors.Add(color.Channels[i]);
+            }
+            tileColors.Add((byte)(pixel ? color.Channels[alphaIndex] : 0));
+        }
+
+        return tileColors.ToArray();
+    }
+
+    public static Bitmap GetBitmap(string path, out PixelSize size)
     {
         var Bitmap = new Bitmap(path);
-        size = new Size(Bitmap.Width, Bitmap.Height);
-        return BitmapConvert(new Bitmap(path));
+        size = new PixelSize((int)Bitmap.Size.Width, (int)Bitmap.Size.Height);
+        return Bitmap;
     }
 }

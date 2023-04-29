@@ -1,13 +1,12 @@
 ﻿using CollisionEditor2.Models.ForAvalonia;
-using CollisionEditor2.Models;
 using CollisionEditor2.ViewServices;
+using CollisionEditor2.Models;
 using CollisionEditor2.Views;
 using MessageBoxSlim.Avalonia.Enums;
 using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
-using System.Drawing;
 using System.IO;
 using System;
 using System.Diagnostics;
@@ -42,7 +41,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
     
-
     public string ByteAngleText
     {
         get => byteAngle.ToString();
@@ -56,7 +54,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             }
 
             byteAngle = newAngle;
+
             ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
+            AngleMap.SetAngle(SelectedTile, byteAngle);
 
             window.DrawRedLine();
         }
@@ -69,25 +69,22 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             textboxValidator.ClearErrors(nameof(HexAngleText));
 
-
+            if (value.Length <= AngleService.HexAnglePrefixLength)
+            {
+                textboxValidator.AddError(nameof(HexAngleText),
+                    $"Wrong hexadecimal number length!\nMust be between {AngleService.HexAnglePrefixLength + 1} and "
+                    + $"{AngleService.HexAnglePrefixLength + AngleService.HexAngleMaxLength}");
+                return;
+            }
+            
 
             string prefix = value[..AngleService.HexAnglePrefixLength];
 
-            if (prefix != "0x" || prefix != "0X")
+            if (prefix != "0x" && prefix != "0X")
             {
                 textboxValidator.AddError(nameof(HexAngleText), 
                     "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
                 return;
-
-            }
-            else if (value.Length <= AngleService.HexAnglePrefixLength)
-
-            {
-                textboxValidator.AddError(nameof(HexAngleText), 
-                    $"Wrong hexadecimal number length!\nMust be between {AngleService.HexAnglePrefixLength} and "
-                    + $"{AngleService.HexAnglePrefixLength + AngleService.HexAngleMaxLength}");
-                return;
-
             }
             else if (!int.TryParse(value[AngleService.HexAnglePrefixLength..], 
                 System.Globalization.NumberStyles.HexNumber, null, out _))
@@ -98,11 +95,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             }
 
             hexAngle = value;
-
+            
             Angles angles = ViewModelAngleService.GetAngles(hexAngle);
 
-            ByteAngleText = angles.ByteAngle.ToString();
-            AngleMap.SetAngle(int.Parse(SelectedTileText), angles.ByteAngle);
+            ShowAngles(ViewModelAngleService.GetAngles(angles.ByteAngle));
+            AngleMap.SetAngle(SelectedTile, angles.ByteAngle);
+            
             window.DrawRedLine();
         }
     }
@@ -199,7 +197,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.AddTileButton.IsEnabled     = true;
         window.DeleteTileButton.IsEnabled  = true;
 
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridReset();
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
     }
@@ -215,11 +214,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngleText));
+        textboxValidator.ClearErrors(nameof(ByteAngleText));
         window.ByteAngleIncrimentButton.IsEnabled = true;
         window.ByteAngleDecrementButton.IsEnabled = true;
 
         hexAngle = angles.HexAngle;
         OnPropertyChanged(nameof(HexAngleText));
+        textboxValidator.ClearErrors(nameof(HexAngleText));
         window.HexAngleIncrimentButton.IsEnabled = true;
         window.HexAngleDecrementButton.IsEnabled = true;
 
@@ -243,22 +244,24 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
-            new System.Drawing.Size(openTileMap.HorizontalSeparation,openTileMap.VerticalSeparation), 
-            new System.Drawing.Size(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
+            new PixelSize(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation), 
+            new PixelSize(openTileMap.HorizontalOffset,     openTileMap.VerticalOffset));
 
         if (AngleMap.Values.Count <= 0)
         {
             AngleMap = new AngleMap(TileSet.Tiles.Count);
         }
 
-        ViewModelAssistant.SupplementElements(AngleMap,TileSet);
-        ViewModelAssistant.BitmapConvert(TileSet.Tiles[SelectedTile]);
+        ViewModelAssistant.SupplementElements(AngleMap, TileSet);
+        ViewModelAssistant.GetBitmapFromPixelArray(
+            ViewModelAssistant.TileToPixelArray(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
+            new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length));
 
         TileGridUpdate(TileSet, SelectedTile, window);
         RectanglesGridUpdate();
             
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
             
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
         
@@ -270,10 +273,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.DeleteTileButton.IsEnabled  = true;
 
         TileMapGridReset();
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         window.DrawRedLine();
         SelectTile();
-        window.WindowSizeChanged(new Avalonia.Size(window.Width, window.Height));
+        window.WindowSizeChanged(new Size(window.Width, window.Height));
     }
 
     private void TileMapGridReset()
@@ -286,7 +289,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void TileMapGridUpdate(int tileCount)
+    public void TileMapGridHeightUpdate(int tileCount)
     {
         window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / window.TileMapGrid.Columns) 
             * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
@@ -313,7 +316,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
         SaveTileMap saveTileMap = new();
-        saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap);
+        saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap,TileSet);
         await saveTileMap.ShowDialog(window);
         if (!saveTileMap.IsSaved)
         {
@@ -323,7 +326,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            TileSet.Save(Path.GetFullPath(filePath), 16);
+            TileSet.SaveTileMap(Path.GetFullPath(filePath),saveTileMap.ResultSaveImage);
         }
     }
 
@@ -338,7 +341,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.WidthMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.WidthMap);
+            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,true);
         }
     }
 
@@ -354,7 +357,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.HeightMap);
+            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,false);
         }
     }
 
@@ -387,8 +390,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
     }
@@ -414,8 +417,14 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ShowAngles(new Angles(0, "0x00", 0));
 
         SelectedTile = 0;
-        window.SelectTileTextBox.Text = "0";
+        OnPropertyChanged(nameof(SelectedTileText));
         window.LastSelectedTile = 0;
+
+
+        window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(176, 176, 176));
+        window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 177, 177, 177));
+        window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
+        window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
 
         window.ByteAngleIncrimentButton.IsEnabled = false;
         window.ByteAngleDecrementButton.IsEnabled = false;
@@ -434,7 +443,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.canvasForLine.Children.Clear();
         window.RectanglesGrid.Children.Clear();
 
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         TileGridUpdate(TileSet, 0, window);
     }
 
@@ -471,8 +480,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.LastSelectedTile = SelectedTile;
 
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
         
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
 
@@ -484,8 +493,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         OnPropertyChanged(nameof(SelectedTileText));
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text  = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
 
@@ -495,19 +504,20 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public Border GetTile(int index)
     {
-        Bitmap tile = TileSet.Tiles[index];
+        Tile tile = TileSet.Tiles[index];
 
-        var image = new Avalonia.Controls.Image
+        var image = new Image
         {
             Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
             Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
-            Source = ViewModelAssistant.BitmapConvert(tile)
+            Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.TileToPixelArray(tile, new OurColor(0, 0, 0, 255)),
+                                                   new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length))
         };
 
         var border = new Border()
         {
-            Background  = new SolidColorBrush(Avalonia.Media.Color.FromRgb(230, 230, 230)),
-            BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211)),
+            Background  = new SolidColorBrush(Color.FromRgb(230, 230, 230)),
+            BorderBrush = new SolidColorBrush(Color.FromRgb(211, 211, 211)),
             BorderThickness = new Thickness(tileMapSeparation / thicknessToSeparationRatio),
             Child = image
         };
@@ -536,7 +546,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Border newTile = GetTile(SelectedTile);
         window.TileMapGrid.Children.Insert(SelectedTile, newTile);
         
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         SelectTile();
     }
 
@@ -552,9 +562,11 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         AngleMap.RemoveAngle(SelectedTile);
 
         window.TileMapGrid.Children.RemoveAt(SelectedTile);
+        
         if (TileSet.Tiles.Count==0)
         {
             MenuUnloadAll();
+            return;
         }
 
         if (SelectedTile > TileSet.Tiles.Count - 1)
@@ -568,7 +580,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             window.LastSelectedTile -= 1;
         }
 
-        TileMapGridUpdate(TileSet.Tiles.Count);
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
         SelectTile();
 
     }
@@ -578,7 +590,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Close();
     }
 
-    public void UpdateAngles(Vector2<int> positionGreen, Vector2<int> positionBlue)
+    public void UpdateAngles(PixelPoint positionGreen, PixelPoint positionBlue)
     {
         if (AngleMap.Values.Count <= 0)
         {
@@ -618,7 +630,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.TileGrid.Columns = size.Width;
         window.TileGrid.Background = new SolidColorBrush(Colors.Transparent);
 
-        Bitmap tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Bitmap(size.Height, size.Width);
+        Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(size);
 
         for (int y = 0; y < size.Height; y++)
         {
@@ -632,7 +644,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                         tileGridBorderThickness, 
                         tileGridBorderThickness),
 
-                    Background = new SolidColorBrush(tile.GetPixel(x, y).A > 0 ? Colors.Black : Colors.Transparent),
+                    Background = new SolidColorBrush(tile.Pixels[y * size.Width + x] ? Colors.Black : Colors.Transparent),
                     BorderBrush = new SolidColorBrush(Colors.Gray),
                 };
 
@@ -641,15 +653,17 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void EditTile(Vector2<int> tilePosition, bool isLeftButtonPressed)
+    public void EditTile(PixelPoint tilePosition, bool isLeftButtonPressed)
     {
-        TileSet.TileChangeLine(SelectedTile, tilePosition, isLeftButtonPressed);
+        TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, window);
-        window.Heights.Text = TileService.GetCollisionValues(TileSet.HeightMap[SelectedTile]);
-        window.Widths.Text = TileService.GetCollisionValues(TileSet.WidthMap[SelectedTile]);
+
+        window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        window.Widths.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+
         Border newTile = GetTile(SelectedTile);
         newTile.BorderBrush = new SolidColorBrush(Colors.Red);
-        window.TileMapGrid.Children[SelectedTile]=newTile;
+        window.TileMapGrid.Children[SelectedTile] = newTile;
     }
 
     private void Help()
@@ -675,5 +689,4 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     public bool HasErrors => textboxValidator.HasErrors;
-
 }

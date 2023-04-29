@@ -1,15 +1,13 @@
 using CollisionEditor2.ViewServices;
 using CollisionEditor2.ViewModels;
-using CollisionEditor2.Models;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
-using System.Net.Mime;
-using Avalonia.Interactivity;
 
 namespace CollisionEditor2.Views
 {
@@ -47,15 +45,13 @@ namespace CollisionEditor2.Views
 #endif
         }
 
-        private Vector2<int> GetGridPosition(Point mousePosition)
+        private PixelPoint GetGridPosition(Point mousePosition)
         {
             var tileSize = WindowMain.TileSet.TileSize;
 
-            Vector2<int> position = new()
-            {
-                X = (int)mousePosition.X / ((int)TileGrid.Width  / tileSize.Width),
-                Y = (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height)
-            };
+            var position = new PixelPoint(
+                (int)mousePosition.X / ((int)TileGrid.Width / tileSize.Width),
+                (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height));
 
             return position;
         }
@@ -64,7 +60,7 @@ namespace CollisionEditor2.Views
         {
             PointerPoint pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
 
-            Vector2<int> gridPosition = GetGridPosition(pointControlPosition.Position);
+            PixelPoint gridPosition = GetGridPosition(pointControlPosition.Position);
 
             if (pointControlPosition.Properties.IsLeftButtonPressed)
             {
@@ -76,7 +72,7 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGrid_LeftButton(Vector2<int> gridPosition)
+        private void RectanglesGrid_LeftButton(PixelPoint gridPosition)
         {
             if (isTileEditorMode)
             {
@@ -88,7 +84,7 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGrid_RightButton(Vector2<int> gridPosition)
+        private void RectanglesGrid_RightButton(PixelPoint gridPosition)
         {
             if (isTileEditorMode)
             {
@@ -100,7 +96,7 @@ namespace CollisionEditor2.Views
             }
         }
 
-        private void RectanglesGridUpdate(Vector2<int> gridPosition, 
+        private void RectanglesGridUpdate(PixelPoint gridPosition, 
             SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (WindowMain.AngleMap.Values.Count <= 0)
@@ -161,8 +157,9 @@ namespace CollisionEditor2.Views
 
         private int GetUniformGridIndex(Point mousePosition)
         {
-            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize * TileMapTileScale
-                + new System.Drawing.Size(tileMapSeparation, tileMapSeparation);
+            var tileSize = new PixelSize(
+                WindowMain.TileSet.TileSize.Width * TileMapTileScale + tileMapSeparation, 
+                WindowMain.TileSet.TileSize.Height * TileMapTileScale + tileMapSeparation);
             
             return (int)mousePosition.X / tileSize.Width 
                 + (int)mousePosition.Y / tileSize.Height * TileMapGrid.Columns;
@@ -214,7 +211,7 @@ namespace CollisionEditor2.Views
         public void WindowSizeChanged(Size size)
         {
             int countOfTiles = WindowMain.TileSet.Tiles.Count;
-            System.Drawing.Size tileSize = WindowMain.TileSet.TileSize;
+            PixelSize tileSize = WindowMain.TileSet.TileSize;
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
@@ -235,7 +232,7 @@ namespace CollisionEditor2.Views
             canvasForLine.Width  = TileGridSize.Width;
             canvasForLine.Height = TileGridSize.Height;
 
-            ModSwitchButton.Height = actualHeightTextAndButtons+5;
+            ModSwitchButton.Height = actualHeightTextAndButtons + 5;
             ModSwitchButton.FontSize = actualFontSize;
 
             Heights.Height   = actualHeightTextAndButtons;
@@ -292,8 +289,6 @@ namespace CollisionEditor2.Views
             DeleteTileButton.FontSize     = actualFontSize;
 
             DrawRedLine();
-        }
-
-        
+        } 
     }
 }
