@@ -350,6 +350,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
         window.SaveImage.Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
                                                                             new PixelSize(saveImage.Width, saveImage.Height));
+        window.SaveImageBorder.Height = saveImage.Height;
         window.SaveImageBorder.Width= saveImage.Width;
     }
 

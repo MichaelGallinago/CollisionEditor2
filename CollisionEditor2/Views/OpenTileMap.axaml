@@ -85,8 +85,10 @@
         
 
 		<ScrollViewer Grid.Column="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="15" HorizontalScrollBarVisibility="Visible">
-            <Image x:Name="ImageFromFile" RenderOptions.BitmapInterpolationMode="Default"/>
-        </ScrollViewer>
+			<Border x:Name="ImageFromFileBorder" Background="#E6E6E6" Width="50">
+	            <Image x:Name="ImageFromFile" RenderOptions.BitmapInterpolationMode="Default"/>
+            </Border>
+	    </ScrollViewer>
 
         <Button x:Name="OpenButton" Grid.Column="5" Grid.Row="15" Content="Open" Command="{Binding OpenCommand}" HorizontalAlignment="Right"/>
                     
