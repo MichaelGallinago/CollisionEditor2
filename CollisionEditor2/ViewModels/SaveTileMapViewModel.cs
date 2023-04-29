@@ -338,21 +338,14 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         UpdateColorsCommand = ReactiveCommand.Create(UpdateColors);
         SaveCommand         = ReactiveCommand.Create(Save);
 
-        saveImage = tileSet.DrawTileMap(amountOfColumns,
-            new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-                             new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-                             new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
-                 new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
-                 new PixelSize(horizontalSeparation, verticalSeparation),
-                 new PixelSize(horizontalOffset, verticalOffset));
-
         this.tileSet = tileSet;
         this.window = window;
+
+        UpdateColors();
     }
 
     private void UpdateColors()
     {
-
         saveImage = tileSet.DrawTileMap(amountOfColumns,
             new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
                              new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
@@ -362,7 +355,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
                  new PixelSize(horizontalOffset, verticalOffset));
 
         window.SaveImage.Source =ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
-                                                                            new PixelSize(saveImage.Width, saveImage.Height) );
+                                                                           new PixelSize(saveImage.Width, saveImage.Height) );
     }
 
     private void Save()
