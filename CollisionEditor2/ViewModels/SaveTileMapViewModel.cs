@@ -112,7 +112,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
             CheckErrorsForSaveAndUpdateButton();
             bool isNumber = int.TryParse(value, out int intAmountOfColumns);
 
-            if (!isNumber || intAmountOfColumns < 0)
+            if (!isNumber || intAmountOfColumns < 0 || intAmountOfColumns > 0)
             {
                 textboxValidator.AddError(nameof(AmountOfColumnsText), "Wrong Amount of Columns!");
                 CheckErrorsForSaveAndUpdateButton();
@@ -297,7 +297,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private int horizontalSeparation;
     private int verticalOffset;
     private int horizontalOffset;
-    private int amountOfColumns;
+    private int amountOfColumns = 8;
 
     //0 0 0 255
     //255 255 255 255
