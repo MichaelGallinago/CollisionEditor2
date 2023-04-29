@@ -328,7 +328,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     private SaveTileMap window;
     private TileSet tileSet;
-    private Bitmap saveImage;
+    private SKBitmap saveImage;
 
     public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
     {
@@ -361,7 +361,8 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
                  new PixelSize(horizontalSeparation, verticalSeparation),
                  new PixelSize(horizontalOffset, verticalOffset));
 
-        window.SaveImage.Source = saveImage;
+        window.SaveImage.Source =ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
+                                                                            new PixelSize(saveImage.Width, saveImage.Height) );
     }
 
     private void Save()
