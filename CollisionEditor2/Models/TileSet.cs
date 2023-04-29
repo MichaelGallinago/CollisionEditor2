@@ -49,7 +49,7 @@ public class TileSet
                     for (int z = 0; z < TileSize.Width; z++)
                     {
                         tilePixels[w * TileSize.Width + z] = pixelArray[
-                            tilePosition.X + z, tilePosition.Y + w, 3] != 0;
+                            tilePosition.X + z, tilePosition.Y + w, 0] != 0;
                     }
                 }
 
@@ -225,7 +225,7 @@ public class TileSet
                 int offset = (y * bitmap.Width + x) * bitmap.BytesPerPixel;
                 for (int i = 0; i < 4; i++)
                 {
-                    pixelValues[x, y, i] = span[(offset + 6 - i) % 4];
+                    pixelValues[x, y, i] = span[offset + 3 - i];
                 }
             }
         }
