@@ -510,7 +510,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
             Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
-            Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.TileToPixelArray(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
+            Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.TileToPixelArray(tile, new OurColor(0, 0, 0, 255)),
                                                    new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length))
         };
 
