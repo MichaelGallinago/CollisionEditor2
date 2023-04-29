@@ -339,13 +339,17 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void UpdateColors()
     {
-        OurColor[] ourColors =  new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-                                                 new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-                                                 new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)};
+        OurColor[] ourColors = new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
+                                                new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
+                                                new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)};
 
-        window.SaveImage.Source =ViewModelAssistant.GetBitmapFromPixelArray(
-            ViewModelAssistant.SKBitmapToPixelArray(saveImage),
-            new PixelSize(saveImage.Width, saveImage.Height) );
+        saveImage = tileSet.DrawTileMap(amountOfColumns, ourColors,
+                                        new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
+                                        new PixelSize(horizontalSeparation, verticalSeparation),
+                                        new PixelSize(horizontalOffset, verticalOffset));
+
+        window.SaveImage.Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
+                                                                            new PixelSize(saveImage.Width, saveImage.Height));
     }
 
     private void Save()
