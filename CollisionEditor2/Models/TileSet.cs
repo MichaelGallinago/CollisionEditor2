@@ -58,9 +58,6 @@ public class TileSet
 
         byte[,,] pixelArray = SKBitmapToArray(tileMap);
 
-        var tile = new Tile(TileSize);
-        bool[] tilePixels = tile.Pixels;
-
         for (int y = 0; y < cellCount.Y; y++)
         {
             for (int x = 0; x < cellCount.X; x++)
@@ -68,12 +65,15 @@ public class TileSet
                 var tilePosition = new Vector2<int>(
                     x * (TileSize.X + separate.X) + offset.X,
                     y * (TileSize.Y + separate.Y) + offset.Y);
-                
+
+                var tile = new Tile(TileSize);
+                bool[] tilePixels = tile.Pixels;
+
                 for (int w = 0; w < TileSize.Y; w++)
                 {
                     for (int z = 0; z < TileSize.X; z++)
                     {
-                        tilePixels[w * TileSize.X + y] = pixelArray[
+                        tilePixels[w * TileSize.X + z] = pixelArray[
                             tilePosition.X + z, tilePosition.Y + w, 3] != 0;
                     }
                 }
