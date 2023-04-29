@@ -12,6 +12,7 @@ using ReactiveUI;
 using Avalonia;
 using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.Models;
+using SkiaSharp;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -325,7 +326,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     private SaveTileMap window;
     private TileSet tileSet;
-    private Avalonia.Media.IImage saveImage;
+    private SKBitmap saveImage;
 
     public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
     {
@@ -342,7 +343,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private void UpdateColors()
     {
 
-        saveImage = (Avalonia.Media.IImage) tileSet.DrawTileMap(amountOfColumns,
+        saveImage = tileSet.DrawTileMap(amountOfColumns,
             new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
                              new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
                              new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
@@ -350,7 +351,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
                  new PixelSize(horizontalSeparation, verticalSeparation),
                  new PixelSize(horizontalOffset, verticalOffset));
 
-        window.SaveImage.Source = saveImage;
+        window.SaveImage.Source = (Avalonia.Media.IImage)saveImage;
     }
 
     private void Save()

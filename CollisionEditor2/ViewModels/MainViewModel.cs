@@ -323,7 +323,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveTileMap(Path.GetFullPath(filePath), );
+            TileSet.Save(Path.GetFullPath(filePath), );
         }
     }
 
