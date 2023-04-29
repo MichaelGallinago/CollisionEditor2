@@ -20,9 +20,8 @@ public class TileSet
         Tiles = new List<Tile>();
 
         SKImage image = SKImage.FromEncodedData(path);
-        SKBitmap tileMap = RecolorTileMap(SKBitmap.FromImage(image));
 
-        CreateTiles(tileMap, separate, offset);
+        CreateTiles(SKBitmap.FromImage(image), separate, offset);
     }
 
     private SKBitmap RecolorTileMap(SKBitmap tileMap)
@@ -43,7 +42,7 @@ public class TileSet
                         }
                         continue;
                     }
-                    pixelArray[x, y, 3] = 0;
+                    pixelArray[x, y, i] = 0;
                 }
             }
         }
@@ -260,7 +259,7 @@ public class TileSet
     {
         ReadOnlySpan<byte> span = bitmap.GetPixelSpan();
 
-        byte[,,] pixelValues = new byte[bitmap.Height, bitmap.Width, 4];
+        byte[,,] pixelValues = new byte[bitmap.Width, bitmap.Height, 4];
         for (int y = 0; y < bitmap.Height; y++)
         {
             for (int x = 0; x < bitmap.Width; x++)
@@ -268,7 +267,7 @@ public class TileSet
                 int offset = (y * bitmap.Width + x) * bitmap.BytesPerPixel;
                 for (int i = 0; i < 4; i++)
                 {
-                    pixelValues[y, x, i] = span[offset + 3 - i];
+                    pixelValues[x, y, i] = span[offset + 3 - i];
                 }
             }
         }
@@ -278,19 +277,20 @@ public class TileSet
     
     public static SKBitmap ArrayToSKBitmap(byte[,,] pixelArray)
     {
-        int width  = pixelArray.GetLength(1);
-        int height = pixelArray.GetLength(0);
+        int width  = pixelArray.GetLength(0);
+        int height = pixelArray.GetLength(1);
 
         uint[] pixelValues = new uint[width * height];
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                byte red   = pixelArray[y, x, 0];
-                byte green = pixelArray[y, x, 1];
-                byte blue  = pixelArray[y, x, 2];
-                byte alpha = pixelArray[y, x, 3];
-                uint pixelValue = red + (uint)(green << 8) + (uint)(blue << 16) + (uint)(alpha << 24);
+                byte red   = pixelArray[x, y, 0];
+                byte green = pixelArray[x, y, 1];
+                byte blue  = pixelArray[x, y, 2];
+                byte alpha = pixelArray[x, y, 3];
+                uint pixelValue = red + (uint)(green << 8) 
+                    + (uint)(blue << 16) + (uint)(alpha << 24);
                 pixelValues[y * width + x] = pixelValue;
             }
         }
