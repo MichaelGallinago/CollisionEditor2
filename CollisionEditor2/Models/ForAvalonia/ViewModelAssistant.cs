@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Avalonia.Media.Imaging;
 using Avalonia;
+using SkiaSharp;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
@@ -28,30 +29,41 @@ public class ViewModelAssistant
         }
     }
 
-    public static Bitmap GetBitmapFromTile(Tile tile, OurColor color)
+    public static Bitmap GetBitmapFromArray(byte[] pixelColors, PixelSize bitmapSize)
     {
         var bitmap = new WriteableBitmap(
-            new PixelSize(tile.Heights.Length, tile.Widths.Length), 
-            new Vector(dpi, dpi), 
-            Avalonia.Platform.PixelFormat.Bgra8888, 
+            bitmapSize,
+            new Vector(dpi, dpi),
+            Avalonia.Platform.PixelFormat.Bgra8888,
             Avalonia.Platform.AlphaFormat.Premul);
 
+        using (var frameBuffer = bitmap.Lock())
+        {
+            Marshal.Copy(pixelColors, 0, frameBuffer.Address, pixelColors.Length);
+        }
+
+        return bitmap;
+    }
+
+    public static byte[] SKBitmapToPixelArray(SKBitmap tileMap)
+    {
+        return tileMap.GetPixelSpan().ToArray();
+    }
+
+    public static byte[] TileToPixelArray(Tile tile, OurColor color)
+    {
         var tileColors = new List<byte>(tile.Pixels.Length * 4);
 
         foreach (bool pixel in tile.Pixels)
         {
-            tileColors.Add(color.Channels[2]);
-            tileColors.Add(color.Channels[1]);
-            tileColors.Add(color.Channels[0]);
-            tileColors.Add((byte)(pixel ? color.Channels[3] : 0));
+            for (int i = 3; i > 0; i--)
+            {
+                tileColors.Add(color.Channels[i]);
+            }
+            tileColors.Add((byte)(pixel ? color.Channels[0] : 0));
         }
 
-        using (var frameBuffer = bitmap.Lock())
-        {
-            Marshal.Copy(tileColors.ToArray(), 0, frameBuffer.Address, tileColors.Count);
-        }
-
-        return bitmap;
+        return tileColors.ToArray();
     }
 
     public static Bitmap GetBitmap(string path, out PixelSize size)
