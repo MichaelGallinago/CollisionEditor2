@@ -34,7 +34,7 @@ public class ViewModelAssistant
     {
         var bitmap = new WriteableBitmap(
             bitmapSize, new Vector(dpi, dpi),
-            PixelFormat.Bgra8888, AlphaFormat.Premul);
+            PixelFormat.Rgba8888, AlphaFormat.Premul);
 
         using (var frameBuffer = bitmap.Lock())
         {
@@ -51,15 +51,18 @@ public class ViewModelAssistant
 
     public static byte[] TileToPixelArray(Tile tile, OurColor color)
     {
-        var tileColors = new List<byte>(tile.Pixels.Length * 4);
+        int channelsAmount = color.Channels.Length;
+        var tileColors = new List<byte>(tile.Pixels.Length * channelsAmount);
+
+        int alphaIndex = channelsAmount - 1;
 
         foreach (bool pixel in tile.Pixels)
         {
-            for (var i = 2; i >= 0; i--)
+            for (var i = 0; i < alphaIndex; i++)
             {
                 tileColors.Add(color.Channels[i]);
             }
-            tileColors.Add((byte)(pixel ? color.Channels[3] : 0));
+            tileColors.Add((byte)(pixel ? color.Channels[alphaIndex] : 0));
         }
 
         return tileColors.ToArray();
