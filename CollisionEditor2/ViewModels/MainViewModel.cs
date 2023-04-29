@@ -419,6 +419,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         OnPropertyChanged(nameof(SelectedTileText));
         window.LastSelectedTile = 0;
 
+
         window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(176, 176, 176));
         window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 177, 177, 177));
         window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
@@ -560,9 +561,11 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         AngleMap.RemoveAngle(SelectedTile);
 
         window.TileMapGrid.Children.RemoveAt(SelectedTile);
+        
         if (TileSet.Tiles.Count==0)
         {
             MenuUnloadAll();
+            return;
         }
 
         if (SelectedTile > TileSet.Tiles.Count - 1)
