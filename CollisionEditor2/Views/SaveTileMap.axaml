@@ -192,7 +192,7 @@
 		<Button x:Name="SaveButton" Grid.Column="10" Grid.Row="38" Grid.ColumnSpan="3" Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right"/>
 
 		<ScrollViewer Grid.Column="16" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="38" HorizontalScrollBarVisibility="Visible">
-			<Border x:Name="SaveImageBorder" Background="LightGray" Width="50">
+			<Border x:Name="SaveImageBorder" Background="#E6E6E6" Width="50">
 				<Image x:Name="SaveImage"/>
 			</Border>
 		</ScrollViewer>
