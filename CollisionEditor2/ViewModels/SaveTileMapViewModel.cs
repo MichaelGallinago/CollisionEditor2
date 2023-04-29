@@ -343,13 +343,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
                                                  new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
                                                  new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)};
 
-        saveImage = tileSet.DrawTileMap(amountOfColumns, ourColors,
-                                        new int[] {offsetInTiles1, offsetInTiles2, offsetInTiles3},
-                                        new PixelSize(horizontalSeparation, verticalSeparation),
-                                        new PixelSize(horizontalOffset, verticalOffset));
-
-        window.SaveImage.Source =ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
-                                                                            new PixelSize(saveImage.Width, saveImage.Height));
+        window.SaveImage.Source =ViewModelAssistant.GetBitmapFromPixelArray(
+            ViewModelAssistant.SKBitmapToPixelArray(saveImage),
+            new PixelSize(saveImage.Width, saveImage.Height) );
     }
 
     private void Save()
