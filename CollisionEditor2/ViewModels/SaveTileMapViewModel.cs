@@ -13,20 +13,13 @@ using Avalonia;
 using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.Models;
 using SkiaSharp;
-using Avalonia.Media.Imaging;
-using System.Security.Cryptography.X509Certificates;
 
 namespace CollisionEditor2.ViewModels;
 
 public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 {
-    //Glory to RuChat!!!!!
-    private const int minTileHeight = 4;
-    private const int minTileWidth = 4;
-
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
     public ReactiveCommand<Unit, Unit> UpdateColorsCommand { get; }
-
     
     public string VerticalSeparationText
     {
@@ -328,7 +321,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     private SaveTileMap window;
     private TileSet tileSet;
-    private SKBitmap saveImage;
+    private SKBitmap ?saveImage;
 
     public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
     {
@@ -346,22 +339,24 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void UpdateColors()
     {
-        saveImage = tileSet.DrawTileMap(amountOfColumns,
-            new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-                             new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-                             new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)},
-                 new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
-                 new PixelSize(horizontalSeparation, verticalSeparation),
-                 new PixelSize(horizontalOffset, verticalOffset));
+        OurColor[] ourColors =  new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
+                                                 new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
+                                                 new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)};
+
+        saveImage = tileSet.DrawTileMap(amountOfColumns, ourColors,
+                                        new int[] {offsetInTiles1, offsetInTiles2, offsetInTiles3},
+                                        new PixelSize(horizontalSeparation, verticalSeparation),
+                                        new PixelSize(horizontalOffset, verticalOffset));
 
         window.SaveImage.Source =ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
-                                                                           new PixelSize(saveImage.Width, saveImage.Height) );
+                                                                            new PixelSize(saveImage.Width, saveImage.Height));
     }
 
     private void Save()
     {   
         window.IsSaved = true;
         window.ResultSaveImage = saveImage;
+
         window.Close();
     }
 
