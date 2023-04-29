@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using SkiaSharp;
 using Avalonia;
+using System.Linq;
 
 namespace CollisionEditor2.Models;
 
@@ -106,8 +107,12 @@ public class TileSet
     public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
         int[] groupOffset, PixelSize separation, PixelSize offset)
     {
-        var cell = new PixelSize(TileSize.Width + separation.Width, TileSize.Height + separation.Height);
-        int rowCount = (Tiles.Count & -columnCount) / columnCount;
+        var cell = new PixelSize(
+            TileSize.Width + separation.Width, 
+            TileSize.Height + separation.Height);
+
+        int rowCount = ((Tiles.Count * groupOffset.Length 
+            + groupOffset.Sum()) & -columnCount) / columnCount;
 
         var tileMapSize = new PixelSize(
             offset.Width + columnCount * cell.Width - separation.Width,
