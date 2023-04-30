@@ -324,7 +324,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveTileMap(Path.GetFullPath(filePath),saveTileMap.ResultSaveImage);
+            TileService.SaveTileMap(Path.GetFullPath(filePath), saveTileMap.ResultSaveImage);
         }
     }
 
@@ -339,7 +339,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.WidthMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,true);
+            TileService.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,true);
         }
     }
 
@@ -355,7 +355,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.HeightMap);
         if (filePath != string.Empty)
         {
-            TileSet.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,false);
+            TileService.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,false);
         }
     }
 
