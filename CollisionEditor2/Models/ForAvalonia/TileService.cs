@@ -20,7 +20,7 @@ public class TileService
         return string.Join(" ", builder.ToString().ToCharArray());
     }
 
-    public static void SaveTileMap(string path, SKBitmap? tileMap)
+    public static void SaveTileMap(string path, SKBitmap tileMap)
     {
         if (File.Exists(path))
         {
