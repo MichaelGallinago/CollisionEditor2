@@ -98,7 +98,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             
             Angles angles = ViewModelAngleService.GetAngles(hexAngle);
 
-            ShowAngles(ViewModelAngleService.GetAngles(angles.ByteAngle));
+            ShowAngles(angles);
             AngleMap.SetAngle(SelectedTile, angles.ByteAngle);
             
             window.DrawRedLine();
