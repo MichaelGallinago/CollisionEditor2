@@ -1,7 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System;
 using SkiaSharp;
 using Avalonia;
@@ -32,7 +30,7 @@ public class TileSet
             (tileMap.Width  - offset.Width) / (TileSize.Width + separation.Width),
             (tileMap.Height - offset.Height) / (TileSize.Height + separation.Height));
 
-        byte[,,] bitmapArray = SKBitmapToBitmapArray(tileMap);
+        byte[,,] bitmapArray = BitmapConvertor.SKBitmapToBitmapArray(tileMap);
 
         for (int y = 0; y < cellCount.Y; y++)
         {
@@ -72,38 +70,6 @@ public class TileSet
         }
     }
 
-    public void SaveTileMap(string path, SKBitmap tileMap)
-    {
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
-
-        using var image = SKImage.FromBitmap(tileMap);
-        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-        using var stream = File.OpenWrite(path);
-        data.SaveTo(stream);
-    }
-
-    public void SaveCollisionMap(string path, List<Tile> tiles, bool isWidths)
-    {
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
-
-        using var writer = new BinaryWriter(File.Open(path, FileMode.CreateNew));
-        {
-            foreach (Tile tile in tiles)
-            {
-                foreach (byte value in isWidths ? tile.Widths : tile.Heights)
-                {
-                    writer.Write(value);
-                }
-            }
-        }
-    }
-
     public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
         int[] groupOffset, PixelSize separation, PixelSize offset)
     {
@@ -121,7 +87,7 @@ public class TileSet
         var tileMap = new SKBitmap(
             tileMapSize.Width, tileMapSize.Height, 
             SKColorType.Rgba8888, SKAlphaType.Premul);
-        byte[,,] bitmapArray = SKBitmapToBitmapArray(tileMap);
+        byte[,,] bitmapArray = BitmapConvertor.SKBitmapToBitmapArray(tileMap);
 
         int groupCount = groupColor.Length;
         PixelPoint position = new();
@@ -142,7 +108,7 @@ public class TileSet
                     separation, offset, columnCount, ref position);
             }
         }
-        return BitmapArrayToSKBitmap(bitmapArray);
+        return BitmapConvertor.BitmapArrayToSKBitmap(bitmapArray);
     }
 
     private void DrawTile(ref byte[,,] bitmapArray, bool[]? tilePixels, OurColor tileColor,
@@ -216,55 +182,6 @@ public class TileSet
         }
 
         Tiles[tileIndex].Pixels = pixels;
-    }
-
-    private byte[,,] SKBitmapToBitmapArray(SKBitmap bitmap)
-    {
-        ReadOnlySpan<byte> span = bitmap.GetPixelSpan();
-
-        byte[,,] pixelValues = new byte[bitmap.Width, bitmap.Height, 4];
-        for (int y = 0; y < bitmap.Height; y++)
-        {
-            for (int x = 0; x < bitmap.Width; x++)
-            {
-                int offset = (y * bitmap.Width + x) * bitmap.BytesPerPixel;
-                for (int i = 0; i < 4; i++)
-                {
-                    pixelValues[x, y, i] = span[offset + 3 - i];
-                }
-            }
-        }
-
-        return pixelValues;
-    }
-    
-    public static SKBitmap BitmapArrayToSKBitmap(byte[,,] bitmapArray)
-    {
-        var bitmapSize = new PixelSize(bitmapArray.GetLength(0), bitmapArray.GetLength(1));
-
-        uint[] pixelValues = new uint[bitmapSize.Width * bitmapSize.Height];
-        for (int y = 0; y < bitmapSize.Height; y++)
-        {
-            for (int x = 0; x < bitmapSize.Width; x++)
-            {
-                uint pixelValue = 0;
-                for (int i = 0; i < 4; i++)
-                {
-                    pixelValue += (uint)(bitmapArray[x, y, i] << (8 * i));
-                }
-                pixelValues[y * bitmapSize.Width + x] = pixelValue;
-            }
-        }
-
-        SKBitmap bitmap = new();
-        GCHandle gcHandle = GCHandle.Alloc(pixelValues, GCHandleType.Pinned);
-        var info = new SKImageInfo(bitmapSize.Width, bitmapSize.Height, SKColorType.Rgba8888, SKAlphaType.Premul);
-
-        IntPtr ptr = gcHandle.AddrOfPinnedObject();
-        int rowBytes = info.RowBytes;
-        bitmap.InstallPixels(info, ptr, rowBytes, delegate { gcHandle.Free(); });
-
-        return bitmap;
     }
 
     private int GetPixelIndex(int positionX, int positionY)
