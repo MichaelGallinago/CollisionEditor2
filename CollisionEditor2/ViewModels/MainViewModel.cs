@@ -321,6 +321,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
+        if (saveTileMap.ResultSaveImage==null)
+        {
+            OurMessageBox("Your Image is NULL!");
+            return;
+        }
+
         string filePath = await ViewModelFileService.GetFileSavePath(window, ViewModelFileService.Filters.TileMap);
         if (filePath != string.Empty)
         {
