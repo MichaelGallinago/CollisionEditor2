@@ -55,7 +55,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
             byteAngle = newAngle;
 
-            ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
+            ShowAngles(Angles.FromByte(byteAngle));
             AngleMap.SetAngle(SelectedTile, byteAngle);
 
             window.DrawRedLine();
@@ -69,16 +69,16 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             textboxValidator.ClearErrors(nameof(HexAngleText));
 
-            if (value.Length <= AngleService.HexAnglePrefixLength)
+            if (value.Length <= Angles.HexAnglePrefixLength)
             {
                 textboxValidator.AddError(nameof(HexAngleText),
-                    $"Wrong hexadecimal number length!\nMust be between {AngleService.HexAnglePrefixLength + 1} and "
-                    + $"{AngleService.HexAnglePrefixLength + AngleService.HexAngleMaxLength}");
+                    $"Wrong hexadecimal number length!\nMust be between {Angles.HexAnglePrefixLength + 1} and "
+                    + $"{Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength}");
                 return;
             }
             
 
-            string prefix = value[..AngleService.HexAnglePrefixLength];
+            string prefix = value[..Angles.HexAnglePrefixLength];
 
             if (prefix != "0x" && prefix != "0X")
             {
@@ -86,7 +86,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                     "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
                 return;
             }
-            else if (!int.TryParse(value[AngleService.HexAnglePrefixLength..], 
+            else if (!int.TryParse(value[Angles.HexAnglePrefixLength..], 
                 System.Globalization.NumberStyles.HexNumber, null, out _))
             {
                 textboxValidator.AddError(nameof(HexAngleText), 
@@ -96,9 +96,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
             hexAngle = value;
             
-            Angles angles = ViewModelAngleService.GetAngles(hexAngle);
+            Angles angles = Angles.FromHex(hexAngle);
 
-            ShowAngles(ViewModelAngleService.GetAngles(angles.ByteAngle));
+            ShowAngles(Angles.FromByte(angles.ByteAngle));
             AngleMap.SetAngle(SelectedTile, angles.ByteAngle);
             
             window.DrawRedLine();
@@ -190,7 +190,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
 
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
         window.ModSwitchButton.IsEnabled   = true;
@@ -263,8 +263,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
         window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
             
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
-        
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
         window.SelectTileTextBox.IsEnabled = true;
         window.SelectTileButton.IsEnabled  = true;
@@ -393,13 +392,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
         window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
     }
 
     private void MenuUnloadAngleMap()
     {
         AngleMap = new AngleMap(TileSet.Tiles.Count);
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
         window.RectanglesGrid.Children.Clear();
         window.DrawRedLine();
     }
@@ -414,7 +413,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = null;
         window.Widths.Text  = null;
 
-        ShowAngles(new Angles(0, "0x00", 0));
+        ShowAngles(Angles.FromByte(0));
 
         SelectedTile = 0;
         OnPropertyChanged(nameof(SelectedTileText));
@@ -451,7 +450,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         byte byteAngle = AngleMap.ChangeAngle(SelectedTile, 1);
 
-        ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
+        ShowAngles(Angles.FromByte(byteAngle));
 
         window.DrawRedLine();
     }
@@ -460,7 +459,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         byte byteAngle = AngleMap.ChangeAngle(SelectedTile, -1);
 
-        ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
+        ShowAngles(Angles.FromByte(byteAngle));
 
         window.DrawRedLine();
     }
@@ -483,7 +482,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
         window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
         
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
         window.DrawRedLine();
         window.RectanglesGrid.Children.Clear();
@@ -496,7 +495,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
         window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
-        ShowAngles(AngleService.GetAngles(AngleMap, SelectedTile));
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
         window.DrawRedLine();
         window.RectanglesGrid.Children.Clear();
@@ -599,7 +598,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         byte byteAngle = AngleMap.SetAngleWithLine(SelectedTile, positionGreen, positionBlue);
 
-        ShowAngles(ViewModelAngleService.GetAngles(byteAngle));
+        ShowAngles(Angles.FromByte(byteAngle));
     }
 
     private void RectanglesGridUpdate()
