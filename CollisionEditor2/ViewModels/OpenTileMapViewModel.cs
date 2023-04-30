@@ -203,7 +203,7 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
 
         this.window = window;
 
-        window.ImageFromFile.Source = ViewModelAssistant.GetBitmap(filePath, out PixelSize bitmapSize);
+        window.ImageFromFile.Source = ViewModelAssistant.OpenBitmap(filePath, out PixelSize bitmapSize);
         
         window.ImageFromFileBorder.Height = bitmapSize.Height;
         window.ImageFromFileBorder.Width = bitmapSize.Width;

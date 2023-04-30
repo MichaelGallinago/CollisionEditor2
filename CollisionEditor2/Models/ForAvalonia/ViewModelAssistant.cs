@@ -68,7 +68,7 @@ public class ViewModelAssistant
         return tileColors.ToArray();
     }
 
-    public static Bitmap GetBitmap(string path, out PixelSize size)
+    public static Bitmap OpenBitmap(string path, out PixelSize size)
     {
         var Bitmap = new Bitmap(path);
         size = new PixelSize((int)Bitmap.Size.Width, (int)Bitmap.Size.Height);
