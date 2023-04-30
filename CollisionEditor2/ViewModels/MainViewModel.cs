@@ -69,7 +69,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             textboxValidator.ClearErrors(nameof(HexAngleText));
 
-            if (value.Length <= Angles.HexAnglePrefixLength)
+            if (value.Length < Angles.HexAnglePrefixLength+1 || value.Length > Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength)
             {
                 textboxValidator.AddError(nameof(HexAngleText),
                     $"Wrong hexadecimal number length!\nMust be between {Angles.HexAnglePrefixLength + 1} and "
