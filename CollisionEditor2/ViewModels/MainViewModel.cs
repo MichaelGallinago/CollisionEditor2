@@ -97,11 +97,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             hexAngle = value;
             
             Angles angles = Angles.FromHex(hexAngle);
-
-            ShowAngles(angles);
-            
             AngleMap.SetAngle(SelectedTile, angles.ByteAngle);
-            
+            ShowAngles(angles);
+
             window.DrawRedLine();
         }
     }
