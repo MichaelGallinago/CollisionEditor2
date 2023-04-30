@@ -28,27 +28,25 @@ public class Angles
 
     public static Angles FromByte(byte byteAngle)
     {
-        var angles = new Angles
+        return new Angles
         {
             ByteAngle = byteAngle,
             HexAngle  = GetHexAngle(byteAngle),
             FullAngle = GetFullAngle(byteAngle)
         };
-
-        return angles;
     }
 
-    public static string GetHexAngle(byte byteAngle)
+    private static string GetHexAngle(byte byteAngle)
     {
         return "0x" + string.Format("{0:X}", byteAngle).PadLeft(HexAngleMaxLength, '0');
     }
 
-    public static double GetFullAngle(byte byteAngle)
+    private static double GetFullAngle(byte byteAngle)
     {
         return Math.Round((byte.MaxValue + 1 - byteAngle) * convertByteToFull, 1);
     }
 
-    public static byte GetByteAngle(string hexAngle)
+    private static byte GetByteAngle(string hexAngle)
     {
         return byte.Parse(hexAngle[HexAnglePrefixLength..], NumberStyles.HexNumber);
     }
