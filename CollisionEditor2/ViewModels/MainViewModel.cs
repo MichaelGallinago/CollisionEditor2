@@ -255,7 +255,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
         ViewModelAssistant.GetBitmapFromPixelArray(
-            ViewModelAssistant.TileToPixelArray(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
+            ViewModelAssistant.GetPixelArrayFromTile(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
             new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length));
 
         TileGridUpdate(TileSet, SelectedTile, Window);
@@ -516,7 +516,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
             Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
-            Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.TileToPixelArray(tile, new OurColor(0, 0, 0, 255)),
+            Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.GetPixelArrayFromTile(tile, new OurColor(0, 0, 0, 255)),
                                                    new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length))
         };
 
@@ -603,7 +603,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        byte byteAngle = AngleMap.SetAngleWithLine(SelectedTile, positionGreen, positionBlue);
+        byte byteAngle = AngleMap.SetAngleFromLine(SelectedTile, positionGreen, positionBlue);
 
         ShowAngles(Angles.FromByte(byteAngle));
     }

@@ -5,9 +5,9 @@ using Avalonia;
 
 namespace CollisionEditor2.Models;
 
-internal class BitmapConvertor
+public class BitmapConvertor
 {
-    public static byte[,,] SKBitmapToBitmapArray(SKBitmap bitmap)
+    public static byte[,,] GetBitmapArrayFromSKBitmap(SKBitmap bitmap)
     {
         ReadOnlySpan<byte> span = bitmap.GetPixelSpan();
 
@@ -27,7 +27,7 @@ internal class BitmapConvertor
         return pixelValues;
     }
 
-    public static SKBitmap BitmapArrayToSKBitmap(byte[,,] bitmapArray)
+    public static SKBitmap GetSKBitmapFromBitmapArray(byte[,,] bitmapArray)
     {
         var bitmapSize = new PixelSize(bitmapArray.GetLength(0), bitmapArray.GetLength(1));
 

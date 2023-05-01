@@ -5,14 +5,14 @@ namespace CollisionEditor2.Models;
 
 public class Angles
 {
-    public byte   ByteAngle { get; private set; }
-    public string HexAngle  { get; private set; } = "0x00";
-    public double FullAngle { get; private set; }
-
     public const int HexAngleMaxLength = 2;
     public const int HexAnglePrefixLength = 2;
 
     private const double convertByteToFull = 1.40625d;
+
+    public byte   ByteAngle { get; private set; }
+    public string HexAngle  { get; private set; } = "0x00";
+    public double FullAngle { get; private set; }
 
     public static Angles FromHex(string hexAngle)
     {

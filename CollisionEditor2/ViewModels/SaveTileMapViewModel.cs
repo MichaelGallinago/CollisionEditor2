@@ -1,13 +1,9 @@
 ﻿using CollisionEditor2.ViewServices;
 using CollisionEditor2.Views;
-using MessageBoxSlim.Avalonia.Enums;
-using MessageBoxSlim.Avalonia.DTO;
-using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
 using System.Reactive;
 using System;
-using Avalonia.Controls;
 using ReactiveUI;
 using Avalonia;
 using CollisionEditor2.Models.ForAvalonia;
@@ -343,17 +339,22 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void UpdateColors()
     {
-        OurColor[] ourColors = new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-                                                new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-                                                new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)};
+        var ourColors = new OurColor[]
+        {
+            new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
+            new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
+            new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)
+        };
 
         saveImage = tileSet.DrawTileMap(amountOfColumns, ourColors,
-                                        new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
-                                        new PixelSize(horizontalSeparation, verticalSeparation),
-                                        new PixelSize(horizontalOffset, verticalOffset));
+            new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
+            new PixelSize(horizontalSeparation, verticalSeparation),
+            new PixelSize(horizontalOffset, verticalOffset));
 
-        window.SaveImage.Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.SKBitmapToPixelArray(saveImage),
-                                                                            new PixelSize(saveImage.Width, saveImage.Height));
+        window.SaveImage.Source = ViewModelAssistant.GetBitmapFromPixelArray(
+            ViewModelAssistant.GetPixelArrayFromSKBitmap(saveImage),
+            new PixelSize(saveImage.Width, saveImage.Height));
+
         window.SaveImageBorder.Height = saveImage.Height;
         window.SaveImageBorder.Width= saveImage.Width;
     }

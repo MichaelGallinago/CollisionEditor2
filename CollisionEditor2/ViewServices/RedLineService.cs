@@ -12,18 +12,18 @@ public static class RedLineService
 {
     public static void DrawRedLine(MainWindow mainWindow, ref Line redLine)
     {
-        var floatAngle = float.Parse(mainWindow.TextBlockFullAngle.Text.TrimEnd('°'));
+        float floatAngle = float.Parse(mainWindow.TextBlockFullAngle.Text.TrimEnd('°'));
 
         int size = (int)mainWindow.canvasForLine.Width / 2;
 
-        double DegreeToRadian = PI / 180;
+        double degreeToRadian = PI / 180;
 
-        double length = size / Cos(((floatAngle + 45) % 90 - 45) * DegreeToRadian);
+        double length = size / Cos(((floatAngle + 45) % 90 - 45) * degreeToRadian);
         floatAngle += 90;
 
         var lineEdgePosition = new Point(
-            length * Sin(floatAngle * DegreeToRadian), 
-            length * Cos(floatAngle * DegreeToRadian));
+            length * Sin(floatAngle * degreeToRadian), 
+            length * Cos(floatAngle * degreeToRadian));
 
         redLine = new()
         {

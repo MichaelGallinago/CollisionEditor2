@@ -44,12 +44,12 @@ public class ViewModelAssistant
         return bitmap;
     }
 
-    public static byte[] SKBitmapToPixelArray(SKBitmap tileMap)
+    public static byte[] GetPixelArrayFromSKBitmap(SKBitmap tileMap)
     {
         return tileMap.GetPixelSpan().ToArray();
     }
 
-    public static byte[] TileToPixelArray(Tile tile, OurColor color)
+    public static byte[] GetPixelArrayFromTile(Tile tile, OurColor color)
     {
         int channelsAmount = color.Channels.Length;
         var tileColors = new List<byte>(tile.Pixels.Length * channelsAmount);
