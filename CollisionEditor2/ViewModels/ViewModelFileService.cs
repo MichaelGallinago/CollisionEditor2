@@ -8,7 +8,6 @@ namespace CollisionEditor2.ViewModels;
 public static class ViewModelFileService
 {
     public enum Filters { TileMap, AngleMap, WidthMap, HeightMap }
-
     private readonly static Dictionary<Filters, FileDialogFilter> filters = new()
     {
         [Filters.TileMap]   = new FileDialogFilter() { Name = "Image Files(*.png)",  Extensions = { "png" } },

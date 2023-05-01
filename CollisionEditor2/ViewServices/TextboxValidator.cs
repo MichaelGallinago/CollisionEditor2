@@ -8,10 +8,10 @@ namespace CollisionEditor2.ViewServices;
 
 public class TextboxValidator : INotifyDataErrorInfo
 {
+    private readonly Dictionary<string, List<string>?> propertyErrors = new();
+
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     public bool HasErrors => propertyErrors.Any();
-
-    private readonly Dictionary<string, List<string>?> propertyErrors = new();
 
     public IEnumerable GetErrors(string? propertyName)
     {
@@ -34,17 +34,15 @@ public class TextboxValidator : INotifyDataErrorInfo
         propertyErrors[propertyName]?.Add(errorMessage);
         OnErrorsChanged(propertyName);
     }
-
+    public void ClearErrors(string propertyName)
+    {
+        if (propertyErrors.Remove(propertyName))
+        {
+            OnErrorsChanged(propertyName);
+        }
+    }
     private void OnErrorsChanged(string propertyName)
     {
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-    }
-
-    public void ClearErrors(string propertyName)
-    {   
-        if (propertyErrors.Remove(propertyName))
-        {   
-            OnErrorsChanged(propertyName);
-        }
     }
 }

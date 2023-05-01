@@ -13,8 +13,6 @@ namespace CollisionEditor2.Views
 {
     public partial class MainWindow : Window
     {
-        public int LastSelectedTile { get; set; }
-
         public const int TileMapTileScale = 2;
 
         private const int tileMapSeparation = 4;
@@ -29,10 +27,10 @@ namespace CollisionEditor2.Views
 
         private bool isTileEditorMode = false;
         private bool isPointerInRectanglesGrid = false;
-        private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0,0,255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
+        private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0, 0, 255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
 
-
+        public int LastSelectedTile { get; set; }
         public MainViewModel WindowMain { get; }
 
         public MainWindow()
@@ -45,18 +43,98 @@ namespace CollisionEditor2.Views
 #endif
         }
 
-        private PixelPoint GetGridPosition(Point mousePosition)
+        public void DrawRedLine()
         {
-            var tileSize = WindowMain.TileSet.TileSize;
-
-            var position = new PixelPoint(
-                (int)mousePosition.X / ((int)TileGrid.Width / tileSize.Width),
-                (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height));
-
-            return position;
+            if (WindowMain.AngleMap.Values.Count > 0)
+            {
+                RedLineService.DrawRedLine(WindowMain.window, ref redLine);
+            }
         }
 
-        public void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        public void WindowSizeChanged(Size size)
+        {
+            int countOfTiles = WindowMain.TileSet.Tiles.Count;
+            PixelSize tileSize = WindowMain.TileSet.TileSize;
+
+            double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
+            double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
+            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (size.Width / countHeightParts * 43)) / 0.35 - 21);
+
+            double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
+
+            var TileGridSize = new Size(
+                (int)actualHeightGrid / tileSize.Width * tileSize.Width,
+                (int)actualHeightGrid / tileSize.Height * tileSize.Height);
+
+            TileGrid.Width = TileGridSize.Width;
+            TileGrid.Height = TileGridSize.Height;
+
+            RectanglesGrid.Width = TileGridSize.Width;
+            RectanglesGrid.Height = TileGridSize.Height;
+
+            canvasForLine.Width = TileGridSize.Width;
+            canvasForLine.Height = TileGridSize.Height;
+
+            ModSwitchButton.Height = actualHeightTextAndButtons + 5;
+            ModSwitchButton.FontSize = actualFontSize;
+
+            Heights.Height = actualHeightTextAndButtons;
+            Heights.FontSize = actualFontSize;
+
+            Widths.Height = actualHeightTextAndButtons;
+            Widths.FontSize = actualFontSize;
+
+            TextBlockFullAngle.Height = actualHeightTextAndButtons - 2;
+            TextBlockFullAngle.FontSize = actualFontSize;
+
+            TextBoxByteAngle.Height = actualHeightTextAndButtons - 2;
+            TextBoxByteAngle.FontSize = actualFontSize;
+
+            TextBoxHexAngle.Height = actualHeightTextAndButtons - 2;
+            TextBoxHexAngle.FontSize = actualFontSize;
+
+            ByteAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
+            ByteAngleIncrimentButton.Width = actualWidthUpAndDownButtons;
+            ByteAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
+            ByteAngleDecrementButton.Width = actualWidthUpAndDownButtons;
+
+            TriangleUpByteAngle.Height = actualHeightTextAndButtons / 2 - 5;
+            TriangleUpByteAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
+            TriangleDownByteAngle.Height = actualHeightTextAndButtons / 2 - 5;
+            TriangleDownByteAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
+
+            HexAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
+            HexAngleIncrimentButton.Width = actualWidthUpAndDownButtons;
+            HexAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
+            HexAngleDecrementButton.Width = actualWidthUpAndDownButtons;
+
+            TriangleUpHexAngle.Height = actualHeightTextAndButtons / 2 - 5;
+            TriangleUpHexAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
+            TriangleDownHexAngle.Height = actualHeightTextAndButtons / 2 - 5;
+            TriangleDownHexAngle.Width = actualWidthUpAndDownButtons / 2 - 5;
+
+            int tileWidth = tileSize.Width * TileMapTileScale;
+            int tileHeight = tileSize.Height * TileMapTileScale;
+
+
+            TileMapGrid.Width = tileMapBorderWidthWithoutScrollBar * (int)size.Width / (int)MinWidth / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
+            TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
+            TileMapGrid.Height = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
+            TileMapBorder.Width = TileMapGrid.Width + tileMapScrollBarWidth;
+
+            SelectTileTextBox.Height = actualHeightTextAndButtons - 2;
+            SelectTileTextBox.FontSize = actualFontSize;
+            SelectTileButton.Height = actualHeightTextAndButtons - 2;
+            SelectTileButton.FontSize = actualFontSize;
+            AddTileButton.Height = actualHeightTextAndButtons - 2;
+            AddTileButton.FontSize = actualFontSize;
+            DeleteTileButton.Height = actualHeightTextAndButtons - 2;
+            DeleteTileButton.FontSize = actualFontSize;
+
+            DrawRedLine();
+        }
+
+        private void RectanglesGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
             PointerPoint pointControlPosition = e.GetCurrentPoint(RectanglesGrid);
 
@@ -70,6 +148,17 @@ namespace CollisionEditor2.Views
             {
                 RectanglesGrid_RightButton(gridPosition);
             }
+        }
+
+        private PixelPoint GetGridPosition(Point mousePosition)
+        {
+            var tileSize = WindowMain.TileSet.TileSize;
+
+            var position = new PixelPoint(
+                (int)mousePosition.X / ((int)TileGrid.Width / tileSize.Width),
+                (int)mousePosition.Y / ((int)TileGrid.Height / tileSize.Height));
+
+            return position;
         }
 
         private void RectanglesGrid_LeftButton(PixelPoint gridPosition)
@@ -111,14 +200,6 @@ namespace CollisionEditor2.Views
             {
                 WindowMain.UpdateAngles(blueAndGreenSquare.Item1.Position, blueAndGreenSquare.Item2.Position);
                 DrawRedLine();
-            }
-        }
-
-        internal void DrawRedLine()
-        {
-            if (WindowMain.AngleMap.Values.Count > 0)
-            {
-                RedLineService.DrawRedLine(WindowMain.window, ref redLine);
             }
         }
 
@@ -165,7 +246,7 @@ namespace CollisionEditor2.Views
                 + (int)mousePosition.Y / tileSize.Height * TileMapGrid.Columns;
         }
 
-        public void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        private void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
             if (WindowMain.TileSet.Tiles.Count <= 0 || 
                 !e.GetCurrentPoint(RectanglesGrid).Properties.IsLeftButtonPressed)
@@ -206,89 +287,6 @@ namespace CollisionEditor2.Views
                 canvasForLine.Children.Clear();
                 RectanglesGrid.Children.Clear();
             }
-        }
-
-        public void WindowSizeChanged(Size size)
-        {
-            int countOfTiles = WindowMain.TileSet.Tiles.Count;
-            PixelSize tileSize = WindowMain.TileSet.TileSize;
-
-            double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
-            double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
-            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (size.Width / countHeightParts * 43)) / 0.35 - 21);
-
-            double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
-
-            var TileGridSize = new Size(
-                (int)actualHeightGrid / tileSize.Width  * tileSize.Width, 
-                (int)actualHeightGrid / tileSize.Height * tileSize.Height);
-
-            TileGrid.Width  = TileGridSize.Width;
-            TileGrid.Height = TileGridSize.Height;
-
-            RectanglesGrid.Width  = TileGridSize.Width;
-            RectanglesGrid.Height = TileGridSize.Height;
-
-            canvasForLine.Width  = TileGridSize.Width;
-            canvasForLine.Height = TileGridSize.Height;
-
-            ModSwitchButton.Height = actualHeightTextAndButtons + 5;
-            ModSwitchButton.FontSize = actualFontSize;
-
-            Heights.Height   = actualHeightTextAndButtons;
-            Heights.FontSize = actualFontSize;
-
-            Widths.Height   = actualHeightTextAndButtons;
-            Widths.FontSize = actualFontSize;
-
-            TextBlockFullAngle.Height = actualHeightTextAndButtons - 2;
-            TextBlockFullAngle.FontSize = actualFontSize;
-            
-            TextBoxByteAngle.Height = actualHeightTextAndButtons - 2;
-            TextBoxByteAngle.FontSize = actualFontSize;
-
-            TextBoxHexAngle.Height = actualHeightTextAndButtons - 2;
-            TextBoxHexAngle.FontSize = actualFontSize;
-
-            ByteAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
-            ByteAngleIncrimentButton.Width  = actualWidthUpAndDownButtons;
-            ByteAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
-            ByteAngleDecrementButton.Width  = actualWidthUpAndDownButtons;
-
-            TriangleUpByteAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
-            TriangleUpByteAngle.Width    = actualWidthUpAndDownButtons / 2 - 5;
-            TriangleDownByteAngle.Height = actualHeightTextAndButtons  / 2 - 5;
-            TriangleDownByteAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
-
-            HexAngleIncrimentButton.Height = actualHeightTextAndButtons / 2;
-            HexAngleIncrimentButton.Width  = actualWidthUpAndDownButtons;
-            HexAngleDecrementButton.Height = actualHeightTextAndButtons / 2;
-            HexAngleDecrementButton.Width  = actualWidthUpAndDownButtons;
-
-            TriangleUpHexAngle.Height   = actualHeightTextAndButtons  / 2 - 5;
-            TriangleUpHexAngle.Width    = actualWidthUpAndDownButtons / 2 - 5;
-            TriangleDownHexAngle.Height = actualHeightTextAndButtons  / 2 - 5;
-            TriangleDownHexAngle.Width  = actualWidthUpAndDownButtons / 2 - 5;
-
-            int tileWidth  = tileSize.Width  * TileMapTileScale;
-            int tileHeight = tileSize.Height * TileMapTileScale;
-
-
-            TileMapGrid.Width   = tileMapBorderWidthWithoutScrollBar * (int)size.Width / (int)MinWidth / (tileWidth + tileMapSeparation) * (tileWidth + tileMapSeparation);
-            TileMapGrid.Columns = ((int)TileMapGrid.Width + tileMapSeparation) / (tileWidth + tileMapSeparation);
-            TileMapGrid.Height  = (int)Math.Ceiling((double)countOfTiles / TileMapGrid.Columns) * (tileHeight + tileMapSeparation);
-            TileMapBorder.Width = TileMapGrid.Width + tileMapScrollBarWidth;
-
-            SelectTileTextBox.Height   = actualHeightTextAndButtons - 2;
-            SelectTileTextBox.FontSize = actualFontSize;
-            SelectTileButton.Height    = actualHeightTextAndButtons - 2;
-            SelectTileButton.FontSize  = actualFontSize;
-            AddTileButton.Height       = actualHeightTextAndButtons - 2;
-            AddTileButton.FontSize     = actualFontSize;
-            DeleteTileButton.Height       = actualHeightTextAndButtons - 2;
-            DeleteTileButton.FontSize     = actualFontSize;
-
-            DrawRedLine();
         } 
     }
 }

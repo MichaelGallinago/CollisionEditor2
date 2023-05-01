@@ -18,9 +18,55 @@ namespace CollisionEditor2.ViewModels;
 
 public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 {
+    private int verticalSeparation;
+    private int horizontalSeparation;
+    private int verticalOffset;
+    private int horizontalOffset;
+    private int amountOfColumns = 8;
+
+    private byte redChannel1 = 0;
+    private byte greenChannel1 = 0;
+    private byte blueChannel1 = 0;
+    private byte alphaChannel1 = 255;
+    private int offsetInTiles1 = 0;
+
+    private byte redChannel2 = 255;
+    private byte greenChannel2 = 255;
+    private byte blueChannel2 = 255;
+    private byte alphaChannel2 = 255;
+    private int offsetInTiles2 = 0;
+
+    private byte redChannel3 = 255;
+    private byte greenChannel3 = 255;
+    private byte blueChannel3 = 0;
+    private byte alphaChannel3 = 255;
+    private int offsetInTiles3 = 0;
+
+    private SaveTileMap window;
+    private TileSet tileSet;
+    private SKBitmap? saveImage;
+
+    private readonly TextboxValidator textboxValidator;
+
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
     public ReactiveCommand<Unit, Unit> UpdateColorsCommand { get; }
+
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     
+    public SaveTileMapViewModel(SaveTileMap window, TileSet tileSet)
+    {
+        textboxValidator = new TextboxValidator();
+        textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
+
+        UpdateColorsCommand = ReactiveCommand.Create(UpdateColors);
+        SaveCommand = ReactiveCommand.Create(Save);
+
+        this.tileSet = tileSet;
+        this.window = window;
+
+        UpdateColors();
+    }
+
     public string VerticalSeparationText
     {
         get => verticalSeparation.ToString();
@@ -243,6 +289,13 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        return textboxValidator.GetErrors(propertyName);
+    }
+
+    public bool HasErrors => textboxValidator.HasErrors;
+
     private void ByteValidation(string value, string nameColorChannel, ref byte resultColorChannel)
     {
         textboxValidator.ClearErrors(nameColorChannel);
@@ -288,55 +341,6 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-
-    private int verticalSeparation;
-    private int horizontalSeparation;
-    private int verticalOffset;
-    private int horizontalOffset;
-    private int amountOfColumns = 8;
-
-    //0 0 0 255
-    //255 255 255 255
-    //255 255 0 255
-
-    private byte redChannel1    = 0;
-    private byte greenChannel1  = 0;
-    private byte blueChannel1   = 0;
-    private byte alphaChannel1  = 255;
-    private int  offsetInTiles1 = 0;
-
-    private byte redChannel2    = 255;
-    private byte greenChannel2  = 255;
-    private byte blueChannel2   = 255;
-    private byte alphaChannel2  = 255;
-    private int  offsetInTiles2 = 0;
-
-    private byte redChannel3    = 255;
-    private byte greenChannel3  = 255;
-    private byte blueChannel3   = 0;
-    private byte alphaChannel3  = 255;
-    private int  offsetInTiles3 = 0;
-
-    private readonly TextboxValidator textboxValidator;
-    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-    private SaveTileMap window;
-    private TileSet tileSet;
-    private SKBitmap ?saveImage;
-
-    public SaveTileMapViewModel(SaveTileMap window,TileSet tileSet)
-    {
-        textboxValidator = new TextboxValidator();
-        textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
-
-        UpdateColorsCommand = ReactiveCommand.Create(UpdateColors);
-        SaveCommand         = ReactiveCommand.Create(Save);
-
-        this.tileSet = tileSet;
-        this.window = window;
-
-        UpdateColors();
-    }
-
     private void UpdateColors()
     {
         OurColor[] ourColors = new OurColor[] { new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
@@ -362,29 +366,8 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         window.Close();
     }
 
-
-    public async void OurMessageBox(string message)
-    {
-        _ = await BoxedMessage.Create(new MessageBoxParams
-        {
-            Buttons = ButtonEnum.Ok,
-            ContentTitle = "Error",
-            ContentMessage = message,
-            Icon = new Avalonia.Media.Imaging.Bitmap("../../../../CollisionEditor2/Assets/avalonia-logo.ico"),
-            Location = WindowStartupLocation.CenterScreen,
-            CanResize = false,
-        }).ShowDialogAsync(window);
-    }
-
     private void TextboxValidator_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
     {
         ErrorsChanged?.Invoke(this, e);
     }
-
-    public IEnumerable GetErrors(string? propertyName)
-    {
-        return textboxValidator.GetErrors(propertyName);
-    }
-
-    public bool HasErrors => textboxValidator.HasErrors;
 }

@@ -16,7 +16,45 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     private const int minTileHeight = 4;
     private const int minTileWidth  = 4;
 
+    private int tileHeight = 16;
+    private int tileWidth = 16;
+    private int verticalSeparation;
+    private int horizontalSeparation;
+    private int verticalOffset;
+    private int horizontalOffset;
+
+    private string tileHeightString = "16";
+    private string tileWidthString = "16";
+    private string verticalSeparationString = "0";
+    private string horizontalSeparationString = "0";
+    private string verticalOffsetString = "0";
+    private string horizontalOffsetString = "0";
+
+    private OpenTileMap window;
+    private readonly PixelSize bitmapSize;
+
+    private readonly TextboxValidator textboxValidator;
+
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+    public OpenTileMapViewModel(OpenTileMap window, string filePath)
+    {
+        textboxValidator = new TextboxValidator();
+        textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
+        OpenCommand = ReactiveCommand.Create(Open);
+
+        this.window = window;
+
+        window.ImageFromFile.Source = ViewModelAssistant.OpenBitmap(filePath, out PixelSize bitmapSize);
+
+        window.ImageFromFileBorder.Height = bitmapSize.Height;
+        window.ImageFromFileBorder.Width = bitmapSize.Width;
+
+        this.bitmapSize = bitmapSize;
+    }
+
+
     public string TileHeightText
     {
         get => tileHeightString;
@@ -72,6 +110,13 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
             HorizontalSet();
         }
     }
+
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        return textboxValidator.GetErrors(propertyName);
+    }
+
+    public bool HasErrors => textboxValidator.HasErrors;
 
     private void VerticalSet()
     {
@@ -175,42 +220,6 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    private int tileHeight=16;
-    private int tileWidth =16;
-    private int verticalSeparation;
-    private int horizontalSeparation;
-    private int verticalOffset;
-    private int horizontalOffset;
-
-    private string tileHeightString           = "16";
-    private string tileWidthString            = "16";
-    private string verticalSeparationString   = "0";
-    private string horizontalSeparationString = "0";
-    private string verticalOffsetString       = "0";
-    private string horizontalOffsetString     = "0";
-
-    private readonly PixelSize bitmapSize;
-
-    private readonly TextboxValidator textboxValidator;
-    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-    public OpenTileMap window;
-
-    public OpenTileMapViewModel(OpenTileMap window, string filePath)
-    {
-        textboxValidator = new TextboxValidator();
-        textboxValidator.ErrorsChanged += TextboxValidator_ErrorsChanged;
-        OpenCommand = ReactiveCommand.Create(Open);
-
-        this.window = window;
-
-        window.ImageFromFile.Source = ViewModelAssistant.OpenBitmap(filePath, out PixelSize bitmapSize);
-        
-        window.ImageFromFileBorder.Height = bitmapSize.Height;
-        window.ImageFromFileBorder.Width = bitmapSize.Width;
-
-        this.bitmapSize = bitmapSize;
-    }
-
     private void Open()
     {
         window.IsOpened=true;
@@ -229,11 +238,4 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     {
         ErrorsChanged?.Invoke(this, e);
     }
-
-    public IEnumerable GetErrors(string? propertyName)
-    {
-        return textboxValidator.GetErrors(propertyName);
-    }
-
-    public bool HasErrors => textboxValidator.HasErrors;
 }
