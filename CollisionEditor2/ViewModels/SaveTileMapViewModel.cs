@@ -324,10 +324,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     private void CheckErrors()
-    {
-        
-        window.SaveButton.IsEnabled = textboxValidator.HasErrors;
-        window.UpdateColorsButton.IsEnabled = textboxValidator.HasErrors;   
+    {      
+        window.SaveButton.IsEnabled = !textboxValidator.HasErrors;
+        window.UpdateColorsButton.IsEnabled = !textboxValidator.HasErrors;   
     }
 
     private void UpdateColors()

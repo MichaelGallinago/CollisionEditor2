@@ -210,14 +210,7 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
 
     private void CheckErrors()
     {
-        if (textboxValidator.HasErrors)
-        {
-            window.OpenButton.IsEnabled = false;
-        }
-        else
-        {
-            window.OpenButton.IsEnabled = true;
-        }
+        window.OpenButton.IsEnabled = !textboxValidator.HasErrors; 
     }
 
     private void Open()
