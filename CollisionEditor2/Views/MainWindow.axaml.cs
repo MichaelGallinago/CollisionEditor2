@@ -47,7 +47,7 @@ namespace CollisionEditor2.Views
         {
             if (WindowMain.AngleMap.Values.Count > 0)
             {
-                RedLineService.DrawRedLine(WindowMain.window, ref redLine);
+                RedLineService.DrawRedLine(WindowMain.Window, ref redLine);
             }
         }
 
@@ -193,7 +193,7 @@ namespace CollisionEditor2.Views
                 return;
             }
 
-            SquaresService.MoveSquare(WindowMain.window, gridPosition, firstSquare, secondSquare);
+            SquaresService.MoveSquare(WindowMain.Window, gridPosition, firstSquare, secondSquare);
 
             if (RectanglesGrid.Children.Contains(firstSquare.Square) 
                 && RectanglesGrid.Children.Contains(secondSquare.Square))
