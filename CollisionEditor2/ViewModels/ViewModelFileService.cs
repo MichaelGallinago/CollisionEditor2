@@ -8,6 +8,7 @@ namespace CollisionEditor2.ViewModels;
 public static class ViewModelFileService
 {
     public enum Filters { TileMap, AngleMap, WidthMap, HeightMap }
+
     private readonly static Dictionary<Filters, FileDialogFilter> filters = new()
     {
         [Filters.TileMap]   = new FileDialogFilter() { Name = "Image Files(*.png)",  Extensions = { "png" } },
@@ -28,12 +29,7 @@ public static class ViewModelFileService
 
         string? filePath = await fileDialog.ShowAsync(mainWindow);
 
-        if (filePath is null)
-        {
-            return string.Empty;
-        }
-
-        return filePath;
+        return filePath is null ? string.Empty : filePath;
     }
 
     public static async Task<string> GetFileOpenPath(MainWindow mainWindow,Filters filterID)
@@ -53,11 +49,6 @@ public static class ViewModelFileService
 
         string[]? filePath = await fileDialog.ShowAsync(mainWindow);
 
-        if (filePath is null)
-        {
-            return string.Empty;
-        }
-
-        return string.Join("/", filePath);
+        return filePath is null ? string.Empty : string.Join("/", filePath);
     }
 }

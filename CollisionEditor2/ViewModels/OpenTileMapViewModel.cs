@@ -215,7 +215,7 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
 
     private void Open()
     {
-        window.IsOpened=true;
+        window.IsOpened = true;
 
         window.TileHeight = tileHeight;
         window.TileWidth = tileWidth;
