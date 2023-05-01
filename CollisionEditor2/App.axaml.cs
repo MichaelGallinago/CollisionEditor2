@@ -9,6 +9,7 @@ namespace CollisionEditor2
     public partial class App : Application
     {
         public MainViewModel? WindowMain { get; set; }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
