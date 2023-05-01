@@ -12,7 +12,7 @@ public static class RedLineService
 {
     public static void DrawRedLine(MainWindow mainWindow, ref Line redLine)
     {
-        var floatAngle = float.Parse(mainWindow.TextBlockFullAngle.Text.TrimEnd('°'));
+        float floatAngle = float.Parse(mainWindow.TextBlockFullAngle.Text.TrimEnd('°'));
 
         int size = (int)mainWindow.canvasForLine.Width / 2;
 
