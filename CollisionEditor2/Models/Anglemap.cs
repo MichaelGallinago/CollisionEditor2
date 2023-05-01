@@ -8,9 +8,9 @@ namespace CollisionEditor2.Models;
 
 public class AngleMap
 {
-    public List<byte> Values { get; private set; }
-
     private const double convertRadiansToByte = 128 / Math.PI;
+
+    public List<byte> Values { get; private set; }
 
     public AngleMap(string path)
     {
@@ -39,7 +39,7 @@ public class AngleMap
         }
     }
 
-    public byte SetAngleWithLine(int tileIndex, PixelPoint positionGreen, PixelPoint positionBlue)
+    public byte SetAngleFromLine(int tileIndex, PixelPoint positionGreen, PixelPoint positionBlue)
     {
         return Values[tileIndex] = (byte)(Math.Atan2(
             positionBlue.Y - positionGreen.Y, 

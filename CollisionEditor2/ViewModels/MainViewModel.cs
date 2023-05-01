@@ -601,7 +601,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        byte byteAngle = AngleMap.SetAngleWithLine(SelectedTile, positionGreen, positionBlue);
+        byte byteAngle = AngleMap.SetAngleFromLine(SelectedTile, positionGreen, positionBlue);
 
         ShowAngles(Angles.FromByte(byteAngle));
     }
