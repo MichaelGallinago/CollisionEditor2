@@ -16,19 +16,19 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     private const int minTileHeight = 4;
     private const int minTileWidth  = 4;
 
-    private int tileHeight = 16;
-    private int tileWidth = 16;
-    private int verticalSeparation;
     private int horizontalSeparation;
-    private int verticalOffset;
+    private int verticalSeparation;
     private int horizontalOffset;
+    private int verticalOffset;
+    private int tileWidth  = 16;
+    private int tileHeight = 16;
 
-    private string tileHeightString = "16";
-    private string tileWidthString = "16";
-    private string verticalSeparationString = "0";
     private string horizontalSeparationString = "0";
-    private string verticalOffsetString = "0";
+    private string verticalSeparationString   = "0";
     private string horizontalOffsetString = "0";
+    private string verticalOffsetString   = "0";
+    private string tileWidthString  = "16";
+    private string tileHeightString = "16";
 
     private OpenTileMap window;
     private readonly PixelSize bitmapSize;
@@ -49,11 +49,20 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
         window.ImageFromFile.Source = ViewModelAssistant.OpenBitmap(filePath, out PixelSize bitmapSize);
 
         window.ImageFromFileBorder.Height = bitmapSize.Height;
-        window.ImageFromFileBorder.Width = bitmapSize.Width;
+        window.ImageFromFileBorder.Width  = bitmapSize.Width;
 
         this.bitmapSize = bitmapSize;
     }
 
+    public string TileWidthText
+    {
+        get => tileWidthString;
+        set
+        {
+            tileWidthString = value;
+            HorizontalSet();
+        }
+    }
 
     public string TileHeightText
     {
@@ -64,15 +73,17 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
             VerticalSet();
         }
     }
-    public string TileWidthText
+
+    public string HorizontalSeparationText
     {
-        get => tileWidthString;
+        get => horizontalSeparationString;
         set
         {
-            tileWidthString = value;
+            horizontalSeparationString = value;
             HorizontalSet();
         }
     }
+
     public string VerticalSeparationText
     {
         get => verticalSeparationString;
@@ -82,12 +93,13 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
             VerticalSet();
         }
     }
-    public string HorizontalSeparationText
+
+    public string HorizontalOffsetText
     {
-        get => horizontalSeparationString;
+        get => horizontalOffsetString;
         set
-        {   
-            horizontalSeparationString = value;
+        {
+            horizontalOffsetString = value;
             HorizontalSet();
         }
     }
@@ -99,15 +111,6 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
         {
             verticalOffsetString = value;
             VerticalSet();
-        }
-    }
-    public string HorizontalOffsetText
-    {
-        get => horizontalOffsetString;
-        set
-        {
-            horizontalOffsetString = value;
-            HorizontalSet();
         }
     }
 
@@ -217,12 +220,12 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
     {
         window.IsOpened = true;
 
-        window.TileHeight = tileHeight;
-        window.TileWidth = tileWidth;
-        window.VerticalSeparation = verticalSeparation;
         window.HorizontalSeparation = horizontalSeparation;
-        window.VerticalOffset = verticalOffset;
+        window.VerticalSeparation   = verticalSeparation;
         window.HorizontalOffset = horizontalOffset;
+        window.VerticalOffset   = verticalOffset;
+        window.TileWidth  = tileWidth;
+        window.TileHeight = tileHeight;
         
         window.Close();
     }
