@@ -58,7 +58,7 @@ namespace CollisionEditor2.Views
 
             double actualHeightTextAndButtons = (size.Height - menuHeight) / countHeightParts * textAndButtonsHeight;
             double actualWidthUpAndDownButtons = size.Width / countWidthParts * upAndDownButtonsWidth;
-            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (size.Width / countHeightParts * 43)) / 0.35 - 21);
+            double actualFontSize = Math.Min((25.4 / 96 * actualHeightTextAndButtons) / 0.35 - 4, (25.4 / 96 * (size.Width / countWidthParts * 43)) / 0.35 - 21);
 
             double actualHeightGrid = (size.Height - menuHeight) / countHeightParts * gridHeight;
 
