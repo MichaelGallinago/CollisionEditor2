@@ -210,6 +210,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.TextBoxHexAngle.IsEnabled  = true;
 
         Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(84, 84, 84));
+        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Black);
         Window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
 
@@ -430,7 +431,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
 
         Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(176, 176, 176));
-        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromArgb(255, 177, 177, 177));
+        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
         Window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
 
