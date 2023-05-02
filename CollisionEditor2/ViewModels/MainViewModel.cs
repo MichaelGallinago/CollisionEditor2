@@ -521,7 +521,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
             Source = ViewModelAssistant.GetBitmapFromPixelArray(
                 ViewModelAssistant.GetPixelArrayFromTile(tile, new OurColor(0, 0, 0, 255)),
-                new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length))
+                new PixelSize(TileSet.Tiles[SelectedTile].Heights.Length, TileSet.Tiles[SelectedTile].Widths.Length))
         };
 
         var border = new Border()
