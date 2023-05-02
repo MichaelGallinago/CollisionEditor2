@@ -392,7 +392,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void MenuUnloadTileMap()
     {
-        TileSet = new TileSet(AngleMap.Values.Count);
+        TileSet = new TileSet(AngleMap.Values.Count, TileSet.Tiles[SelectedTile].Heights.Length, TileSet.Tiles[SelectedTile].Heights.Length);
+
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, Window);
