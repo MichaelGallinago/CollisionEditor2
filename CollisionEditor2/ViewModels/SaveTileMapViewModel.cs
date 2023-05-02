@@ -62,26 +62,6 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
         UpdateColors();
     }
-
-    public string VerticalSeparationText
-    {
-        get => verticalSeparation.ToString();
-        set
-        {
-            textboxValidator.ClearErrors(nameof(VerticalSeparationText));
-            CheckErrors();
-            bool isNumber = int.TryParse(value, out int intVerticalSeparation);
-
-            if (!isNumber || intVerticalSeparation < 0)
-            {
-                textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
-                CheckErrors();
-                return;
-            }
-
-            verticalSeparation = intVerticalSeparation;
-        }
-    }
     public string HorizontalSeparationText
     {
         get => horizontalSeparation.ToString();
@@ -101,24 +81,23 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
             horizontalSeparation = intHorizontalSeparation;
         }
     }
-
-    public string VerticalOffsetText
+    public string VerticalSeparationText
     {
-        get => verticalOffset.ToString();
+        get => verticalSeparation.ToString();
         set
         {
-            textboxValidator.ClearErrors(nameof(VerticalOffsetText));
+            textboxValidator.ClearErrors(nameof(VerticalSeparationText));
             CheckErrors();
-            bool isNumber = int.TryParse(value, out int intVerticalOffset);
+            bool isNumber = int.TryParse(value, out int intVerticalSeparation);
 
-            if (!isNumber || intVerticalOffset < 0)
+            if (!isNumber || intVerticalSeparation < 0)
             {
-                textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
+                textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
                 CheckErrors();
                 return;
             }
 
-            verticalOffset = intVerticalOffset;
+            verticalSeparation = intVerticalSeparation;
         }
     }
     public string HorizontalOffsetText
@@ -138,6 +117,25 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
             }
 
             horizontalOffset = intHorizontalOffset;
+        }
+    }
+    public string VerticalOffsetText
+    {
+        get => verticalOffset.ToString();
+        set
+        {
+            textboxValidator.ClearErrors(nameof(VerticalOffsetText));
+            CheckErrors();
+            bool isNumber = int.TryParse(value, out int intVerticalOffset);
+
+            if (!isNumber || intVerticalOffset < 0)
+            {
+                textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
+                CheckErrors();
+                return;
+            }
+
+            verticalOffset = intVerticalOffset;
         }
     }
 
