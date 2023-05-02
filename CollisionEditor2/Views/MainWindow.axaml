@@ -70,9 +70,9 @@
 			<MenuItem Header="File">
 				<MenuItem Header="Load" >
 					<!--InputGestureText="Ctrl+D"-->
-					<MenuItem Header="TileMap"  Command="{Binding MenuOpenTileMapCommand}"  HotKey="Ctrl+D"/>
+					<MenuItem Header="TileMap    Ctrl+D"  Command="{Binding MenuOpenTileMapCommand}"  HotKey="Ctrl+D"/>
 					<!--InputGestureText="Ctrl+W"-->
-					<MenuItem Header="AngleMap" Command="{Binding MenuOpenAngleMapCommand}" HotKey="Ctrl+W"/>
+					<MenuItem Header="AngleMap   Ctrl+W" Command="{Binding MenuOpenAngleMapCommand}" HotKey="Ctrl+W"/>
 				</MenuItem>
 
 				<MenuItem Header="Unload">
@@ -81,7 +81,7 @@
 				</MenuItem>
 
 				<!--InputGestureText="Ctrl+A"-->
-				<MenuItem Header="Unload All" HorizontalAlignment="Right" Command="{Binding MenuUnloadAllCommand}" HotKey="Ctrl+A"/>
+				<MenuItem Header="Unload All     Ctrl+A" HorizontalAlignment="Right" Command="{Binding MenuUnloadAllCommand}" HotKey="Ctrl+A"/>
 
 				<MenuItem Header="Save">
 					<MenuItem Header="AngleMap"  Command="{Binding MenuSaveAngleMapCommand}"/>
@@ -91,9 +91,9 @@
 				</MenuItem>
 
 				<!--InputGestureText="Ctrl+S"-->
-				<MenuItem Header="Save All" Command="{Binding MenuSaveAllCommand}" HotKey="Ctrl+S"/>
+				<MenuItem Header="Save All       Ctrl+S" Command="{Binding MenuSaveAllCommand}" HotKey="Ctrl+S"/>
 				<!--InputGestureText="Alt+F4"-->
-				<MenuItem Header="Exit"     Command="{Binding ExitAppCommand}"/>
+				<MenuItem Header="Exit           Alt+F4"     Command="{Binding ExitAppCommand}"/>
 
 			</MenuItem>
 			<MenuItem Header="Help" >

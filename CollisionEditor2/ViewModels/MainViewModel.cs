@@ -383,7 +383,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     private void MenuSaveAll()
-    {
+    {   
         MenuSaveAngleMap();
         MenuSaveHeightMap();
         MenuSaveWidthMap();
