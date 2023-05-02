@@ -19,14 +19,14 @@
             <RowDefinition Height="20"  />
             <RowDefinition Height="5*"  />
             <RowDefinition Height="5*"  />
-            <RowDefinition Height="64*" />
+            <RowDefinition Height="44*" />
             <RowDefinition Height="149*"/>
             <RowDefinition Height="29*" />
             <RowDefinition Height="4*"  />
             <RowDefinition Height="8*"  />
-            <RowDefinition Height="20*" />
+            <RowDefinition Height="30*" />
             <RowDefinition Height="4*"  />
-            <RowDefinition Height="20*" />
+            <RowDefinition Height="30*" />
             <RowDefinition Height="5*"  />
             <RowDefinition Height="6*"  />
             <RowDefinition Height="5*"  />
@@ -107,10 +107,15 @@
 		<Canvas Grid.Column="1" Grid.Row="4"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="12" IsHitTestVisible="False"/>
 
 		<Border Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="8" Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
-			<TextBlock x:Name="Heights" TextWrapping="Wrap" HorizontalAlignment="Center" Padding="2,4,0,0"/>
+			<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" >
+				<TextBlock x:Name="Heights" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="2,2,0,0"/>
+			</ScrollViewer>
 		</Border>
+		
 		<Border Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="8" Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
-			<TextBlock x:Name="Widths" TextWrapping="Wrap" HorizontalAlignment="Center" Padding="2,4,0,0"/>
+			<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" >
+				<TextBlock x:Name="Widths"  TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="2,2,0,0"/>
+			</ScrollViewer>
 		</Border>
 		
 		<TextBox Grid.Column="4" Grid.Row="14" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngleText,Mode=TwoWay}" 
