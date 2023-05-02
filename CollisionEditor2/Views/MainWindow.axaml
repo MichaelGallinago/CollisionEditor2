@@ -154,9 +154,7 @@
 
 		<Button  Grid.Column="16" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton" Padding="2,0,5,0"
                  IsEnabled="False" MinHeight="20" Command="{Binding SelectTileCommand}" BorderThickness="1" BorderBrush="Silver"
-                 CornerRadius="3,3,3,3">
-				<TextBlock TextWrapping="Wrap" Text="Select Tile" />
-		</Button> 
+                 CornerRadius="3,3,3,3" Content="Select"/>
 		
 		<Button  Grid.Column="17" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="AddTileButton" Padding="2,0,3,0"
 				  IsEnabled="False" MinHeight="20" Content="Add" Command="{Binding AddTileCommand}" BorderThickness="1" BorderBrush="Silver"
