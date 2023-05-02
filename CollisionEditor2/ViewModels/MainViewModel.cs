@@ -7,10 +7,10 @@ using MessageBoxSlim.Avalonia.DTO;
 using MessageBoxSlim.Avalonia;
 using System.ComponentModel;
 using System.Collections;
-using System.IO;
-using System;
 using System.Diagnostics;
 using System.Reactive;
+using System.IO;
+using System;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia;
@@ -392,7 +392,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void MenuUnloadTileMap()
     {
-        TileSet = new TileSet(AngleMap.Values.Count, TileSet.Tiles[SelectedTile].Heights.Length, TileSet.Tiles[SelectedTile].Heights.Length);
+        var tile = TileSet.Tiles[SelectedTile];
+        TileSet = new TileSet(AngleMap.Values.Count, tile.Heights.Length, tile.Widths.Length);
 
         TileMapGridReset();
 
