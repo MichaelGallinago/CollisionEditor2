@@ -140,7 +140,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                     "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
                 return;
             }
-            else if (!int.TryParse(value[Angles.HexAnglePrefixLength..], 
+            
+            if (!int.TryParse(value[Angles.HexAnglePrefixLength..], 
                 System.Globalization.NumberStyles.HexNumber, null, out _))
             {
                 textboxValidator.AddError(nameof(HexAngleText), 
@@ -324,7 +325,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        if (saveTileMap.ResultSaveImage==null)
+        if (saveTileMap.ResultSaveImage == null)
         {
             OurMessageBox("Your Image is NULL!");
             return;
@@ -356,7 +357,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         if (TileSet.Tiles.Count <= 0)
         {
-            
             OurMessageBox("Error: The HeightMap isn't generated!");
             return;
         }
@@ -519,8 +519,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             Width  = TileSet.TileSize.Width  * MainWindow.TileMapTileScale,
             Height = TileSet.TileSize.Height * MainWindow.TileMapTileScale,
-            Source = ViewModelAssistant.GetBitmapFromPixelArray(ViewModelAssistant.GetPixelArrayFromTile(tile, new OurColor(0, 0, 0, 255)),
-                                                   new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length))
+            Source = ViewModelAssistant.GetBitmapFromPixelArray(
+                ViewModelAssistant.GetPixelArrayFromTile(tile, new OurColor(0, 0, 0, 255)),
+                new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length))
         };
 
         var border = new Border()
@@ -652,9 +653,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
                         y == 0 ? tileGridBorderThickness : 0d, 
                         tileGridBorderThickness, 
                         tileGridBorderThickness),
-
-                    Background = new SolidColorBrush(tile.Pixels[y * size.Width + x] ? Colors.Black : Colors.Transparent),
-                    BorderBrush = new SolidColorBrush(Colors.Gray),
+                    Background  = new SolidColorBrush(
+                        tile.Pixels[y * size.Width + x] ? Colors.Black : Colors.Transparent),
+                    BorderBrush = new SolidColorBrush(Colors.Gray)
                 };
 
                 window.TileGrid.Children.Add(Border);
@@ -668,7 +669,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileGridUpdate(TileSet, SelectedTile, Window);
 
         Window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        Window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         Border newTile = GetTile(SelectedTile);
         newTile.BorderBrush = new SolidColorBrush(Colors.Red);
