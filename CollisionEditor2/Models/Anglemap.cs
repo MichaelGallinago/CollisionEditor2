@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System;
 using Avalonia;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace CollisionEditor2.Models;
 
@@ -42,8 +42,8 @@ public class AngleMap
     public byte SetAngleFromLine(int tileIndex, PixelPoint positionGreen, PixelPoint positionBlue)
     {
         return Values[tileIndex] = (byte)(Math.Atan2(
-            positionBlue.Y - positionGreen.Y, 
-            positionBlue.X - positionGreen.X) 
+            positionBlue.Y - positionGreen.Y,
+            positionBlue.X - positionGreen.X)
             * convertRadiansToByte);
     }
 

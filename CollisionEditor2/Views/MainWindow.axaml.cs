@@ -1,13 +1,13 @@
-using CollisionEditor2.ViewModels;
-using Avalonia.Controls.Shapes;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia;
-using System.Threading.Tasks;
-using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 using CollisionEditor2.Models.ForAvalonia;
+using CollisionEditor2.ViewModels;
+using System;
+using System.Threading.Tasks;
 
 namespace CollisionEditor2.Views
 {
@@ -186,7 +186,7 @@ namespace CollisionEditor2.Views
             RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
         }
 
-        private void RectanglesGridUpdate(PixelPoint gridPosition, 
+        private void RectanglesGridUpdate(PixelPoint gridPosition,
             SquareAndPosition firstSquare, SquareAndPosition secondSquare)
         {
             if (WindowMain.AngleMap.Values.Count <= 0)
@@ -196,7 +196,7 @@ namespace CollisionEditor2.Views
 
             SquaresUtilities.MoveSquare(WindowMain.Window, gridPosition, firstSquare, secondSquare);
 
-            if (RectanglesGrid.Children.Contains(firstSquare.Square) 
+            if (RectanglesGrid.Children.Contains(firstSquare.Square)
                 && RectanglesGrid.Children.Contains(secondSquare.Square))
             {
                 WindowMain.UpdateAngles(blueAndGreenSquare.Item1.Position, blueAndGreenSquare.Item2.Position);
@@ -240,16 +240,16 @@ namespace CollisionEditor2.Views
         private int GetUniformGridIndex(Point mousePosition)
         {
             var tileSize = new PixelSize(
-                WindowMain.TileSet.TileSize.Width * TileMapTileScale + tileMapSeparation, 
+                WindowMain.TileSet.TileSize.Width * TileMapTileScale + tileMapSeparation,
                 WindowMain.TileSet.TileSize.Height * TileMapTileScale + tileMapSeparation);
-            
-            return (int)mousePosition.X / tileSize.Width 
+
+            return (int)mousePosition.X / tileSize.Width
                 + (int)mousePosition.Y / tileSize.Height * TileMapGrid.Columns;
         }
 
         private void TileMapGrid_OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            if (WindowMain.TileSet.Tiles.Count <= 0 || 
+            if (WindowMain.TileSet.Tiles.Count <= 0 ||
                 !e.GetCurrentPoint(RectanglesGrid).Properties.IsLeftButtonPressed)
             {
                 return;
@@ -287,6 +287,6 @@ namespace CollisionEditor2.Views
 
             canvasForLine.Children.Clear();
             RectanglesGrid.Children.Clear();
-        } 
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Avalonia.Controls.Shapes;
+﻿using Avalonia;
+using Avalonia.Controls.Shapes;
 using Avalonia.Media;
-using Avalonia;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 

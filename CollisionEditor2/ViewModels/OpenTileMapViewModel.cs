@@ -1,32 +1,32 @@
-﻿using CollisionEditor2.Models.ForAvalonia;
+﻿using Avalonia;
+using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.Views;
-using System.ComponentModel;
-using System.Collections;
-using System.Reactive;
-using System;
 using ReactiveUI;
-using Avalonia;
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Reactive;
 
 namespace CollisionEditor2.ViewModels;
 
-public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
+public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 {
     //Glory to RuChat!!!!!
     private const int minTileHeight = 4;
-    private const int minTileWidth  = 4;
+    private const int minTileWidth = 4;
 
     private int horizontalSeparation;
     private int verticalSeparation;
     private int horizontalOffset;
     private int verticalOffset;
-    private int tileWidth  = 16;
+    private int tileWidth = 16;
     private int tileHeight = 16;
 
     private string horizontalSeparationString = "0";
-    private string verticalSeparationString   = "0";
+    private string verticalSeparationString = "0";
     private string horizontalOffsetString = "0";
-    private string verticalOffsetString   = "0";
-    private string tileWidthString  = "16";
+    private string verticalOffsetString = "0";
+    private string tileWidthString = "16";
     private string tileHeightString = "16";
 
     private OpenTileMap window;
@@ -48,7 +48,7 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
         window.ImageFromFile.Source = ViewModelAssistant.OpenBitmap(filePath, out PixelSize bitmapSize);
 
         window.ImageFromFileBorder.Height = bitmapSize.Height;
-        window.ImageFromFileBorder.Width  = bitmapSize.Width;
+        window.ImageFromFileBorder.Width = bitmapSize.Width;
 
         this.bitmapSize = bitmapSize;
     }
@@ -212,7 +212,7 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
 
     private void CheckErrors()
     {
-        window.OpenButton.IsEnabled = !textboxValidator.HasErrors; 
+        window.OpenButton.IsEnabled = !textboxValidator.HasErrors;
     }
 
     private void Open()
@@ -220,12 +220,12 @@ public class OpenTileMapViewModel: ViewModelBase, INotifyDataErrorInfo
         window.IsOpened = true;
 
         window.HorizontalSeparation = horizontalSeparation;
-        window.VerticalSeparation   = verticalSeparation;
+        window.VerticalSeparation = verticalSeparation;
         window.HorizontalOffset = horizontalOffset;
-        window.VerticalOffset   = verticalOffset;
-        window.TileWidth  = tileWidth;
+        window.VerticalOffset = verticalOffset;
+        window.TileWidth = tileWidth;
         window.TileHeight = tileHeight;
-        
+
         window.Close();
     }
 

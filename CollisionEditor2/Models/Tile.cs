@@ -30,7 +30,7 @@ public class Tile
 
             pixels = value;
             Heights = new byte[Heights.Length];
-            Widths  = new byte[Widths.Length];
+            Widths = new byte[Widths.Length];
 
             for (int x = Heights.Length - 1; x >= 0; x--)
             {

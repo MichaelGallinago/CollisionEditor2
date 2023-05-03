@@ -1,6 +1,6 @@
-﻿using CollisionEditor2.Views;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia;
+using CollisionEditor2.Views;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 

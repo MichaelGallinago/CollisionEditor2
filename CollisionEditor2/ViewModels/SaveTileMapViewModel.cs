@@ -1,13 +1,13 @@
-﻿using CollisionEditor2.Views;
-using System.ComponentModel;
-using System.Collections;
-using System.Reactive;
-using System;
-using ReactiveUI;
-using Avalonia;
-using CollisionEditor2.Models.ForAvalonia;
+﻿using Avalonia;
 using CollisionEditor2.Models;
+using CollisionEditor2.Models.ForAvalonia;
+using CollisionEditor2.Views;
+using ReactiveUI;
 using SkiaSharp;
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Reactive;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -47,7 +47,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     public ReactiveCommand<Unit, Unit> UpdateColorsCommand { get; }
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-    
+
     public SaveTileMapViewModel(SaveTileMap window, TileSet tileSet)
     {
         textboxValidator = new TextboxValidator();
@@ -163,7 +163,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         get => redChannel1.ToString();
         set
         {
-            ByteValidation(value, nameof(RedChannel1Text),ref redChannel1);   
+            ByteValidation(value, nameof(RedChannel1Text), ref redChannel1);
         }
     }
     public string GreenChannel1Text
@@ -321,9 +321,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     private void CheckErrors()
-    {      
+    {
         window.SaveButton.IsEnabled = !textboxValidator.HasErrors;
-        window.UpdateColorsButton.IsEnabled = !textboxValidator.HasErrors;   
+        window.UpdateColorsButton.IsEnabled = !textboxValidator.HasErrors;
     }
 
     private void UpdateColors()
@@ -345,11 +345,11 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
             new PixelSize(saveImage.Width, saveImage.Height));
 
         window.SaveImageBorder.Height = saveImage.Height;
-        window.SaveImageBorder.Width= saveImage.Width;
+        window.SaveImageBorder.Width = saveImage.Width;
     }
 
     private void Save()
-    {   
+    {
         window.IsSaved = true;
         window.ResultSaveImage = saveImage;
 

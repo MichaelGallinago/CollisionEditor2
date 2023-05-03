@@ -1,9 +1,8 @@
-using CollisionEditor2.Views;
-using Avalonia.Controls.Shapes;
-using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia;
-
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Media;
+using CollisionEditor2.Views;
 using static System.Math;
 
 namespace CollisionEditor2.Models.ForAvalonia;

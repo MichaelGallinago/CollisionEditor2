@@ -1,11 +1,11 @@
-using CollisionEditor2.ViewModels;
-using CollisionEditor2.Views;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia;
+using CollisionEditor2.ViewModels;
+using CollisionEditor2.Views;
 
 namespace CollisionEditor2
-{   
+{
     public partial class App : Application
     {
         public MainViewModel? WindowMain { get; set; }

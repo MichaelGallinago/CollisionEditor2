@@ -1,5 +1,5 @@
-﻿using Avalonia.ReactiveUI;
-using Avalonia;
+﻿using Avalonia;
+using Avalonia.ReactiveUI;
 using System;
 
 namespace CollisionEditor2;

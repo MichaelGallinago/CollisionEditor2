@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System;
+﻿using Avalonia;
 using SkiaSharp;
-using Avalonia;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CollisionEditor2.Models;
 
@@ -36,14 +36,14 @@ public class TileSet
         }
     }
 
-    public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor, 
+    public SKBitmap DrawTileMap(int columnCount, OurColor[] groupColor,
         int[] groupOffset, PixelSize separation, PixelSize offset)
     {
         var cell = new PixelSize(
-            TileSize.Width + separation.Width, 
+            TileSize.Width + separation.Width,
             TileSize.Height + separation.Height);
 
-        int rowCount = (int)Math.Ceiling((Tiles.Count * groupOffset.Length 
+        int rowCount = (int)Math.Ceiling((Tiles.Count * groupOffset.Length
             + groupOffset.Sum()) / (double)columnCount);
 
         var tileMapSize = new PixelSize(
@@ -51,7 +51,7 @@ public class TileSet
             offset.Height + rowCount * cell.Height - separation.Height);
 
         var tileMap = new SKBitmap(
-            tileMapSize.Width, tileMapSize.Height, 
+            tileMapSize.Width, tileMapSize.Height,
             SKColorType.Rgba8888, SKAlphaType.Premul);
         byte[,,] bitmapArray = BitmapConvertor.GetBitmapArrayFromSKBitmap(tileMap);
 
@@ -64,7 +64,7 @@ public class TileSet
         {
             foreach (Tile tile in Tiles)
             {
-                DrawTile(ref bitmapArray, tile.Pixels, groupColor[group], 
+                DrawTile(ref bitmapArray, tile.Pixels, groupColor[group],
                     separation, offset, columnCount, ref position);
             }
 
