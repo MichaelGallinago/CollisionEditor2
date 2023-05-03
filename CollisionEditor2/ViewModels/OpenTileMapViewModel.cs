@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.Views;
+using CollisionEditor2.ViewUtilities;
 using ReactiveUI;
 using System;
 using System.Collections;
