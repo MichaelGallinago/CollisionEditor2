@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace CollisionEditor2.Models.ForAvalonia;
+namespace CollisionEditor2.ViewUtilities;
 
 public class TextboxValidator : INotifyDataErrorInfo
 {

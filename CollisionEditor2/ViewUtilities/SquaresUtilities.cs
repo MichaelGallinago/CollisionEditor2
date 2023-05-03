@@ -1,8 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.Views;
 
-namespace CollisionEditor2.Models.ForAvalonia;
+namespace CollisionEditor2.ViewUtilities;
 
 public static class SquaresUtilities
 {

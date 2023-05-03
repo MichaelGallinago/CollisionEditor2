@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using CollisionEditor2.Models.ForAvalonia;
 using CollisionEditor2.ViewModels;
+using CollisionEditor2.ViewUtilities;
 using System;
 using System.Threading.Tasks;
 

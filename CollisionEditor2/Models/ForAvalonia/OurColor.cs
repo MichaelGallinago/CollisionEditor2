@@ -1,4 +1,4 @@
-﻿namespace CollisionEditor2.Models;
+﻿namespace CollisionEditor2.Models.ForAvalonia;
 
 // Color in RGBA format
 public struct OurColor

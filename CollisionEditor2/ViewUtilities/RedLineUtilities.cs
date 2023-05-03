@@ -5,7 +5,7 @@ using Avalonia.Media;
 using CollisionEditor2.Views;
 using static System.Math;
 
-namespace CollisionEditor2.Models.ForAvalonia;
+namespace CollisionEditor2.ViewUtilities;
 
 public static class RedLineUtilities
 {
