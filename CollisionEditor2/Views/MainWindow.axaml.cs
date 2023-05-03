@@ -1,4 +1,3 @@
-using CollisionEditor2.ViewServices;
 using CollisionEditor2.ViewModels;
 using Avalonia.Controls.Shapes;
 using Avalonia.Controls;
@@ -8,6 +7,7 @@ using Avalonia.Media;
 using Avalonia;
 using System.Threading.Tasks;
 using System;
+using CollisionEditor2.Models.ForAvalonia;
 
 namespace CollisionEditor2.Views
 {
@@ -27,8 +27,11 @@ namespace CollisionEditor2.Views
 
         private bool isTileEditorMode = false;
         private bool isPointerInRectanglesGrid = false;
-        private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare = (new SquareAndPosition(Color.FromRgb(0, 0, 255)), new SquareAndPosition(Color.FromRgb(0, 255, 0)));
         private Line redLine = new();
+
+        private (SquareAndPosition, SquareAndPosition) blueAndGreenSquare =
+            (new SquareAndPosition(Color.FromRgb(0, 0, 255)),
+            new SquareAndPosition(Color.FromRgb(0, 255, 0)));
 
         public int LastSelectedTile { get; set; }
         public MainViewModel WindowMain { get; }
@@ -47,7 +50,7 @@ namespace CollisionEditor2.Views
         {
             if (WindowMain.AngleMap.Values.Count > 0)
             {
-                RedLineService.DrawRedLine(WindowMain.Window, ref redLine);
+                RedLineUtilities.DrawRedLine(WindowMain.Window, ref redLine);
             }
         }
 
@@ -166,11 +169,10 @@ namespace CollisionEditor2.Views
             if (isTileEditorMode)
             {
                 WindowMain.EditTile(gridPosition, true);
+                return;
             }
-            else
-            {
-                RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
-            }
+
+            RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item1, blueAndGreenSquare.Item2);
         }
 
         private void RectanglesGrid_RightButton(PixelPoint gridPosition)
@@ -178,11 +180,10 @@ namespace CollisionEditor2.Views
             if (isTileEditorMode)
             {
                 WindowMain.EditTile(gridPosition, false);
+                return;
             }
-            else
-            {
-                RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
-            }
+
+            RectanglesGridUpdate(gridPosition, blueAndGreenSquare.Item2, blueAndGreenSquare.Item1);
         }
 
         private void RectanglesGridUpdate(PixelPoint gridPosition, 
@@ -193,7 +194,7 @@ namespace CollisionEditor2.Views
                 return;
             }
 
-            SquaresService.MoveSquare(WindowMain.Window, gridPosition, firstSquare, secondSquare);
+            SquaresUtilities.MoveSquare(WindowMain.Window, gridPosition, firstSquare, secondSquare);
 
             if (RectanglesGrid.Children.Contains(firstSquare.Square) 
                 && RectanglesGrid.Children.Contains(secondSquare.Square))
@@ -278,15 +279,14 @@ namespace CollisionEditor2.Views
                 isTileEditorMode = false;
                 ModSwitchButton.Content = "Angle mode";
                 DrawRedLine();
+                return;
             }
-            else
-            {
-                isTileEditorMode = true;
-                ModSwitchButton.Content = "Editor mode";
 
-                canvasForLine.Children.Clear();
-                RectanglesGrid.Children.Clear();
-            }
+            isTileEditorMode = true;
+            ModSwitchButton.Content = "Editor mode";
+
+            canvasForLine.Children.Clear();
+            RectanglesGrid.Children.Clear();
         } 
     }
 }

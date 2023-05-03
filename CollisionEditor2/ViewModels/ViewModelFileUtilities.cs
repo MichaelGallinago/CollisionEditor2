@@ -5,7 +5,7 @@ using Avalonia.Controls;
 
 namespace CollisionEditor2.ViewModels;
 
-public static class ViewModelFileService
+public static class ViewModelFileUtilities
 {
     public enum Filters { TileMap, AngleMap, WidthMap, HeightMap }
 

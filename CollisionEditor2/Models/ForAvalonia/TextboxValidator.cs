@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using System;
 
-namespace CollisionEditor2.ViewServices;
+namespace CollisionEditor2.Models.ForAvalonia;
 
 public class TextboxValidator : INotifyDataErrorInfo
 {
@@ -21,7 +21,7 @@ public class TextboxValidator : INotifyDataErrorInfo
         }
 
         List<string>? errors = propertyErrors.GetValueOrDefault(propertyName, null);
-        return errors is null ? new List<string>() : errors;
+        return errors ?? Enumerable.Empty<string>();
     }
 
     public void AddError(string propertyName, string errorMessage)

@@ -1,5 +1,4 @@
 ﻿using CollisionEditor2.Models.ForAvalonia;
-using CollisionEditor2.ViewServices;
 using CollisionEditor2.Models;
 using CollisionEditor2.Views;
 using MessageBoxSlim.Avalonia.Enums;
@@ -178,7 +177,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuOpenAngleMap()
     {
-        string filePath = await ViewModelFileService.GetFileOpenPath(Window,ViewModelFileService.Filters.AngleMap);
+        string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window,ViewModelFileUtilities.Filters.AngleMap);
         if (filePath == string.Empty)
         {
             return;
@@ -232,7 +231,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuOpenTileMap()
     {
-        string filePath = await ViewModelFileService.GetFileOpenPath(Window, ViewModelFileService.Filters.TileMap);
+        string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.TileMap);
         if (filePath == string.Empty) 
         { 
             return; 
@@ -263,8 +262,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileGridUpdate(TileSet, SelectedTile, Window);
         RectanglesGridUpdate();
             
-        Window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text  = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
             
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
@@ -331,10 +330,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = await ViewModelFileService.GetFileSavePath(Window, ViewModelFileService.Filters.TileMap);
+        string filePath = await ViewModelFileUtilities.GetFileSavePath(Window, ViewModelFileUtilities.Filters.TileMap);
         if (filePath != string.Empty)
         {
-            TileService.SaveTileMap(Path.GetFullPath(filePath), saveTileMap.ResultSaveImage);
+            TileUtilities.SaveTileMap(Path.GetFullPath(filePath), saveTileMap.ResultSaveImage);
         }
     }
 
@@ -346,10 +345,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = await ViewModelFileService.GetFileSavePath(Window, ViewModelFileService.Filters.WidthMap);
+        string filePath = await ViewModelFileUtilities.GetFileSavePath(Window, ViewModelFileUtilities.Filters.WidthMap);
         if (filePath != string.Empty)
         {
-            TileService.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,true);
+            TileUtilities.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,true);
         }
     }
 
@@ -361,10 +360,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = await ViewModelFileService.GetFileSavePath(Window, ViewModelFileService.Filters.HeightMap);
+        string filePath = await ViewModelFileUtilities.GetFileSavePath(Window, ViewModelFileUtilities.Filters.HeightMap);
         if (filePath != string.Empty)
         {
-            TileService.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,false);
+            TileUtilities.SaveCollisionMap(Path.GetFullPath(filePath), TileSet.Tiles,false);
         }
     }
 
@@ -376,7 +375,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        string filePath = await ViewModelFileService.GetFileSavePath(Window, ViewModelFileService.Filters.AngleMap);
+        string filePath = await ViewModelFileUtilities.GetFileSavePath(Window, ViewModelFileUtilities.Filters.AngleMap);
         if (filePath != string.Empty)
         {
             AngleMap.Save(Path.GetFullPath(filePath));
@@ -399,8 +398,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text  = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
     }
@@ -489,8 +488,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.LastSelectedTile = SelectedTile;
 
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text  = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
         
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
@@ -502,8 +501,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         OnPropertyChanged(nameof(SelectedTileText));
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text  = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
@@ -668,8 +667,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, Window);
 
-        Window.Heights.Text = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text  = TileService.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text  = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
 
         Border newTile = GetTile(SelectedTile);
         newTile.BorderBrush = new SolidColorBrush(Colors.Red);

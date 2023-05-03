@@ -2,7 +2,7 @@
 using Avalonia.Media;
 using Avalonia;
 
-namespace CollisionEditor2.ViewServices;
+namespace CollisionEditor2.Models.ForAvalonia;
 
 public class SquareAndPosition
 {

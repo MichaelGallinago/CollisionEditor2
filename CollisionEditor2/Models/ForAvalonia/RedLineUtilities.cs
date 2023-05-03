@@ -6,9 +6,9 @@ using Avalonia;
 
 using static System.Math;
 
-namespace CollisionEditor2.ViewServices;
+namespace CollisionEditor2.Models.ForAvalonia;
 
-public static class RedLineService
+public static class RedLineUtilities
 {
     public static void DrawRedLine(MainWindow mainWindow, ref Line redLine)
     {
@@ -22,16 +22,16 @@ public static class RedLineService
         floatAngle += 90;
 
         var lineEdgePosition = new Point(
-            length * Sin(floatAngle * degreeToRadian), 
+            length * Sin(floatAngle * degreeToRadian),
             length * Cos(floatAngle * degreeToRadian));
 
         redLine = new()
         {
-            StartPoint =  lineEdgePosition,
-            EndPoint   = -lineEdgePosition,
+            StartPoint = lineEdgePosition,
+            EndPoint = -lineEdgePosition,
         };
 
-        Canvas.SetTop(redLine,  size);
+        Canvas.SetTop(redLine, size);
         Canvas.SetLeft(redLine, size);
 
         redLine.Stroke = new SolidColorBrush(Colors.Red);

@@ -2,15 +2,15 @@
 using Avalonia.Controls;
 using Avalonia;
 
-namespace CollisionEditor2.ViewServices;
+namespace CollisionEditor2.Models.ForAvalonia;
 
-public static class SquaresService
+public static class SquaresUtilities
 {
-    public static void MoveSquare(MainWindow mainWindow, PixelPoint position, 
+    public static void MoveSquare(MainWindow mainWindow, PixelPoint position,
         SquareAndPosition firstSquare, SquareAndPosition secondSquare)
     {
         firstSquare.Square.SetValue(Grid.ColumnProperty, position.X);
-        firstSquare.Square.SetValue(Grid.RowProperty,    position.Y);
+        firstSquare.Square.SetValue(Grid.RowProperty, position.Y);
 
         bool isFirstExists = mainWindow.RectanglesGrid.Children.Contains(firstSquare.Square);
 

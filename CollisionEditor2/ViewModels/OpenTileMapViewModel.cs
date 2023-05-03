@@ -1,5 +1,4 @@
 ﻿using CollisionEditor2.Models.ForAvalonia;
-using CollisionEditor2.ViewServices;
 using CollisionEditor2.Views;
 using System.ComponentModel;
 using System.Collections;

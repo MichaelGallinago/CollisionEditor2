@@ -5,7 +5,7 @@ using SkiaSharp;
 
 namespace CollisionEditor2.Models.ForAvalonia;
 
-public class TileService
+public static class TileUtilities
 {
     private const byte digitsNumber = 10;
 
