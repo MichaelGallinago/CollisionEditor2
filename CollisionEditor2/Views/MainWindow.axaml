@@ -1,0 +1,172 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CollisionEditor2.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" MinHeight="440" MinWidth="664" Width="664" Height="440"
+        x:Class="CollisionEditor2.Views.MainWindow"
+		FontFamily="Consolas"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="CollisionEditor2">
+	<Window.Styles>
+		<Style Selector="DataValidationErrors">
+			<Setter Property="Template" Value="{DynamicResource TooltipDataValidationContentTemplate}"   />
+			<Setter Property="ErrorTemplate" Value="{DynamicResource TooltipDataValidationErrorTemplate}"/>
+		</Style>
+	</Window.Styles>
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="44*" />
+            <RowDefinition Height="149*"/>
+            <RowDefinition Height="29*" />
+            <RowDefinition Height="4*"  />
+            <RowDefinition Height="8*"  />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="4*"  />
+            <RowDefinition Height="30*" />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="6*"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="5*"  />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="5*"  />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="23*" />
+            <ColumnDefinition Width="43*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="23*" />
+            <ColumnDefinition Width="43*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="23*" />
+            <ColumnDefinition Width="43*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="12*" />
+            <ColumnDefinition Width="5*"  />
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="75*" />
+            <ColumnDefinition Width="32*" />
+			<ColumnDefinition Width="32*" />
+            <ColumnDefinition Width="5*"  />
+            <ColumnDefinition Width="5*"  />
+        </Grid.ColumnDefinitions>
+		
+        <Border Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="12" Grid.RowSpan="16" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+        <Border Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="10" Grid.RowSpan="5" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+        <Border Grid.Column="2" Grid.Row="13" Grid.ColumnSpan="10" Grid.RowSpan="4" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+        <Border Grid.Column="14" Grid.Row="2" Grid.ColumnSpan="5" Grid.RowSpan="16" BorderBrush="Silver" BorderThickness="1" CornerRadius="5"/>
+		
+        <Menu VerticalAlignment="Center" Grid.Column="0"  Grid.ColumnSpan="20" Foreground="Black" Height="20" Background="White">
+			<MenuItem Header="File">
+				<MenuItem Header="Load" >
+					<MenuItem Header="TileMap    Ctrl+D"  Command="{Binding MenuOpenTileMapCommand}"  HotKey="Ctrl+D"/>
+					<MenuItem Header="AngleMap   Ctrl+W" Command="{Binding MenuOpenAngleMapCommand}" HotKey="Ctrl+W"/>
+				</MenuItem>
+
+				<MenuItem Header="Unload">
+					<MenuItem Header="TileMap"  Command="{Binding MenuUnloadTileMapCommand}"/>
+					<MenuItem Header="AngleMap" Command="{Binding MenuUnloadAngleMapCommand}"/>
+				</MenuItem>
+
+				<MenuItem Header="Unload All     Ctrl+A" HorizontalAlignment="Right" Command="{Binding MenuUnloadAllCommand}" HotKey="Ctrl+A"/>
+
+				<MenuItem Header="Save">
+					<MenuItem Header="AngleMap"  Command="{Binding MenuSaveAngleMapCommand}"/>
+					<MenuItem Header="HeightMap" Command="{Binding MenuSaveHeightMapCommand}"/>
+					<MenuItem Header="WidthMap"  Command="{Binding MenuSaveWidthMapCommand}"/>
+					<MenuItem Header="TileMap"   Command="{Binding MenuSaveTileMapCommand}"/>
+				</MenuItem>
+
+				<MenuItem Header="Save All       Ctrl+S" Command="{Binding MenuSaveAllCommand}" HotKey="Ctrl+S"/>
+				<MenuItem Header="Exit           Alt+F4"     Command="{Binding ExitAppCommand}"/>
+
+			</MenuItem>
+			<MenuItem Header="Help" >
+				<MenuItem Header="Call tech support" Command="{Binding HelpCommand}"/>
+			</MenuItem>
+		</Menu>
+        
+        <Button x:Name="ModSwitchButton" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="4" Content="Angle mode" Click="ModSwitchButtonClick" IsEnabled="False"/>
+
+        <UniformGrid x:Name="TileGrid" Grid.Column="1" Grid.Row="4" Height="128" Width="128" Grid.ColumnSpan="12"
+                     RenderOptions.BitmapInterpolationMode="Default"/>
+		
+		<Grid x:Name="RectanglesGrid"  Grid.Column="1" Grid.Row="4" Height="128" Width="128" Grid.ColumnSpan="12" Focusable="True" Background="Transparent"
+              PointerEnter="RectanglesGrid_MouseEnter" PointerLeave="RectanglesGrid_MouseLeave"	PointerPressed="RectanglesGrid_OnPointerPressed"
+              RenderOptions.BitmapInterpolationMode="Default"/>
+		<Canvas Grid.Column="1" Grid.Row="4"  Height="128" Width="128" Name ="canvasForLine" Grid.ColumnSpan="12" IsHitTestVisible="False"/>
+
+		<Border Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="8" Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
+			<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" >
+				<TextBlock x:Name="Heights" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="2,2,0,0"/>
+			</ScrollViewer>
+		</Border>
+		
+		<Border Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="8" Background="WhiteSmoke" BorderBrush="Silver" BorderThickness="0.8,0.8,0.8,2" CornerRadius="3,3,3,3">
+			<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" >
+				<TextBlock x:Name="Widths"  TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="2,2,0,0"/>
+			</ScrollViewer>
+		</Border>
+		
+		<TextBox Grid.Column="4" Grid.Row="14" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=ByteAngleText,Mode=TwoWay}" 
+                 Name="TextBoxByteAngle"  Padding=" 2,0,0,0"  Background="#FFB1B1B1" Watermark="Byte" MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0" 
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+		<TextBox Grid.Column="7" Grid.Row="14" Grid.RowSpan="2" TextWrapping="Wrap" IsEnabled="False" Text="{Binding Path=HexAngleText,Mode=TwoWay}"
+                 Name="TextBoxHexAngle"  Padding="2,0,0,0"  Background="#FFB1B1B1"  Watermark="Hex"  MinHeight="10" MinWidth="10" CornerRadius="0,3,3,0"  
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+		<Border x:Name="BorderFullAngle" Grid.Column="9" Grid.Row="14" Grid.RowSpan="2" Grid.ColumnSpan="2" BorderBrush="#B0B0B0" Background="#C4C4C4" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3">
+            <TextBlock TextWrapping="Wrap" Text="0°" Name="TextBlockFullAngle" Background="#C4C4C4" Foreground="Gray" Padding="2,0,0,0"/>
+		</Border>
+		
+		<Button Grid.Column="3" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="ByteAngleIncrimentButton" Grid.Row="14"  
+				Height="20" Width="30" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Gray" CornerRadius="3,0,0,0" VerticalAlignment="Bottom">
+			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpByteAngle"/>
+		</Button>
+		<Button Grid.Column="3" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="ByteAngleDecrementButton" Grid.Row="15" 
+				Height="20" Width="30" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Gray" CornerRadius="0,0,0,3">
+			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownByteAngle"/>
+		</Button>
+
+		<Button Grid.Column="6" Command="{Binding AngleIncrementCommand}" IsEnabled="False" x:Name="HexAngleIncrimentButton"  Grid.Row="14"  
+				Height="20" Width="30" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Gray" CornerRadius="3,0,0,0" VerticalAlignment="Bottom">
+			<Path Fill="Black" Data="M 0 6 L 12 6 L 6 0 Z" Stretch="Uniform" x:Name="TriangleUpHexAngle"/>
+		</Button>
+		<Button Grid.Column="6" Command="{Binding AngleDecrementCommand}" IsEnabled="False" x:Name="HexAngleDecrementButton"  Grid.Row="15" 
+				Height="20" Width="30" HorizontalAlignment="Right" BorderThickness="1" BorderBrush="Gray" CornerRadius="0,0,0,3">
+			<Path Fill="Black" Data="M 0 0 L 6 6 L 12 0 Z" Stretch="Uniform" x:Name="TriangleDownHexAngle"/>
+		</Button>
+		
+		<Border x:Name="TileMapBorder" Grid.Column="14" Grid.Row="3" Grid.RowSpan="9" Grid.ColumnSpan="5" BorderBrush="Silver" Background="LightGray" BorderThickness="1" CornerRadius="5">
+			<ScrollViewer>
+				<UniformGrid x:Name="TileMapGrid" Columns="8" Background="Transparent" RenderOptions.BitmapInterpolationMode="Default"
+							 PointerPressed="TileMapGrid_OnPointerPressed" HorizontalAlignment="Left"/>
+			</ScrollViewer>
+		</Border>
+		
+		<TextBox Grid.Column="15" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileTextBox" IsEnabled="False" TextWrapping="Wrap"
+                 Text="{Binding Path=SelectedTileText,Mode=TwoWay}" Watermark="Tile index" Padding="2,0,0,0" KeyDown="SelectTileTextBox_KeyDown" MinHeight="20" 
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+
+		<Button  Grid.Column="16" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="SelectTileButton" Padding="2,0,5,0"
+                 IsEnabled="False" MinHeight="20" Command="{Binding SelectTileCommand}" BorderThickness="1" BorderBrush="Silver"
+                 CornerRadius="3,3,3,3" Content="Select"/>
+		
+		<Button  Grid.Column="17" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="AddTileButton" Padding="2,0,3,0"
+				  IsEnabled="False" MinHeight="20" Content="Add" Command="{Binding AddTileCommand}" BorderThickness="1" BorderBrush="Silver"
+				  CornerRadius="3,3,3,3" HorizontalAlignment="Center"/>
+		<Button  Grid.Column="18" Grid.Row="14" Grid.RowSpan ="2" Background="#FFD8D8D8" x:Name="DeleteTileButton" Padding="2,0,3,0"
+				  IsEnabled="False" MinHeight="20" Content="Del" Command="{Binding DeleteTileCommand}" BorderThickness="1" BorderBrush="Silver"
+				  CornerRadius="3,3,3,3" HorizontalAlignment="Left"/>
+    </Grid>
+</Window>
+
