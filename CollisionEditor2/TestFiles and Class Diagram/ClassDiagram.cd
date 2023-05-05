@@ -1,63 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="CollisionEditor2.Models.AngleMap" Collapsed="true">
-    <Position X="3.75" Y="0.75" Width="1.5" />
+    <Position X="0.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAIAAAAAAAAAABAAAgAAAAAAAAAAAQAggAAAEAAA=</HashCode>
       <FileName>Models\Anglemap.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.Angles" Collapsed="true">
-    <Position X="0.75" Y="4.5" Width="1.5" />
+    <Position X="8.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CCAAAAAAAgIAAAAAAACAAAAAAAIAAEAEAAAAAAAAAAY=</HashCode>
       <FileName>Models\Angles.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.BitmapConvertor" Collapsed="true">
-    <Position X="7.25" Y="1.25" Width="1.5" />
+    <Position X="4" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\BitmapConvertor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.Tile" Collapsed="true">
-    <Position X="7.25" Y="0.5" Width="1.5" />
+    <Position X="2.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAEAAAABAEAAAAACAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Tile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.TileSet" Collapsed="true">
-    <Position X="5.5" Y="0.75" Width="1.5" />
+    <Position X="2.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAQAAEAAAAIAEAAAAAAAQIBAAGAAAAAAAA=</HashCode>
       <FileName>Models\TileSet.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.ForAvalonia.SquareAndPosition" Collapsed="true">
-    <Position X="0.5" Y="8.5" Width="1.5" />
+    <Position X="21.75" Y="6.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAggAAAAAA=</HashCode>
       <FileName>Models\ForAvalonia\SquareAndPosition.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.ForAvalonia.TileUtilities" Collapsed="true">
-    <Position X="0.75" Y="6" Width="1.5" />
+    <Position X="10.5" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAgAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>Models\ForAvalonia\TileUtilities.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Models.ForAvalonia.ViewModelAssistant" Collapsed="true">
-    <Position X="4.5" Y="6.25" Width="1.5" />
+    <Position X="16.5" Y="4.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAAAAAACAAAAAAAAAgAAAQEAAAEAAA=</HashCode>
       <FileName>Models\ForAvalonia\ViewModelAssistant.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.ViewModels.MainViewModel" Collapsed="true">
-    <Position X="2.5" Y="5.25" Width="1.5" />
+    <Position X="12.5" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>axTDAAIBAwioAgoBAwCQFABEhIkFAyoIEUAADEJFIAQ=</HashCode>
       <FileName>ViewModels\MainViewModel.cs</FileName>
@@ -65,7 +65,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="CollisionEditor2.ViewModels.OpenTileMapViewModel" Collapsed="true">
-    <Position X="4.5" Y="5.25" Width="1.5" />
+    <Position X="14.25" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>gAIAEAIAAAABJAJBAgEwACABAMggGAAKAFABAAABAAE=</HashCode>
       <FileName>ViewModels\OpenTileMapViewModel.cs</FileName>
@@ -73,7 +73,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="CollisionEditor2.ViewModels.SaveTileMapViewModel" Collapsed="true">
-    <Position X="6.5" Y="5.25" Width="1.5" />
+    <Position X="16.5" Y="8" Width="2" />
     <TypeIdentifier>
       <HashCode>QBoDkKoAAECQQAIhAAAQFRoBgIgAWLIIQFAAAIAlAAA=</HashCode>
       <FileName>ViewModels\SaveTileMapViewModel.cs</FileName>
@@ -81,7 +81,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="CollisionEditor2.ViewModels.ViewModelBase" Collapsed="true">
-    <Position X="4.5" Y="2.75" Width="1.5" />
+    <Position X="14.25" Y="4.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModels\ViewModelBase.cs</FileName>
@@ -89,7 +89,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="CollisionEditor2.ViewModels.ViewModelFileUtilities" Collapsed="true">
-    <Position X="0.75" Y="5.25" Width="1.5" />
+    <Position X="10.5" Y="6.5" Width="1.75" />
     <NestedTypes>
       <Enum Name="CollisionEditor2.ViewModels.ViewModelFileUtilities.Filters" Collapsed="true">
         <TypeIdentifier>
@@ -103,42 +103,42 @@
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Views.MainWindow" Collapsed="true">
-    <Position X="2.5" Y="8.5" Width="1.5" />
+    <Position X="23.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEwAQAgSACAAAIABDAEAgAAIgAgAAwAChEAKAAAKIA=</HashCode>
       <FileName>Views\MainWindow.axaml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Views.OpenTileMap" Collapsed="true">
-    <Position X="4.5" Y="8.5" Width="1.5" />
+    <Position X="25.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAEQACIAAAAAEAAAAAAAAQAAAAA=</HashCode>
       <FileName>Views\OpenTileMap.axaml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.Views.SaveTileMap" Collapsed="true">
-    <Position X="6.5" Y="8.5" Width="1.5" />
+    <Position X="25.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
       <FileName>Views\SaveTileMap.axaml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.ViewUtilities.RedLineUtilities" Collapsed="true">
-    <Position X="0.5" Y="9.25" Width="1.5" />
+    <Position X="21.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>ViewUtilities\RedLineUtilities.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.ViewUtilities.SquaresUtilities" Collapsed="true">
-    <Position X="0.5" Y="7.75" Width="1.5" />
+    <Position X="21.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewUtilities\SquaresUtilities.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollisionEditor2.ViewUtilities.TextboxValidator" Collapsed="true">
-    <Position X="4.5" Y="9.5" Width="1.5" />
+    <Position X="12.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAIAAAIAAAAAAAhoAA=</HashCode>
       <FileName>ViewUtilities\TextboxValidator.cs</FileName>
@@ -146,7 +146,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Struct Name="CollisionEditor2.Models.ForAvalonia.OurColor" Collapsed="true">
-    <Position X="7.25" Y="2" Width="1.5" />
+    <Position X="4" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
       <FileName>Models\ForAvalonia\OurColor.cs</FileName>
