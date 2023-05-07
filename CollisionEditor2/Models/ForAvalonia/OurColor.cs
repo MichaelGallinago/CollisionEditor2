@@ -9,4 +9,9 @@ public struct OurColor
     {
         Channels = new byte[] { red, green, blue, alpha };
     }
+
+    public OurColor(ColorGroup colors)
+    {
+        Channels = new byte[] { colors.RedChannel, colors.GreenChannel, colors.BlueChannel, colors.AlphaChannel };
+    }
 }
