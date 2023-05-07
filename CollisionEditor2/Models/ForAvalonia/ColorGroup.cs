@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CollisionEditor2.Models.ForAvalonia;
 
-namespace CollisionEditor2.Models.ForAvalonia
+public class ColorGroup
 {
     public struct ColorGroup
     {
