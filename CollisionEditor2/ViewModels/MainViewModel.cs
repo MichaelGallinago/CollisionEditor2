@@ -210,10 +210,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.TextBoxByteAngle.IsEnabled = true;
         Window.TextBoxHexAngle.IsEnabled = true;
 
-        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(84, 84, 84));
-        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
+        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Color.FromRgb(84, 84, 84));
+        Window.BorderFullAngle.Background = new SolidColorBrush(Color.FromRgb(177, 177, 177));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Black);
-        Window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
+        Window.TextBlockFullAngle.Background = new SolidColorBrush(Color.FromRgb(177, 177, 177));
 
         byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngleText));
@@ -430,10 +430,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.LastSelectedTile = 0;
 
 
-        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(176, 176, 176));
-        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
+        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Color.FromRgb(176, 176, 176));
+        Window.BorderFullAngle.Background = new SolidColorBrush(Color.FromRgb(196, 196, 196));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
-        Window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
+        Window.TextBlockFullAngle.Background = new SolidColorBrush(Color.FromRgb(196, 196, 196));
 
         Window.ByteAngleIncrimentButton.IsEnabled = false;
         Window.ByteAngleDecrementButton.IsEnabled = false;
