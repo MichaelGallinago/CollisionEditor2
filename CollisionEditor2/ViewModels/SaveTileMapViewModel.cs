@@ -20,23 +20,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private int horizontalOffset;
     private int amountOfColumns = 8;
 
-    private byte redChannel1 = 0;
-    private byte greenChannel1 = 0;
-    private byte blueChannel1 = 0;
-    private byte alphaChannel1 = 255;
-    private int offsetInTiles1 = 0;
-
-    private byte redChannel2 = 255;
-    private byte greenChannel2 = 255;
-    private byte blueChannel2 = 255;
-    private byte alphaChannel2 = 255;
-    private int offsetInTiles2 = 0;
-
-    private byte redChannel3 = 255;
-    private byte greenChannel3 = 255;
-    private byte blueChannel3 = 0;
-    private byte alphaChannel3 = 255;
-    private int offsetInTiles3 = 0;
+    private ColorGroup colorGroup1 = new ColorGroup(0,0,0,255,0);
+    private ColorGroup colorGroup2 = new ColorGroup(255, 255, 255, 255, 0);
+    private ColorGroup colorGroup3 = new ColorGroup(255, 255, 0, 255, 0);
 
     private SaveTileMap window;
     private TileSet tileSet;
