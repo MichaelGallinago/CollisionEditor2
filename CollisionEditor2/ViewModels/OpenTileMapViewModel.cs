@@ -27,7 +27,7 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private string verticalSeparationString = "0";
     private string horizontalOffsetString = "0";
     private string verticalOffsetString = "0";
-    private string tileWidthString = "16";
+    private string tileWidthString =  "16";
     private string tileHeightString = "16";
 
     private OpenTileMap window;
