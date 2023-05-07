@@ -317,9 +317,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         var ourColors = new OurColor[]
         {
-            new OurColor(redChannel1, greenChannel1, blueChannel1, alphaChannel1),
-            new OurColor(redChannel2, greenChannel2, blueChannel2, alphaChannel2),
-            new OurColor(redChannel3, greenChannel3, blueChannel3, alphaChannel3)
+            new OurColor(colorGroup1),
+            new OurColor(colorGroup2),
+            new OurColor(colorGroup3)
         };
 
         saveImage = tileSet.DrawTileMap(amountOfColumns, ourColors,
