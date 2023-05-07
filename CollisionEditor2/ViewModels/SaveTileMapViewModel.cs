@@ -20,9 +20,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private int horizontalOffset;
     private int amountOfColumns = 8;
 
-    private ColorGroup colorGroup1 = new ColorGroup(0,0,0,255,0);
+    private ColorGroup colorGroup1 = new ColorGroup(  0,   0,   0, 255, 0);
     private ColorGroup colorGroup2 = new ColorGroup(255, 255, 255, 255, 0);
-    private ColorGroup colorGroup3 = new ColorGroup(255, 255, 0, 255, 0);
+    private ColorGroup colorGroup3 = new ColorGroup(255, 255,   0, 255, 0);
 
     private SaveTileMap window;
     private TileSet tileSet;
@@ -147,125 +147,125 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public string RedChannel1Text
     {
-        get => redChannel1.ToString();
+        get => colorGroup1.RedChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(RedChannel1Text), ref redChannel1);
+            colorGroup1.RedChannel = ByteValidation(value, nameof(RedChannel1Text), colorGroup1.RedChannel);
         }
     }
     public string GreenChannel1Text
     {
-        get => greenChannel1.ToString();
+        get => colorGroup1.GreenChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(GreenChannel1Text), ref greenChannel1);
+            colorGroup1.GreenChannel = ByteValidation(value, nameof(GreenChannel1Text), colorGroup1.GreenChannel);
         }
     }
     public string BlueChannel1Text
     {
-        get => blueChannel1.ToString();
+        get => colorGroup1.BlueChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(BlueChannel1Text), ref blueChannel1);
+            colorGroup1.BlueChannel = ByteValidation(value, nameof(BlueChannel1Text), colorGroup1.BlueChannel);
         }
     }
     public string AlphaChannel1Text
     {
-        get => alphaChannel1.ToString();
+        get => colorGroup1.AlphaChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(AlphaChannel1Text), ref alphaChannel1);
+            colorGroup1.AlphaChannel = ByteValidation(value, nameof(AlphaChannel1Text), colorGroup1.AlphaChannel);
         }
     }
     public string OffsetInTiles1Text
     {
-        get => offsetInTiles1.ToString();
+        get => colorGroup1.OffsetInTiles.ToString();
         set
         {
-            OffsetValidation(value, nameof(OffsetInTiles1Text), ref offsetInTiles1);
+            colorGroup1.OffsetInTiles = OffsetValidation(value, nameof(OffsetInTiles1Text), colorGroup1.OffsetInTiles);
         }
     }
 
     public string RedChannel2Text
     {
-        get => redChannel2.ToString();
+        get => colorGroup2.RedChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(RedChannel2Text), ref redChannel2);
+            colorGroup2.RedChannel = ByteValidation(value, nameof(RedChannel2Text), colorGroup2.RedChannel);
         }
     }
     public string GreenChannel2Text
     {
-        get => greenChannel2.ToString();
+        get => colorGroup2.GreenChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(GreenChannel2Text), ref greenChannel2);
+            colorGroup2.GreenChannel = ByteValidation(value, nameof(GreenChannel2Text), colorGroup2.GreenChannel);
         }
     }
     public string BlueChannel2Text
     {
-        get => blueChannel2.ToString();
+        get => colorGroup2.BlueChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(BlueChannel2Text), ref blueChannel2);
+            colorGroup2.BlueChannel = ByteValidation(value, nameof(BlueChannel2Text), colorGroup2.BlueChannel);
         }
     }
     public string AlphaChannel2Text
     {
-        get => alphaChannel2.ToString();
+        get => colorGroup2.AlphaChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(AlphaChannel2Text), ref alphaChannel2);
+            colorGroup2.AlphaChannel = ByteValidation(value, nameof(AlphaChannel2Text), colorGroup2.AlphaChannel);
         }
     }
     public string OffsetInTiles2Text
     {
-        get => offsetInTiles2.ToString();
+        get => colorGroup2.OffsetInTiles.ToString();
         set
         {
-            OffsetValidation(value, nameof(OffsetInTiles2Text), ref offsetInTiles2);
+            colorGroup2.OffsetInTiles = OffsetValidation(value, nameof(OffsetInTiles2Text), colorGroup2.OffsetInTiles);
         }
     }
 
     public string RedChannel3Text
     {
-        get => redChannel3.ToString();
+        get => colorGroup3.RedChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(RedChannel3Text), ref redChannel3);
+            colorGroup3.RedChannel = ByteValidation(value, nameof(RedChannel3Text), colorGroup3.RedChannel);
         }
     }
     public string GreenChannel3Text
     {
-        get => greenChannel3.ToString();
+        get => colorGroup3.GreenChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(GreenChannel3Text), ref greenChannel3);
+            colorGroup3.GreenChannel = ByteValidation(value, nameof(GreenChannel3Text), colorGroup3.GreenChannel);
         }
     }
     public string BlueChannel3Text
     {
-        get => blueChannel3.ToString();
+        get => colorGroup3.BlueChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(BlueChannel3Text), ref blueChannel3);
+            colorGroup3.BlueChannel = ByteValidation(value, nameof(BlueChannel3Text), colorGroup3.BlueChannel);
         }
     }
     public string AlphaChannel3Text
     {
-        get => alphaChannel3.ToString();
+        get => colorGroup3.AlphaChannel.ToString();
         set
         {
-            ByteValidation(value, nameof(AlphaChannel3Text), ref alphaChannel3);
+            colorGroup3.AlphaChannel = ByteValidation(value, nameof(AlphaChannel3Text), colorGroup3.AlphaChannel);
         }
     }
 
     public string OffsetInTiles3Text
     {
-        get => offsetInTiles3.ToString();
+        get => colorGroup3.OffsetInTiles.ToString();
         set
         {
-            OffsetValidation(value, nameof(OffsetInTiles3Text), ref offsetInTiles3);
+            colorGroup3.OffsetInTiles = OffsetValidation(value, nameof(OffsetInTiles3Text), colorGroup3.OffsetInTiles);
         }
     }
 
@@ -276,35 +276,35 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public bool HasErrors => textboxValidator.HasErrors;
 
-    private void ByteValidation(string value, string nameColorChannel, ref byte resultColorChannel)
+    private byte ByteValidation(string value, string nameColorChannel, byte oldByteValueColorChannel)
     {
         textboxValidator.ClearErrors(nameColorChannel);
         CheckErrors();
-        bool isByte = byte.TryParse(value, out byte intColorChannel);
+        bool isByte = byte.TryParse(value, out byte newByteValueColorChannel);
 
         if (!isByte)
         {
             textboxValidator.AddError(nameColorChannel, "Not a Byte!");
             CheckErrors();
-            return;
+            return oldByteValueColorChannel;
         }
 
-        resultColorChannel = intColorChannel;
+        return newByteValueColorChannel;
     }
-    private void OffsetValidation(string value, string nameOffsetInTiles, ref int resultoffsetInTiles)
+    private int OffsetValidation(string value, string nameOffsetInTiles, int oldIntValueOffsetInTiles)
     {
         textboxValidator.ClearErrors(nameOffsetInTiles);
         CheckErrors();
-        bool isNumber = int.TryParse(value, out int intOffsetInTiles);
+        bool isNumber = int.TryParse(value, out int newIntOffsetInTiles);
 
-        if (!isNumber || intOffsetInTiles < 0 || intOffsetInTiles > 255)
+        if (!isNumber || newIntOffsetInTiles < 0 || newIntOffsetInTiles > 255)
         {
             textboxValidator.AddError(nameOffsetInTiles, "Not a Byte!");
             CheckErrors();
-            return;
+            return oldIntValueOffsetInTiles;
         }
 
-        resultoffsetInTiles = intOffsetInTiles;
+        return newIntOffsetInTiles;
     }
 
     private void CheckErrors()
@@ -323,7 +323,7 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         };
 
         saveImage = tileSet.DrawTileMap(amountOfColumns, ourColors,
-            new int[] { offsetInTiles1, offsetInTiles2, offsetInTiles3 },
+            new int[] { colorGroup1.OffsetInTiles, colorGroup2.OffsetInTiles, colorGroup3.OffsetInTiles },
             new PixelSize(horizontalSeparation, verticalSeparation),
             new PixelSize(horizontalOffset, verticalOffset));
 

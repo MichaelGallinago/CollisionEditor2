@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace CollisionEditor2.Models.ForAvalonia
 {
-    public class ColorGroup
+    public struct ColorGroup
     {
-        public byte RedChannel    { get; set; }
+        
+        public byte RedChannel    { get; set;} 
         public byte GreenChannel  { get; set; }
         public byte BlueChannel   { get; set; }
         public byte AlphaChannel  { get; set; }
