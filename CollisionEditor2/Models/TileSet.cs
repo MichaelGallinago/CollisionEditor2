@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using CollisionEditor2.Models.ForAvalonia;
-using Microsoft.CodeAnalysis.Text;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -59,7 +58,7 @@ public class TileSet
 
         int groupCount = groupColor.Length;
 
-        DrawTiles(bitmapArray, groupOffset, groupColor, separation, 
+        DrawTiles(bitmapArray, groupOffset, groupColor, separation,
             offset, columnCount, groupCount);
 
         return BitmapConvertor.GetSKBitmapFromBitmapArray(bitmapArray);

@@ -32,23 +32,23 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public AngleMap AngleMap { get; private set; }
     public TileSet TileSet { get; private set; }
 
-    public ReactiveCommand<Unit, Unit> ?MenuOpenAngleMapCommand   { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuOpenTileMapCommand    { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuSaveTileMapCommand    { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuSaveWidthMapCommand   { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuSaveHeightMapCommand  { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuSaveAngleMapCommand   { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuSaveAllCommand        { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuUnloadTileMapCommand  { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuUnloadAngleMapCommand { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?MenuUnloadAllCommand      { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?SelectTileCommand         { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?AngleIncrementCommand     { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?AngleDecrementCommand     { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?AddTileCommand            { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?DeleteTileCommand         { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?ExitAppCommand            { get; private set;}
-    public ReactiveCommand<Unit, Unit> ?HelpCommand               { get; private set;}
+    public ReactiveCommand<Unit, Unit>? MenuOpenAngleMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuOpenTileMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveTileMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveWidthMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveHeightMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveAngleMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveAllCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuUnloadTileMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuUnloadAngleMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuUnloadAllCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? SelectTileCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? AngleIncrementCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? AngleDecrementCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? AddTileCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? DeleteTileCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? ExitAppCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? HelpCommand { get; private set; }
 
     public int SelectedTile { get; set; }
 
