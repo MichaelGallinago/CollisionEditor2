@@ -32,15 +32,20 @@ public class Tile
             Heights = new byte[Heights.Length];
             Widths = new byte[Widths.Length];
 
-            for (int x = Heights.Length - 1; x >= 0; x--)
+            CalculateCollisionArrays();
+        }
+    }
+
+    private void CalculateCollisionArrays()
+    {
+        for (int x = Heights.Length - 1; x >= 0; x--)
+        {
+            for (int y = Widths.Length - 1; y >= 0; y--)
             {
-                for (int y = Widths.Length - 1; y >= 0; y--)
+                if (Pixels[y * Heights.Length + x])
                 {
-                    if (Pixels[y * Heights.Length + x])
-                    {
-                        Widths[y]++;
-                        Heights[x]++;
-                    }
+                    Widths[y]++;
+                    Heights[x]++;
                 }
             }
         }
