@@ -314,23 +314,19 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
-        ViewModelAssistant.GetBitmapFromPixelArray(
-            ViewModelAssistant.GetPixelArrayFromTile(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
-            new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length));
 
         TileGridUpdate(TileSet, SelectedTile, Window);
         RectanglesGridUpdate();
-
         SetHeightsAndWidths();
-
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-
         EnableRightPanelAndModSwitchButtons();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
-        Window.DrawRedLine();
+
         SelectTile();
+
+        Window.DrawRedLine();
         Window.WindowSizeChanged(new Size(Window.Width, Window.Height));
     }
 
