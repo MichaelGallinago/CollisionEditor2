@@ -16,11 +16,11 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private const int minTileHeight = 4;
     private const int minTileWidth = 4;
 
-    private ValidatePixelSize Separation = new ValidatePixelSize(0, 0);
-    private ValidatePixelSize Offset = new ValidatePixelSize(0, 0);
-    private ValidatePixelSize Size = new ValidatePixelSize(16, 16);
+    private readonly ValidatedPixelSize Separation = new ValidatedPixelSize(0, 0);
+    private readonly ValidatedPixelSize Offset = new ValidatedPixelSize(0, 0);
+    private readonly ValidatedPixelSize Size = new ValidatedPixelSize(16, 16);
 
-    private OpenTileMap window;
+    private readonly OpenTileMap window;
     private readonly PixelSize bitmapSize;
 
     private readonly TextboxValidator textboxValidator;
