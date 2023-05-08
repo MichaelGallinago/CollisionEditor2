@@ -181,7 +181,7 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
         verticalOffset = intVerticalOffset;
     }
-    private void TileWidthSet() 
+    private void TileWidthSet()
     {
         textboxValidator.ClearErrors(nameof(TileWidthText));
         CheckErrors();

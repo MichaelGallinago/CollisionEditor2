@@ -20,9 +20,9 @@ public class SaveTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private int horizontalOffset;
     private int amountOfColumns = 8;
 
-    private ColorGroup colorGroup1 = new ColorGroup(  0,   0,   0, 255, 0);
+    private ColorGroup colorGroup1 = new ColorGroup(0, 0, 0, 255, 0);
     private ColorGroup colorGroup2 = new ColorGroup(255, 255, 255, 255, 0);
-    private ColorGroup colorGroup3 = new ColorGroup(255, 255,   0, 255, 0);
+    private ColorGroup colorGroup3 = new ColorGroup(255, 255, 0, 255, 0);
 
     private SaveTileMap window;
     private TileSet tileSet;
