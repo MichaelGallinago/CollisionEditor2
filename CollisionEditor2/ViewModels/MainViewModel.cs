@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -300,23 +301,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private async void MenuOpenTileMap()
     {
-        string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.TileMap);
-        if (filePath == string.Empty)
+        TileSet? tileSet = await CreateTileSetFromOpenTileMapWindow();
+        if (tileSet is null)
         {
             return;
         }
-
-        OpenTileMap openTileMap = new();
-        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
-        await openTileMap.ShowDialog(Window);
-        if (!openTileMap.IsOpened)
-        {
-            return;
-        }
-
-        TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
-            new PixelSize(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation),
-            new PixelSize(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
+        TileSet = tileSet;
 
         if (AngleMap.Values.Count <= 0)
         {
@@ -342,6 +332,27 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.DrawRedLine();
         SelectTile();
         Window.WindowSizeChanged(new Size(Window.Width, Window.Height));
+    }
+
+    private async Task<TileSet?> CreateTileSetFromOpenTileMapWindow()
+    {
+        string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.TileMap);
+        if (filePath == string.Empty)
+        {
+            return null;
+        }
+
+        OpenTileMap openTileMap = new();
+        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
+        await openTileMap.ShowDialog(Window);
+        if (!openTileMap.IsOpened)
+        {
+            return null;
+        }
+
+        return new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
+            new PixelSize(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation),
+            new PixelSize(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
     }
 
     private void SetHeightsAndWidths()
@@ -579,6 +590,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         return border;
     }
+
     private void AddTile()
     {
         if (SelectedTile > TileSet.Tiles.Count - 1)
@@ -589,10 +601,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         if (SelectedTile < Window.LastSelectedTile)
         {
-            Window.LastSelectedTile += 1;
+            Window.LastSelectedTile++;
         }
 
-        SelectedTile += 1;
+        SelectedTile++;
         OnPropertyChanged(nameof(SelectedTileText));
 
         TileSet.InsertTile(SelectedTile);
@@ -607,11 +619,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void DeleteTile()
     {
-        if (SelectedTile > TileSet.Tiles.Count - 1)
-        {
-            SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTileText));
-        }
+        LimitSelectedTile();
 
         TileSet.RemoveTile(SelectedTile);
         AngleMap.RemoveAngle(SelectedTile);
@@ -624,20 +632,24 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        if (SelectedTile > TileSet.Tiles.Count - 1)
-        {
-            SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTileText));
-        }
+        LimitSelectedTile();
 
         if (SelectedTile < Window.LastSelectedTile)
         {
-            Window.LastSelectedTile -= 1;
+            Window.LastSelectedTile--;
         }
 
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
         SelectTile();
+    }
 
+    private void LimitSelectedTile()
+    {
+        if (SelectedTile >= TileSet.Tiles.Count)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
     }
 
     private void ExitApp()
@@ -675,6 +687,11 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(size);
 
+        FillTileGrid(tile, size, window);
+    }
+
+    private static void FillTileGrid(Tile tile, PixelSize size, MainWindow window)
+    {
         for (int y = 0; y < size.Height; y++)
         {
             for (int x = 0; x < size.Width; x++)
