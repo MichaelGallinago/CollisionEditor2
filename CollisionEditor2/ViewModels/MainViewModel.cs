@@ -32,23 +32,23 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public AngleMap AngleMap { get; private set; }
     public TileSet TileSet { get; private set; }
 
-    public ReactiveCommand<Unit, Unit> MenuOpenAngleMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuOpenTileMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveTileMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveWidthMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveHeightMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveAngleMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuUnloadTileMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuUnloadAngleMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuUnloadAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> SelectTileCommand { get; }
-    public ReactiveCommand<Unit, Unit> AngleIncrementCommand { get; }
-    public ReactiveCommand<Unit, Unit> AngleDecrementCommand { get; }
-    public ReactiveCommand<Unit, Unit> AddTileCommand { get; }
-    public ReactiveCommand<Unit, Unit> DeleteTileCommand { get; }
-    public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
-    public ReactiveCommand<Unit, Unit> HelpCommand { get; }
+    public ReactiveCommand<Unit, Unit> ?MenuOpenAngleMapCommand   { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuOpenTileMapCommand    { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuSaveTileMapCommand    { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuSaveWidthMapCommand   { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuSaveHeightMapCommand  { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuSaveAngleMapCommand   { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuSaveAllCommand        { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuUnloadTileMapCommand  { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuUnloadAngleMapCommand { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?MenuUnloadAllCommand      { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?SelectTileCommand         { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?AngleIncrementCommand     { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?AngleDecrementCommand     { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?AddTileCommand            { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?DeleteTileCommand         { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?ExitAppCommand            { get; private set;}
+    public ReactiveCommand<Unit, Unit> ?HelpCommand               { get; private set;}
 
     public int SelectedTile { get; set; }
 
@@ -67,35 +67,15 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         hexAngle = "0x00";
         Window = window;
 
-        MenuOpenAngleMapCommand = ReactiveCommand.Create(MenuOpenAngleMap);
-        MenuOpenTileMapCommand = ReactiveCommand.Create(MenuOpenTileMap);
-
-        MenuSaveTileMapCommand = ReactiveCommand.Create(MenuSaveTileMap);
-        MenuSaveWidthMapCommand = ReactiveCommand.Create(MenuSaveWidthMap);
-        MenuSaveHeightMapCommand = ReactiveCommand.Create(MenuSaveHeightMap);
-        MenuSaveAngleMapCommand = ReactiveCommand.Create(MenuSaveAngleMap);
-        MenuSaveAllCommand = ReactiveCommand.Create(MenuSaveAll);
-
-        MenuUnloadTileMapCommand = ReactiveCommand.Create(MenuUnloadTileMap);
-        MenuUnloadAngleMapCommand = ReactiveCommand.Create(MenuUnloadAngleMap);
-        MenuUnloadAllCommand = ReactiveCommand.Create(MenuUnloadAll);
-
-        AngleIncrementCommand = ReactiveCommand.Create(AngleIncrement);
-        AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
-        SelectTileCommand = ReactiveCommand.Create(SelectTile);
-
-        AddTileCommand = ReactiveCommand.Create(AddTile);
-        DeleteTileCommand = ReactiveCommand.Create(DeleteTile);
-
+        SetMenuCommand();
+        SetAngleIncAndDecCommand();
+        SetRightPanelCommand();
         ExitAppCommand = ReactiveCommand.Create(ExitApp);
 
-        HelpCommand = ReactiveCommand.Create(Help);
-
         RectanglesGridUpdate();
+
         TileGridUpdate(TileSet, SelectedTile, window);
     }
-
-
     public string ByteAngleText
     {
         get => byteAngle.ToString();
@@ -217,6 +197,36 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         return textboxValidator.GetErrors(propertyName);
     }
     public bool HasErrors => textboxValidator.HasErrors;
+
+    private void SetMenuCommand()
+    {
+        MenuOpenAngleMapCommand = ReactiveCommand.Create(MenuOpenAngleMap);
+        MenuOpenTileMapCommand = ReactiveCommand.Create(MenuOpenTileMap);
+
+        MenuSaveTileMapCommand = ReactiveCommand.Create(MenuSaveTileMap);
+        MenuSaveWidthMapCommand = ReactiveCommand.Create(MenuSaveWidthMap);
+        MenuSaveHeightMapCommand = ReactiveCommand.Create(MenuSaveHeightMap);
+        MenuSaveAngleMapCommand = ReactiveCommand.Create(MenuSaveAngleMap);
+        MenuSaveAllCommand = ReactiveCommand.Create(MenuSaveAll);
+
+        MenuUnloadTileMapCommand = ReactiveCommand.Create(MenuUnloadTileMap);
+        MenuUnloadAngleMapCommand = ReactiveCommand.Create(MenuUnloadAngleMap);
+        MenuUnloadAllCommand = ReactiveCommand.Create(MenuUnloadAll);
+
+        HelpCommand = ReactiveCommand.Create(Help);
+    }
+    private void SetAngleIncAndDecCommand()
+    {
+        AngleIncrementCommand = ReactiveCommand.Create(AngleIncrement);
+        AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
+    }
+    private void SetRightPanelCommand()
+    {
+        SelectTileCommand = ReactiveCommand.Create(SelectTile);
+
+        AddTileCommand = ReactiveCommand.Create(AddTile);
+        DeleteTileCommand = ReactiveCommand.Create(DeleteTile);
+    }
 
     private async void MenuOpenAngleMap()
     {
