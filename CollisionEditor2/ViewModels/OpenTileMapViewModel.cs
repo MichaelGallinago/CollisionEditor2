@@ -17,8 +17,8 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private const int minTileWidth = 4;
 
     private ValidatePixelSize Separation = new ValidatePixelSize(0, 0);
-    private ValidatePixelSize Offset     = new ValidatePixelSize(0, 0);
-    private ValidatePixelSize Size       = new ValidatePixelSize(16, 16);
+    private ValidatePixelSize Offset = new ValidatePixelSize(0, 0);
+    private ValidatePixelSize Size = new ValidatePixelSize(16, 16);
 
     private OpenTileMap window;
     private readonly PixelSize bitmapSize;
@@ -227,11 +227,11 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         window.IsOpened = true;
 
         window.HorizontalSeparation = Separation.Width;
-        window.VerticalSeparation   = Separation.Height;
-        window.HorizontalOffset     = Offset.Width;
-        window.VerticalOffset       = Offset.Height;
-        window.TileWidth            = Size.Width;
-        window.TileHeight           = Size.Height;
+        window.VerticalSeparation = Separation.Height;
+        window.HorizontalOffset = Offset.Width;
+        window.VerticalOffset = Offset.Height;
+        window.TileWidth = Size.Width;
+        window.TileHeight = Size.Height;
 
         window.Close();
     }
