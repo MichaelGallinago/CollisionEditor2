@@ -193,11 +193,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-        Window.SelectTileTextBox.IsEnabled = true;
-        Window.SelectTileButton.IsEnabled = true;
-        Window.ModSwitchButton.IsEnabled = true;
-        Window.AddTileButton.IsEnabled = true;
-        Window.DeleteTileButton.IsEnabled = true;
+        RightPanelAndModSwithButtonsIsEnabled();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
@@ -268,17 +264,23 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
-        Window.SelectTileTextBox.IsEnabled = true;
-        Window.SelectTileButton.IsEnabled = true;
-        Window.ModSwitchButton.IsEnabled = true;
-        Window.AddTileButton.IsEnabled = true;
-        Window.DeleteTileButton.IsEnabled = true;
+        RightPanelAndModSwithButtonsIsEnabled();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
         Window.DrawRedLine();
         SelectTile();
         Window.WindowSizeChanged(new Size(Window.Width, Window.Height));
+    }
+
+    private void RightPanelAndModSwithButtonsIsEnabled()
+    {
+        Window.ModSwitchButton.IsEnabled = true;
+
+        Window.SelectTileTextBox.IsEnabled = true;
+        Window.SelectTileButton.IsEnabled = true;
+        Window.AddTileButton.IsEnabled = true;
+        Window.DeleteTileButton.IsEnabled = true;
     }
 
     private void TileMapGridReset()
