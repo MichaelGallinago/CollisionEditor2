@@ -123,8 +123,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         set
         {
             if (!ValidateHexAngle(value))
-            { 
-                return; 
+            {
+                return;
             }
 
             hexAngle = value;
