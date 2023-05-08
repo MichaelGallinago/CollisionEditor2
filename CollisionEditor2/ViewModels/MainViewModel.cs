@@ -153,6 +153,70 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
+    public void SelectTile()
+    {
+        if (SelectedTile > TileSet.Tiles.Count - 1)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
+
+        ((Border)Window.TileMapGrid.Children[Window.LastSelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
+
+        ((Border)Window.TileMapGrid.Children[SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
+
+        Window.LastSelectedTile = SelectedTile;
+
+        TileGridUpdate(TileSet, SelectedTile, Window);
+
+        SetHeightsAndWidths();
+
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
+
+        Window.DrawRedLine();
+        Window.RectanglesGrid.Children.Clear();
+    }
+    public void SelectTileFromTileMap()
+    {
+        OnPropertyChanged(nameof(SelectedTileText));
+        TileGridUpdate(TileSet, SelectedTile, Window);
+
+        SetHeightsAndWidths();
+
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
+
+        Window.DrawRedLine();
+        Window.RectanglesGrid.Children.Clear();
+    }
+    public void UpdateAngles(PixelPoint positionGreen, PixelPoint positionBlue)
+    {
+        if (AngleMap.Values.Count <= 0)
+        {
+            return;
+        }
+
+        byte byteAngle = AngleMap.SetAngleFromLine(SelectedTile, positionGreen, positionBlue);
+
+        ShowAngles(Angles.FromByte(byteAngle));
+    }
+    public void EditTile(PixelPoint tilePosition, bool isLeftButtonPressed)
+    {
+        TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
+        TileGridUpdate(TileSet, SelectedTile, Window);
+
+        SetHeightsAndWidths();
+
+        Border newTile = GetTile(SelectedTile);
+        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
+        Window.TileMapGrid.Children[SelectedTile] = newTile;
+    }
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        return textboxValidator.GetErrors(propertyName);
+    }
+    public bool HasErrors => textboxValidator.HasErrors;
+
     private async void MenuOpenAngleMap()
     {
         string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.AngleMap);
@@ -492,43 +556,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.DrawRedLine();
     }
 
-    public void SelectTile()
-    {
-        if (SelectedTile > TileSet.Tiles.Count - 1)
-        {
-            SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTileText));
-        }
-
-        ((Border)Window.TileMapGrid.Children[Window.LastSelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
-
-        ((Border)Window.TileMapGrid.Children[SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
-
-        Window.LastSelectedTile = SelectedTile;
-
-        TileGridUpdate(TileSet, SelectedTile, Window);
-        
-        SetHeightsAndWidths();
-
-        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-
-        Window.DrawRedLine();
-        Window.RectanglesGrid.Children.Clear();
-    }
-
-    public void SelectTileFromTileMap()
-    {
-        OnPropertyChanged(nameof(SelectedTileText));
-        TileGridUpdate(TileSet, SelectedTile, Window);
-
-        SetHeightsAndWidths();
-
-        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-
-        Window.DrawRedLine();
-        Window.RectanglesGrid.Children.Clear();
-    }
-
     private Border GetTile(int index)
     {
         Tile tile = TileSet.Tiles[index];
@@ -618,18 +645,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.Close();
     }
 
-    public void UpdateAngles(PixelPoint positionGreen, PixelPoint positionBlue)
-    {
-        if (AngleMap.Values.Count <= 0)
-        {
-            return;
-        }
-
-        byte byteAngle = AngleMap.SetAngleFromLine(SelectedTile, positionGreen, positionBlue);
-
-        ShowAngles(Angles.FromByte(byteAngle));
-    }
-
     private void RectanglesGridUpdate()
     {
         Window.RectanglesGrid.ColumnDefinitions.Clear();
@@ -681,18 +696,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void EditTile(PixelPoint tilePosition, bool isLeftButtonPressed)
-    {
-        TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
-        TileGridUpdate(TileSet, SelectedTile, Window);
-
-        SetHeightsAndWidths();
-
-        Border newTile = GetTile(SelectedTile);
-        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
-        Window.TileMapGrid.Children[SelectedTile] = newTile;
-    }
-
     private void Help()
     {
         Process.Start(new ProcessStartInfo()
@@ -702,18 +705,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         });
     }
 
-    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
     private void TextboxValidator_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
     {
         ErrorsChanged?.Invoke(this, e);
         OnPropertyChanged(nameof(HexAngleText));
     }
-
-    public IEnumerable GetErrors(string? propertyName)
-    {
-        return textboxValidator.GetErrors(propertyName);
-    }
-
-    public bool HasErrors => textboxValidator.HasErrors;
 }
