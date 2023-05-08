@@ -201,7 +201,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         SelectTile();
     }
 
-    public void ShowAngles(Angles angles)
+    private void ShowAngles(Angles angles)
     {
         Window.TextBoxByteAngle.IsEnabled = true;
         Window.TextBoxHexAngle.IsEnabled = true;
@@ -298,13 +298,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void TileMapGridHeightUpdate(int tileCount)
+    private void TileMapGridHeightUpdate(int tileCount)
     {
         Window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / Window.TileMapGrid.Columns)
             * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
     }
 
-    public async void OurMessageBox(string message)
+    private async void OurMessageBox(string message)
     {
         _ = await BoxedMessage.Create(new MessageBoxParams
         {
@@ -435,8 +435,17 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         SelectedTile = 0;
         OnPropertyChanged(nameof(SelectedTileText));
         Window.LastSelectedTile = 0;
+        AllButtonsAndTextBlocksUnenabled();
 
+        Window.canvasForLine.Children.Clear();
+        Window.RectanglesGrid.Children.Clear();
 
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
+        TileGridUpdate(TileSet, 0, Window);
+    }
+
+    private void AllButtonsAndTextBlocksUnenabled()
+    {
         Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Color.FromRgb(176, 176, 176));
         Window.BorderFullAngle.Background = new SolidColorBrush(Color.FromRgb(196, 196, 196));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
@@ -455,12 +464,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         Window.TextBoxByteAngle.IsEnabled = false;
         Window.TextBoxHexAngle.IsEnabled = false;
-
-        Window.canvasForLine.Children.Clear();
-        Window.RectanglesGrid.Children.Clear();
-
-        TileMapGridHeightUpdate(TileSet.Tiles.Count);
-        TileGridUpdate(TileSet, 0, Window);
     }
 
     private void AngleIncrement()
@@ -518,7 +521,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.RectanglesGrid.Children.Clear();
     }
 
-    public Border GetTile(int index)
+    private Border GetTile(int index)
     {
         Tile tile = TileSet.Tiles[index];
 
@@ -541,7 +544,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         return border;
     }
-    public void AddTile()
+    private void AddTile()
     {
         if (SelectedTile > TileSet.Tiles.Count - 1)
         {
@@ -567,7 +570,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         SelectTile();
     }
 
-    public void DeleteTile()
+    private void DeleteTile()
     {
         if (SelectedTile > TileSet.Tiles.Count - 1)
         {
