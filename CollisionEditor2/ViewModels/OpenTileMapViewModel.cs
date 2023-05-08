@@ -27,7 +27,7 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private string verticalSeparationString = "0";
     private string horizontalOffsetString = "0";
     private string verticalOffsetString = "0";
-    private string tileWidthString =  "16";
+    private string tileWidthString = "16";
     private string tileHeightString = "16";
 
     private OpenTileMap window;
@@ -123,6 +123,18 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void VerticalSet()
     {
+        TileHeightSet();
+        VerticalSeparationSet();
+        VerticalOffsetSet();
+    }
+    private void HorizontalSet()
+    {
+        TileWidthSet();
+        HorizontalSeparationSet();
+        HorizontalOffsetSet();
+    }
+    private void TileHeightSet()
+    {
         textboxValidator.ClearErrors(nameof(TileHeightText));
         CheckErrors();
         bool isNumberTileHeight = int.TryParse(TileHeightText, out int intTileHeight);
@@ -135,8 +147,10 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         tileHeight = intTileHeight;
+    }
 
-
+    private void VerticalSeparationSet()
+    {
         textboxValidator.ClearErrors(nameof(VerticalSeparationText));
         CheckErrors();
 
@@ -150,8 +164,9 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         verticalSeparation = intVerticalSeparation;
-
-
+    }
+    private void VerticalOffsetSet()
+    {
         textboxValidator.ClearErrors(nameof(VerticalOffsetText));
         CheckErrors();
 
@@ -166,8 +181,7 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
         verticalOffset = intVerticalOffset;
     }
-
-    private void HorizontalSet()
+    private void TileWidthSet() 
     {
         textboxValidator.ClearErrors(nameof(TileWidthText));
         CheckErrors();
@@ -181,8 +195,9 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         tileWidth = intTileWidth;
-
-
+    }
+    private void HorizontalSeparationSet()
+    {
         textboxValidator.ClearErrors(nameof(HorizontalSeparationText));
         CheckErrors();
         bool isNumberHorizontalSeparation = int.TryParse(HorizontalSeparationText, out int intHorizontalSeparation);
@@ -195,8 +210,9 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         horizontalSeparation = intHorizontalSeparation;
-
-
+    }
+    private void HorizontalOffsetSet()
+    {
         textboxValidator.ClearErrors(nameof(HorizontalOffsetText));
         CheckErrors();
         bool isNumberHorizontalOffset = int.TryParse(HorizontalOffsetText, out int intHorizontalOffset);
