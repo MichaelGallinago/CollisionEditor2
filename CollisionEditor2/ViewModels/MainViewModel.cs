@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace CollisionEditor2.ViewModels;
 
@@ -31,23 +32,23 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     public AngleMap AngleMap { get; private set; }
     public TileSet TileSet { get; private set; }
 
-    public ReactiveCommand<Unit, Unit> MenuOpenAngleMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuOpenTileMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveTileMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveWidthMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveHeightMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveAngleMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuSaveAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuUnloadTileMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuUnloadAngleMapCommand { get; }
-    public ReactiveCommand<Unit, Unit> MenuUnloadAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> SelectTileCommand { get; }
-    public ReactiveCommand<Unit, Unit> AngleIncrementCommand { get; }
-    public ReactiveCommand<Unit, Unit> AngleDecrementCommand { get; }
-    public ReactiveCommand<Unit, Unit> AddTileCommand { get; }
-    public ReactiveCommand<Unit, Unit> DeleteTileCommand { get; }
-    public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
-    public ReactiveCommand<Unit, Unit> HelpCommand { get; }
+    public ReactiveCommand<Unit, Unit>? MenuOpenAngleMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuOpenTileMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveTileMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveWidthMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveHeightMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveAngleMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuSaveAllCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuUnloadTileMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuUnloadAngleMapCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? MenuUnloadAllCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? SelectTileCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? AngleIncrementCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? AngleDecrementCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? AddTileCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? DeleteTileCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? ExitAppCommand { get; private set; }
+    public ReactiveCommand<Unit, Unit>? HelpCommand { get; private set; }
 
     public int SelectedTile { get; set; }
 
@@ -64,37 +65,17 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         byteAngle = 0;
         hexAngle = "0x00";
-        this.Window = window;
+        Window = window;
 
-        MenuOpenAngleMapCommand = ReactiveCommand.Create(MenuOpenAngleMap);
-        MenuOpenTileMapCommand = ReactiveCommand.Create(MenuOpenTileMap);
-
-        MenuSaveTileMapCommand = ReactiveCommand.Create(MenuSaveTileMap);
-        MenuSaveWidthMapCommand = ReactiveCommand.Create(MenuSaveWidthMap);
-        MenuSaveHeightMapCommand = ReactiveCommand.Create(MenuSaveHeightMap);
-        MenuSaveAngleMapCommand = ReactiveCommand.Create(MenuSaveAngleMap);
-        MenuSaveAllCommand = ReactiveCommand.Create(MenuSaveAll);
-
-        MenuUnloadTileMapCommand = ReactiveCommand.Create(MenuUnloadTileMap);
-        MenuUnloadAngleMapCommand = ReactiveCommand.Create(MenuUnloadAngleMap);
-        MenuUnloadAllCommand = ReactiveCommand.Create(MenuUnloadAll);
-
-        AngleIncrementCommand = ReactiveCommand.Create(AngleIncrement);
-        AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
-        SelectTileCommand = ReactiveCommand.Create(SelectTile);
-
-        AddTileCommand = ReactiveCommand.Create(AddTile);
-        DeleteTileCommand = ReactiveCommand.Create(DeleteTile);
-
+        SetMenuCommand();
+        SetAngleIncAndDecCommand();
+        SetRightPanelCommand();
         ExitAppCommand = ReactiveCommand.Create(ExitApp);
 
-        HelpCommand = ReactiveCommand.Create(Help);
-
         RectanglesGridUpdate();
+
         TileGridUpdate(TileSet, SelectedTile, window);
     }
-
-
     public string ByteAngleText
     {
         get => byteAngle.ToString();
@@ -121,31 +102,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         get => hexAngle;
         set
         {
-            textboxValidator.ClearErrors(nameof(HexAngleText));
-
-            if (value.Length < Angles.HexAnglePrefixLength + 1 || value.Length > Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength)
+            if (!ValidateHexAngle(value))
             {
-                textboxValidator.AddError(nameof(HexAngleText),
-                    $"Wrong hexadecimal number length!\nMust be between {Angles.HexAnglePrefixLength + 1} and "
-                    + $"{Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength}");
-                return;
-            }
-
-
-            string prefix = value[..Angles.HexAnglePrefixLength];
-
-            if (prefix != "0x" && prefix != "0X")
-            {
-                textboxValidator.AddError(nameof(HexAngleText),
-                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
-                return;
-            }
-
-            if (!int.TryParse(value[Angles.HexAnglePrefixLength..],
-                System.Globalization.NumberStyles.HexNumber, null, out _))
-            {
-                textboxValidator.AddError(nameof(HexAngleText),
-                    "Wrong hexadecimal number alphabet!\nMust be '0123456789ABCDEFabcdef'");
                 return;
             }
 
@@ -176,6 +134,100 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
+    public void SelectTile()
+    {
+        if (SelectedTile > TileSet.Tiles.Count - 1)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
+
+        ((Border)Window.TileMapGrid.Children[Window.LastSelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
+
+        ((Border)Window.TileMapGrid.Children[SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
+
+        Window.LastSelectedTile = SelectedTile;
+
+        TileGridUpdate(TileSet, SelectedTile, Window);
+
+        SetHeightsAndWidths();
+
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
+
+        Window.DrawRedLine();
+        Window.RectanglesGrid.Children.Clear();
+    }
+    public void SelectTileFromTileMap()
+    {
+        OnPropertyChanged(nameof(SelectedTileText));
+        TileGridUpdate(TileSet, SelectedTile, Window);
+
+        SetHeightsAndWidths();
+
+        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
+
+        Window.DrawRedLine();
+        Window.RectanglesGrid.Children.Clear();
+    }
+    public void UpdateAngles(PixelPoint positionGreen, PixelPoint positionBlue)
+    {
+        if (AngleMap.Values.Count <= 0)
+        {
+            return;
+        }
+
+        byte byteAngle = AngleMap.SetAngleFromLine(SelectedTile, positionGreen, positionBlue);
+
+        ShowAngles(Angles.FromByte(byteAngle));
+    }
+    public void EditTile(PixelPoint tilePosition, bool isLeftButtonPressed)
+    {
+        TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
+        TileGridUpdate(TileSet, SelectedTile, Window);
+
+        SetHeightsAndWidths();
+
+        Border newTile = GetTile(SelectedTile);
+        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
+        Window.TileMapGrid.Children[SelectedTile] = newTile;
+    }
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        return textboxValidator.GetErrors(propertyName);
+    }
+    public bool HasErrors => textboxValidator.HasErrors;
+
+    private void SetMenuCommand()
+    {
+        MenuOpenAngleMapCommand = ReactiveCommand.Create(MenuOpenAngleMap);
+        MenuOpenTileMapCommand = ReactiveCommand.Create(MenuOpenTileMap);
+
+        MenuSaveTileMapCommand = ReactiveCommand.Create(MenuSaveTileMap);
+        MenuSaveWidthMapCommand = ReactiveCommand.Create(MenuSaveWidthMap);
+        MenuSaveHeightMapCommand = ReactiveCommand.Create(MenuSaveHeightMap);
+        MenuSaveAngleMapCommand = ReactiveCommand.Create(MenuSaveAngleMap);
+        MenuSaveAllCommand = ReactiveCommand.Create(MenuSaveAll);
+
+        MenuUnloadTileMapCommand = ReactiveCommand.Create(MenuUnloadTileMap);
+        MenuUnloadAngleMapCommand = ReactiveCommand.Create(MenuUnloadAngleMap);
+        MenuUnloadAllCommand = ReactiveCommand.Create(MenuUnloadAll);
+
+        HelpCommand = ReactiveCommand.Create(Help);
+    }
+    private void SetAngleIncAndDecCommand()
+    {
+        AngleIncrementCommand = ReactiveCommand.Create(AngleIncrement);
+        AngleDecrementCommand = ReactiveCommand.Create(AngleDecrement);
+    }
+    private void SetRightPanelCommand()
+    {
+        SelectTileCommand = ReactiveCommand.Create(SelectTile);
+
+        AddTileCommand = ReactiveCommand.Create(AddTile);
+        DeleteTileCommand = ReactiveCommand.Create(DeleteTile);
+    }
+
     private async void MenuOpenAngleMap()
     {
         string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.AngleMap);
@@ -193,11 +245,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-        Window.SelectTileTextBox.IsEnabled = true;
-        Window.SelectTileButton.IsEnabled = true;
-        Window.ModSwitchButton.IsEnabled = true;
-        Window.AddTileButton.IsEnabled = true;
-        Window.DeleteTileButton.IsEnabled = true;
+        EnableRightPanelAndModSwitchButtons();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
@@ -205,15 +253,15 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         SelectTile();
     }
 
-    public void ShowAngles(Angles angles)
+    private void ShowAngles(Angles angles)
     {
         Window.TextBoxByteAngle.IsEnabled = true;
         Window.TextBoxHexAngle.IsEnabled = true;
 
-        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(84, 84, 84));
-        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
+        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Color.FromRgb(84, 84, 84));
+        Window.BorderFullAngle.Background = new SolidColorBrush(Color.FromRgb(177, 177, 177));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Black);
-        Window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(177, 177, 177));
+        Window.TextBlockFullAngle.Background = new SolidColorBrush(Color.FromRgb(177, 177, 177));
 
         byteAngle = angles.ByteAngle;
         OnPropertyChanged(nameof(ByteAngleText));
@@ -230,25 +278,45 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.TextBlockFullAngle.Text = angles.FullAngle + "°";
     }
 
+    private bool ValidateHexAngle(string hexAngle)
+    {
+        textboxValidator.ClearErrors(nameof(HexAngleText));
+
+        if (hexAngle.Length <= Angles.HexAnglePrefixLength || hexAngle.Length > Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength)
+        {
+            textboxValidator.AddError(nameof(HexAngleText),
+                $"Wrong hexadecimal number length!\nMust be between {Angles.HexAnglePrefixLength + 1} and "
+                + $"{Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength}");
+            return false;
+        }
+
+        string prefix = hexAngle[..Angles.HexAnglePrefixLength];
+        if (prefix != "0x" && prefix != "0X")
+        {
+            textboxValidator.AddError(nameof(HexAngleText),
+                "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
+            return false;
+        }
+
+        if (!int.TryParse(hexAngle[Angles.HexAnglePrefixLength..],
+            System.Globalization.NumberStyles.HexNumber, null, out _))
+        {
+            textboxValidator.AddError(nameof(HexAngleText),
+                "Wrong hexadecimal number alphabet!\nMust be '0123456789ABCDEFabcdef'");
+            return false;
+        }
+
+        return true;
+    }
+
     private async void MenuOpenTileMap()
     {
-        string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.TileMap);
-        if (filePath == string.Empty)
+        TileSet? tileSet = await CreateTileSetFromOpenTileMapWindow();
+        if (tileSet is null)
         {
             return;
         }
-
-        OpenTileMap openTileMap = new();
-        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
-        await openTileMap.ShowDialog(Window);
-        if (!openTileMap.IsOpened)
-        {
-            return;
-        }
-
-        TileSet = new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
-            new PixelSize(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation),
-            new PixelSize(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
+        TileSet = tileSet;
 
         if (AngleMap.Values.Count <= 0)
         {
@@ -256,29 +324,56 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
-        ViewModelAssistant.GetBitmapFromPixelArray(
-            ViewModelAssistant.GetPixelArrayFromTile(TileSet.Tiles[SelectedTile], new OurColor(0, 0, 0, 255)),
-            new PixelSize(TileSet.Tiles[SelectedTile].Widths.Length, TileSet.Tiles[SelectedTile].Heights.Length));
 
         TileGridUpdate(TileSet, SelectedTile, Window);
         RectanglesGridUpdate();
-
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
-
+        SetHeightsAndWidths();
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-
-        Window.SelectTileTextBox.IsEnabled = true;
-        Window.SelectTileButton.IsEnabled = true;
-        Window.ModSwitchButton.IsEnabled = true;
-        Window.AddTileButton.IsEnabled = true;
-        Window.DeleteTileButton.IsEnabled = true;
+        EnableRightPanelAndModSwitchButtons();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
-        Window.DrawRedLine();
+
         SelectTile();
+
+        Window.DrawRedLine();
         Window.WindowSizeChanged(new Size(Window.Width, Window.Height));
+    }
+
+    private async Task<TileSet?> CreateTileSetFromOpenTileMapWindow()
+    {
+        string filePath = await ViewModelFileUtilities.GetFileOpenPath(Window, ViewModelFileUtilities.Filters.TileMap);
+        if (filePath == string.Empty)
+        {
+            return null;
+        }
+
+        OpenTileMap openTileMap = new();
+        openTileMap.DataContext = new OpenTileMapViewModel(openTileMap, filePath);
+        await openTileMap.ShowDialog(Window);
+        if (!openTileMap.IsOpened)
+        {
+            return null;
+        }
+
+        return new TileSet(filePath, openTileMap.TileWidth, openTileMap.TileHeight,
+            new PixelSize(openTileMap.HorizontalSeparation, openTileMap.VerticalSeparation),
+            new PixelSize(openTileMap.HorizontalOffset, openTileMap.VerticalOffset));
+    }
+
+    private void SetHeightsAndWidths()
+    {
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+    }
+
+    private void EnableRightPanelAndModSwitchButtons()
+    {
+        Window.ModSwitchButton.IsEnabled = true;
+        Window.SelectTileTextBox.IsEnabled = true;
+        Window.SelectTileButton.IsEnabled = true;
+        Window.AddTileButton.IsEnabled = true;
+        Window.DeleteTileButton.IsEnabled = true;
     }
 
     private void TileMapGridReset()
@@ -291,13 +386,13 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void TileMapGridHeightUpdate(int tileCount)
+    private void TileMapGridHeightUpdate(int tileCount)
     {
         Window.TileMapGrid.Height = (int)Math.Ceiling((double)tileCount / Window.TileMapGrid.Columns)
             * (TileSet.TileSize.Height * MainWindow.TileMapTileScale + tileMapSeparation);
     }
 
-    public async void OurMessageBox(string message)
+    private async void OurMessageBox(string message)
     {
         _ = await BoxedMessage.Create(new MessageBoxParams
         {
@@ -317,6 +412,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             OurMessageBox("Error: You haven't selected TileMap to save");
             return;
         }
+
         SaveTileMap saveTileMap = new();
         saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap, TileSet);
         await saveTileMap.ShowDialog(Window);
@@ -399,8 +495,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+
+        SetHeightsAndWidths();
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
     }
@@ -428,12 +524,21 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         SelectedTile = 0;
         OnPropertyChanged(nameof(SelectedTileText));
         Window.LastSelectedTile = 0;
+        AllButtonsAndTextBlocksUnenabled();
 
+        Window.canvasForLine.Children.Clear();
+        Window.RectanglesGrid.Children.Clear();
 
-        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(176, 176, 176));
-        Window.BorderFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
+        TileMapGridHeightUpdate(TileSet.Tiles.Count);
+        TileGridUpdate(TileSet, 0, Window);
+    }
+
+    private void AllButtonsAndTextBlocksUnenabled()
+    {
+        Window.BorderFullAngle.BorderBrush = new SolidColorBrush(Color.FromRgb(176, 176, 176));
+        Window.BorderFullAngle.Background = new SolidColorBrush(Color.FromRgb(196, 196, 196));
         Window.TextBlockFullAngle.Foreground = new SolidColorBrush(Colors.Gray);
-        Window.TextBlockFullAngle.Background = new SolidColorBrush(Avalonia.Media.Color.FromRgb(196, 196, 196));
+        Window.TextBlockFullAngle.Background = new SolidColorBrush(Color.FromRgb(196, 196, 196));
 
         Window.ByteAngleIncrimentButton.IsEnabled = false;
         Window.ByteAngleDecrementButton.IsEnabled = false;
@@ -448,12 +553,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         Window.TextBoxByteAngle.IsEnabled = false;
         Window.TextBoxHexAngle.IsEnabled = false;
-
-        Window.canvasForLine.Children.Clear();
-        Window.RectanglesGrid.Children.Clear();
-
-        TileMapGridHeightUpdate(TileSet.Tiles.Count);
-        TileGridUpdate(TileSet, 0, Window);
     }
 
     private void AngleIncrement()
@@ -474,44 +573,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.DrawRedLine();
     }
 
-    public void SelectTile()
-    {
-        if (SelectedTile > TileSet.Tiles.Count - 1)
-        {
-            SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTileText));
-        }
-
-        ((Border)Window.TileMapGrid.Children[Window.LastSelectedTile]).BorderBrush = new SolidColorBrush(Avalonia.Media.Color.FromRgb(211, 211, 211));
-
-        ((Border)Window.TileMapGrid.Children[SelectedTile]).BorderBrush = new SolidColorBrush(Colors.Red);
-
-        Window.LastSelectedTile = SelectedTile;
-
-        TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
-
-        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-
-        Window.DrawRedLine();
-        Window.RectanglesGrid.Children.Clear();
-    }
-
-    public void SelectTileFromTileMap()
-    {
-        OnPropertyChanged(nameof(SelectedTileText));
-        TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
-
-        ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-
-        Window.DrawRedLine();
-        Window.RectanglesGrid.Children.Clear();
-    }
-
-    public Border GetTile(int index)
+    private Border GetTile(int index)
     {
         Tile tile = TileSet.Tiles[index];
 
@@ -534,7 +596,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         return border;
     }
-    public void AddTile()
+
+    private void AddTile()
     {
         if (SelectedTile > TileSet.Tiles.Count - 1)
         {
@@ -544,10 +607,10 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         if (SelectedTile < Window.LastSelectedTile)
         {
-            Window.LastSelectedTile += 1;
+            Window.LastSelectedTile++;
         }
 
-        SelectedTile += 1;
+        SelectedTile++;
         OnPropertyChanged(nameof(SelectedTileText));
 
         TileSet.InsertTile(SelectedTile);
@@ -560,13 +623,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         SelectTile();
     }
 
-    public void DeleteTile()
+    private void DeleteTile()
     {
-        if (SelectedTile > TileSet.Tiles.Count - 1)
-        {
-            SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTileText));
-        }
+        LimitSelectedTile();
 
         TileSet.RemoveTile(SelectedTile);
         AngleMap.RemoveAngle(SelectedTile);
@@ -579,37 +638,29 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        if (SelectedTile > TileSet.Tiles.Count - 1)
-        {
-            SelectedTile = TileSet.Tiles.Count - 1;
-            OnPropertyChanged(nameof(SelectedTileText));
-        }
+        LimitSelectedTile();
 
         if (SelectedTile < Window.LastSelectedTile)
         {
-            Window.LastSelectedTile -= 1;
+            Window.LastSelectedTile--;
         }
 
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
         SelectTile();
+    }
 
+    private void LimitSelectedTile()
+    {
+        if (SelectedTile >= TileSet.Tiles.Count)
+        {
+            SelectedTile = TileSet.Tiles.Count - 1;
+            OnPropertyChanged(nameof(SelectedTileText));
+        }
     }
 
     private void ExitApp()
     {
         Window.Close();
-    }
-
-    public void UpdateAngles(PixelPoint positionGreen, PixelPoint positionBlue)
-    {
-        if (AngleMap.Values.Count <= 0)
-        {
-            return;
-        }
-
-        byte byteAngle = AngleMap.SetAngleFromLine(SelectedTile, positionGreen, positionBlue);
-
-        ShowAngles(Angles.FromByte(byteAngle));
     }
 
     private void RectanglesGridUpdate()
@@ -642,6 +693,11 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         Tile tile = tileSet.Tiles.Count > 0 ? tileSet.Tiles[ChosenTile] : new Tile(size);
 
+        FillTileGrid(tile, size, window);
+    }
+
+    private static void FillTileGrid(Tile tile, PixelSize size, MainWindow window)
+    {
         for (int y = 0; y < size.Height; y++)
         {
             for (int x = 0; x < size.Width; x++)
@@ -663,19 +719,6 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    public void EditTile(PixelPoint tilePosition, bool isLeftButtonPressed)
-    {
-        TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
-        TileGridUpdate(TileSet, SelectedTile, Window);
-
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
-
-        Border newTile = GetTile(SelectedTile);
-        newTile.BorderBrush = new SolidColorBrush(Colors.Red);
-        Window.TileMapGrid.Children[SelectedTile] = newTile;
-    }
-
     private void Help()
     {
         Process.Start(new ProcessStartInfo()
@@ -685,18 +728,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         });
     }
 
-    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
     private void TextboxValidator_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
     {
         ErrorsChanged?.Invoke(this, e);
         OnPropertyChanged(nameof(HexAngleText));
     }
-
-    public IEnumerable GetErrors(string? propertyName)
-    {
-        return textboxValidator.GetErrors(propertyName);
-    }
-
-    public bool HasErrors => textboxValidator.HasErrors;
 }
