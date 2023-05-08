@@ -259,8 +259,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileGridUpdate(TileSet, SelectedTile, Window);
         RectanglesGridUpdate();
 
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        SetHeightsAndWidths();
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
@@ -271,6 +270,12 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.DrawRedLine();
         SelectTile();
         Window.WindowSizeChanged(new Size(Window.Width, Window.Height));
+    }
+
+    private void SetHeightsAndWidths()
+    {
+        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
+        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
     }
 
     private void RightPanelAndModSwithButtonsIsEnabled()
@@ -401,8 +406,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileMapGridReset();
 
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+
+        SetHeightsAndWidths();
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
     }
@@ -491,8 +496,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.LastSelectedTile = SelectedTile;
 
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        
+        SetHeightsAndWidths();
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
@@ -504,8 +509,8 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         OnPropertyChanged(nameof(SelectedTileText));
         TileGridUpdate(TileSet, SelectedTile, Window);
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+
+        SetHeightsAndWidths();
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
@@ -670,8 +675,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         TileSet.ChangeTile(SelectedTile, tilePosition, isLeftButtonPressed);
         TileGridUpdate(TileSet, SelectedTile, Window);
 
-        Window.Heights.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Heights);
-        Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
+        SetHeightsAndWidths();
 
         Border newTile = GetTile(SelectedTile);
         newTile.BorderBrush = new SolidColorBrush(Colors.Red);
