@@ -64,7 +64,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         byteAngle = 0;
         hexAngle = "0x00";
-        this.Window = window;
+        Window = window;
 
         MenuOpenAngleMapCommand = ReactiveCommand.Create(MenuOpenAngleMap);
         MenuOpenTileMapCommand = ReactiveCommand.Create(MenuOpenTileMap);
@@ -121,32 +121,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         get => hexAngle;
         set
         {
-            textboxValidator.ClearErrors(nameof(HexAngleText));
-
-            if (value.Length < Angles.HexAnglePrefixLength + 1 || value.Length > Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength)
-            {
-                textboxValidator.AddError(nameof(HexAngleText),
-                    $"Wrong hexadecimal number length!\nMust be between {Angles.HexAnglePrefixLength + 1} and "
-                    + $"{Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength}");
-                return;
-            }
-
-
-            string prefix = value[..Angles.HexAnglePrefixLength];
-
-            if (prefix != "0x" && prefix != "0X")
-            {
-                textboxValidator.AddError(nameof(HexAngleText),
-                    "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
-                return;
-            }
-
-            if (!int.TryParse(value[Angles.HexAnglePrefixLength..],
-                System.Globalization.NumberStyles.HexNumber, null, out _))
-            {
-                textboxValidator.AddError(nameof(HexAngleText),
-                    "Wrong hexadecimal number alphabet!\nMust be '0123456789ABCDEFabcdef'");
-                return;
+            if (!ValidateHexAngle(value))
+            { 
+                return; 
             }
 
             hexAngle = value;
@@ -193,7 +170,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         ViewModelAssistant.SupplementElements(AngleMap, TileSet);
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
-        RightPanelAndModSwithButtonsIsEnabled();
+        EnableRightPanelAndModSwitchButtons();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
@@ -224,6 +201,37 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.HexAngleDecrementButton.IsEnabled = true;
 
         Window.TextBlockFullAngle.Text = angles.FullAngle + "°";
+    }
+
+    private bool ValidateHexAngle(string hexAngle)
+    {
+        textboxValidator.ClearErrors(nameof(HexAngleText));
+
+        if (hexAngle.Length <= Angles.HexAnglePrefixLength || hexAngle.Length > Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength)
+        {
+            textboxValidator.AddError(nameof(HexAngleText),
+                $"Wrong hexadecimal number length!\nMust be between {Angles.HexAnglePrefixLength + 1} and "
+                + $"{Angles.HexAnglePrefixLength + Angles.HexAngleMaxLength}");
+            return false;
+        }
+
+        string prefix = hexAngle[..Angles.HexAnglePrefixLength];
+        if (prefix != "0x" && prefix != "0X")
+        {
+            textboxValidator.AddError(nameof(HexAngleText),
+                "Wrong hexadecimal prefix!\nMust be '0x' or '0X'");
+            return false;
+        }
+
+        if (!int.TryParse(hexAngle[Angles.HexAnglePrefixLength..],
+            System.Globalization.NumberStyles.HexNumber, null, out _))
+        {
+            textboxValidator.AddError(nameof(HexAngleText),
+                "Wrong hexadecimal number alphabet!\nMust be '0123456789ABCDEFabcdef'");
+            return false;
+        }
+
+        return true;
     }
 
     private async void MenuOpenTileMap()
@@ -263,7 +271,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
 
         ShowAngles(Angles.FromByte(AngleMap.Values[SelectedTile]));
 
-        RightPanelAndModSwithButtonsIsEnabled();
+        EnableRightPanelAndModSwitchButtons();
 
         TileMapGridReset();
         TileMapGridHeightUpdate(TileSet.Tiles.Count);
@@ -278,10 +286,9 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
         Window.Widths.Text = TileUtilities.GetCollisionValues(TileSet.Tiles[SelectedTile].Widths);
     }
 
-    private void RightPanelAndModSwithButtonsIsEnabled()
+    private void EnableRightPanelAndModSwitchButtons()
     {
         Window.ModSwitchButton.IsEnabled = true;
-
         Window.SelectTileTextBox.IsEnabled = true;
         Window.SelectTileButton.IsEnabled = true;
         Window.AddTileButton.IsEnabled = true;
@@ -324,6 +331,7 @@ public class MainViewModel : ViewModelBase, INotifyDataErrorInfo
             OurMessageBox("Error: You haven't selected TileMap to save");
             return;
         }
+
         SaveTileMap saveTileMap = new();
         saveTileMap.DataContext = new SaveTileMapViewModel(saveTileMap, TileSet);
         await saveTileMap.ShowDialog(Window);
