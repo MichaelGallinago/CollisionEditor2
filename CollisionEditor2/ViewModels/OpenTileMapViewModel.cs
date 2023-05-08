@@ -16,19 +16,9 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     private const int minTileHeight = 4;
     private const int minTileWidth = 4;
 
-    private int horizontalSeparation;
-    private int verticalSeparation;
-    private int horizontalOffset;
-    private int verticalOffset;
-    private int tileWidth = 16;
-    private int tileHeight = 16;
-
-    private string horizontalSeparationString = "0";
-    private string verticalSeparationString = "0";
-    private string horizontalOffsetString = "0";
-    private string verticalOffsetString = "0";
-    private string tileWidthString = "16";
-    private string tileHeightString = "16";
+    private ValidatePixelSize Separation = new ValidatePixelSize(0, 0);
+    private ValidatePixelSize Offset     = new ValidatePixelSize(0, 0);
+    private ValidatePixelSize Size       = new ValidatePixelSize(16, 16);
 
     private OpenTileMap window;
     private readonly PixelSize bitmapSize;
@@ -56,60 +46,60 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
     public string TileWidthText
     {
-        get => tileWidthString;
+        get => Size.WidthString;
         set
         {
-            tileWidthString = value;
+            Size.WidthString = value;
             HorizontalSet();
         }
     }
 
     public string TileHeightText
     {
-        get => tileHeightString;
+        get => Size.HeightString;
         set
         {
-            tileHeightString = value;
+            Size.HeightString = value;
             VerticalSet();
         }
     }
 
     public string HorizontalSeparationText
     {
-        get => horizontalSeparationString;
+        get => Separation.WidthString;
         set
         {
-            horizontalSeparationString = value;
+            Separation.WidthString = value;
             HorizontalSet();
         }
     }
 
     public string VerticalSeparationText
     {
-        get => verticalSeparationString;
+        get => Separation.HeightString;
         set
         {
-            verticalSeparationString = value;
+            Separation.HeightString = value;
             VerticalSet();
         }
     }
 
     public string HorizontalOffsetText
     {
-        get => horizontalOffsetString;
+        get => Offset.WidthString;
         set
         {
-            horizontalOffsetString = value;
+            Offset.WidthString = value;
             HorizontalSet();
         }
     }
 
     public string VerticalOffsetText
     {
-        get => verticalOffsetString;
+        get => Offset.HeightString;
         set
         {
-            verticalOffsetString = value;
+            Offset.HeightString = value;
             VerticalSet();
         }
     }
@@ -146,7 +136,7 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        tileHeight = intTileHeight;
+        Size.Height = intTileHeight;
     }
 
     private void VerticalSeparationSet()
@@ -156,14 +146,14 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
         bool isNumberVerticalSeparation = int.TryParse(VerticalSeparationText, out int intVerticalSeparation);
 
-        if (!isNumberVerticalSeparation || intVerticalSeparation < 0 || bitmapSize.Height < tileHeight + intVerticalSeparation)
+        if (!isNumberVerticalSeparation || intVerticalSeparation < 0 || bitmapSize.Height < Size.Height + intVerticalSeparation)
         {
             textboxValidator.AddError(nameof(VerticalSeparationText), "Wrong Vertical Separation!");
             CheckErrors();
             return;
         }
 
-        verticalSeparation = intVerticalSeparation;
+        Separation.Height = intVerticalSeparation;
     }
     private void VerticalOffsetSet()
     {
@@ -172,14 +162,14 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
 
         bool isNumberVerticalOffset = int.TryParse(VerticalOffsetText, out int intVerticalOffset);
 
-        if (!isNumberVerticalOffset || intVerticalOffset < 0 || bitmapSize.Height < tileHeight + intVerticalOffset + verticalSeparation)
+        if (!isNumberVerticalOffset || intVerticalOffset < 0 || bitmapSize.Height < Size.Height + intVerticalOffset + Separation.Height)
         {
             textboxValidator.AddError(nameof(VerticalOffsetText), "Wrong Vertical Offset!");
             CheckErrors();
             return;
         }
 
-        verticalOffset = intVerticalOffset;
+        Offset.Height = intVerticalOffset;
     }
     private void TileWidthSet()
     {
@@ -194,7 +184,7 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
             return;
         }
 
-        tileWidth = intTileWidth;
+        Size.Width = intTileWidth;
     }
     private void HorizontalSeparationSet()
     {
@@ -202,14 +192,14 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         CheckErrors();
         bool isNumberHorizontalSeparation = int.TryParse(HorizontalSeparationText, out int intHorizontalSeparation);
 
-        if (!isNumberHorizontalSeparation || intHorizontalSeparation < 0 || bitmapSize.Width < tileWidth + intHorizontalSeparation)
+        if (!isNumberHorizontalSeparation || intHorizontalSeparation < 0 || bitmapSize.Width < Size.Width + intHorizontalSeparation)
         {
             textboxValidator.AddError(nameof(HorizontalSeparationText), "Wrong Horizontal Separation!");
             CheckErrors();
             return;
         }
 
-        horizontalSeparation = intHorizontalSeparation;
+        Separation.Width = intHorizontalSeparation;
     }
     private void HorizontalOffsetSet()
     {
@@ -217,14 +207,14 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
         CheckErrors();
         bool isNumberHorizontalOffset = int.TryParse(HorizontalOffsetText, out int intHorizontalOffset);
 
-        if (!isNumberHorizontalOffset || intHorizontalOffset < 0 || bitmapSize.Width < tileWidth + intHorizontalOffset + horizontalSeparation)
+        if (!isNumberHorizontalOffset || intHorizontalOffset < 0 || bitmapSize.Width < Size.Width + intHorizontalOffset + Separation.Width)
         {
             textboxValidator.AddError(nameof(HorizontalOffsetText), "Wrong Horizontal Offset!");
             CheckErrors();
             return;
         }
 
-        horizontalOffset = intHorizontalOffset;
+        Offset.Width = intHorizontalOffset;
     }
 
     private void CheckErrors()
@@ -236,12 +226,12 @@ public class OpenTileMapViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         window.IsOpened = true;
 
-        window.HorizontalSeparation = horizontalSeparation;
-        window.VerticalSeparation = verticalSeparation;
-        window.HorizontalOffset = horizontalOffset;
-        window.VerticalOffset = verticalOffset;
-        window.TileWidth = tileWidth;
-        window.TileHeight = tileHeight;
+        window.HorizontalSeparation = Separation.Width;
+        window.VerticalSeparation   = Separation.Height;
+        window.HorizontalOffset     = Offset.Width;
+        window.VerticalOffset       = Offset.Height;
+        window.TileWidth            = Size.Width;
+        window.TileHeight           = Size.Height;
 
         window.Close();
     }
